@@ -2,11 +2,11 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.benchmark;
 
+import com.github.fabriciofx.shah.Benchmark;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
-import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.collection.Filtered;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Speed test from SMHasher.
+ * Speed benchmark from SMHasher.
  *
  * <p>Measures the throughput of a hash function by timing repeated
  * hashing of random keys of a given size. The result is reported in
@@ -43,15 +43,13 @@ import java.util.function.Function;
  * parameter (e.g. OAAT).</p>
  *
  * <p>Returns nanoseconds per hash operation (lower is better).
- * Unlike the statistical quality tests, this is a performance
- * benchmark with no pass/fail threshold.</p>
+ * This is a performance benchmark with no pass/fail threshold.</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle MagicNumberCheck (200 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class SpeedTest implements Test<Double> {
+public final class SpeedBenchmark implements Benchmark<Double> {
     /**
      * Default number of trials.
      */
@@ -98,8 +96,11 @@ public final class SpeedTest implements Test<Double> {
      * Ctor with defaults (256 KB bulk key, 999 trials, seedless).
      * @param func The hash function under test (seedless)
      */
-    public SpeedTest(final Function<Key, Hash> func) {
-        this(func, SpeedTest.DEFAULT_TRIALS, SpeedTest.DEFAULT_KEY_SIZE);
+    public SpeedBenchmark(final Function<Key, Hash> func) {
+        this(
+            func, SpeedBenchmark.DEFAULT_TRIALS,
+            SpeedBenchmark.DEFAULT_KEY_SIZE
+        );
     }
 
     /**
@@ -107,11 +108,11 @@ public final class SpeedTest implements Test<Double> {
      * @param func The hash function under test (seedless)
      * @param size Key size in bytes
      */
-    public SpeedTest(
+    public SpeedBenchmark(
         final Function<Key, Hash> func,
         final int size
     ) {
-        this(func, SpeedTest.DEFAULT_TRIALS, size);
+        this(func, SpeedBenchmark.DEFAULT_TRIALS, size);
     }
 
     /**
@@ -121,7 +122,7 @@ public final class SpeedTest implements Test<Double> {
      * @param size Key size in bytes
      * @checkstyle ParameterNumberCheck (5 lines)
      */
-    public SpeedTest(
+    public SpeedBenchmark(
         final Function<Key, Hash> func,
         final int trials,
         final int size
@@ -133,8 +134,11 @@ public final class SpeedTest implements Test<Double> {
      * Ctor with defaults (256 KB bulk key, 999 trials, seeded).
      * @param func The hash function under test, accepting (key, seed)
      */
-    public SpeedTest(final BiFunction<Key, Integer, Hash> func) {
-        this(func, SpeedTest.DEFAULT_TRIALS, SpeedTest.DEFAULT_KEY_SIZE);
+    public SpeedBenchmark(final BiFunction<Key, Integer, Hash> func) {
+        this(
+            func, SpeedBenchmark.DEFAULT_TRIALS,
+            SpeedBenchmark.DEFAULT_KEY_SIZE
+        );
     }
 
     /**
@@ -142,11 +146,11 @@ public final class SpeedTest implements Test<Double> {
      * @param func The hash function under test, accepting (key, seed)
      * @param size Key size in bytes
      */
-    public SpeedTest(
+    public SpeedBenchmark(
         final BiFunction<Key, Integer, Hash> func,
         final int size
     ) {
-        this(func, SpeedTest.DEFAULT_TRIALS, size);
+        this(func, SpeedBenchmark.DEFAULT_TRIALS, size);
     }
 
     /**
@@ -156,7 +160,7 @@ public final class SpeedTest implements Test<Double> {
      * @param size Key size in bytes
      * @checkstyle ParameterNumberCheck (5 lines)
      */
-    public SpeedTest(
+    public SpeedBenchmark(
         final BiFunction<Key, Integer, Hash> func,
         final int trials,
         final int size
@@ -167,7 +171,7 @@ public final class SpeedTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double run() {
         final Key key = new Randomized(new KeyOf(this.size));
         this.func.apply(key, 0);
         final List<Long> times = new ArrayList<>(this.trials);
@@ -179,8 +183,10 @@ public final class SpeedTest implements Test<Double> {
         }
         final double mean = new Mean(times).value();
         final double stdv = new Stdv(new Variance(times, mean)).value();
-        final double cutoff = mean + stdv * SpeedTest.SIGMA;
-        return new Mean(new Filtered<>(times, time -> time > cutoff)).value();
+        final double cutoff = mean + stdv * SpeedBenchmark.SIGMA;
+        return new Mean(
+            new Filtered<>(times, time -> time > cutoff)
+        ).value();
     }
 
     /**
@@ -195,14 +201,14 @@ public final class SpeedTest implements Test<Double> {
      */
     private long measure(final Key key, final int trial) {
         final long elapsed;
-        if (this.size <= SpeedTest.SMALL_MAX) {
+        if (this.size <= SpeedBenchmark.SMALL_MAX) {
             int seed = trial;
             final long start = System.nanoTime();
-            for (int inner = 0; inner < SpeedTest.INNER; ++inner) {
+            for (int inner = 0; inner < SpeedBenchmark.INNER; ++inner) {
                 final Hash hash = this.func.apply(key, seed);
                 seed += hash.asBytes()[0] & 0xFF;
             }
-            elapsed = (System.nanoTime() - start) / SpeedTest.INNER;
+            elapsed = (System.nanoTime() - start) / SpeedBenchmark.INNER;
         } else {
             final long start = System.nanoTime();
             this.func.apply(key, trial);

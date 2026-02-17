@@ -5,6 +5,8 @@
 package com.github.fabriciofx.shah.func.jenkins;
 
 import com.github.fabriciofx.shah.IsLessThan;
+import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
+import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
@@ -14,13 +16,11 @@ import com.github.fabriciofx.shah.test.CyclicKeyTest;
 import com.github.fabriciofx.shah.test.DiffDistTest;
 import com.github.fabriciofx.shah.test.DifferentialTest;
 import com.github.fabriciofx.shah.test.DistributionTest;
-import com.github.fabriciofx.shah.test.HashmapTest;
 import com.github.fabriciofx.shah.test.MomentChi2Test;
 import com.github.fabriciofx.shah.test.PermutationTest;
 import com.github.fabriciofx.shah.test.PrngTest;
 import com.github.fabriciofx.shah.test.SanityTest;
 import com.github.fabriciofx.shah.test.SparseKeyTest;
-import com.github.fabriciofx.shah.test.SpeedTest;
 import com.github.fabriciofx.shah.test.TextTest;
 import com.github.fabriciofx.shah.test.TwoBytesTest;
 import com.github.fabriciofx.shah.test.WindowedKeyTest;
@@ -332,9 +332,9 @@ final class OaatHash32Test {
     void passesBulkSpeedTest() {
         new Assertion<>(
             "oaat bulk speed test must complete",
-            new SpeedTest(
+            new SpeedBenchmark(
                 key -> new OaatHash32(key).hash()
-            ).value(),
+            ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
     }
@@ -343,10 +343,10 @@ final class OaatHash32Test {
     void passesSmallKeySpeedTest() {
         new Assertion<>(
             "oaat small key speed test must complete",
-            new SpeedTest(
+            new SpeedBenchmark(
                 key -> new OaatHash32(key).hash(),
                 4
-            ).value(),
+            ).run(),
             new IsLessThan(100_000.0, "small key ns/op")
         ).affirm();
     }
@@ -355,9 +355,9 @@ final class OaatHash32Test {
     void passesHashmapTest() {
         new Assertion<>(
             "oaat hashmap test must complete",
-            new HashmapTest(
+            new HashmapBenchmark(
                 key -> new OaatHash32(key).hash()
-            ).value(),
+            ).run(),
             new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();
     }

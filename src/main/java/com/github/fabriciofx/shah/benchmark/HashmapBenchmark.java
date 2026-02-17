@@ -2,11 +2,11 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.benchmark;
 
+import com.github.fabriciofx.shah.Benchmark;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
-import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.collection.Filtered;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Hash map speed test from SMHasher.
+ * Hash map benchmark from SMHasher.
  *
  * <p>Measures the performance of a hash function when used as the
  * backing hash for a {@link java.util.HashMap}. Random words are
@@ -37,17 +37,14 @@ import java.util.function.Function;
  * matching SMHasher's approach.</p>
  *
  * <p>Returns nanoseconds per lookup operation (lower is better).
- * Like SpeedTest, this is a performance benchmark with no
- * pass/fail threshold — JUnit tests should use generous
- * thresholds to avoid CI flakiness.</p>
+ * This is a performance benchmark with no pass/fail threshold.</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle ParameterNumberCheck (300 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class HashmapTest implements Test<Double> {
+public final class HashmapBenchmark implements Benchmark<Double> {
     /**
      * Default number of timing trials.
      */
@@ -77,17 +74,17 @@ public final class HashmapTest implements Test<Double> {
      * Ctor with defaults.
      * @param func The hash function under test
      */
-    public HashmapTest(final Function<Key, Hash> func) {
-        this(func, HashmapTest.DEFAULT_TRIALS, new Words());
+    public HashmapBenchmark(final Function<Key, Hash> func) {
+        this(func, HashmapBenchmark.DEFAULT_TRIALS, new Words());
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
      * @param trials Number of timing trials
-     * @param words Words to use for the test
+     * @param words Words to use for the benchmark
      */
-    public HashmapTest(
+    public HashmapBenchmark(
         final Function<Key, Hash> func,
         final int trials,
         final Words words
@@ -98,7 +95,7 @@ public final class HashmapTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double run() {
         final Map<HashedKey, Boolean> map = new HashMap<>(this.words.size());
         for (final String word : this.words) {
             map.put(
@@ -131,8 +128,10 @@ public final class HashmapTest implements Test<Double> {
         }
         final double mean = new Mean(times).value();
         final double stdv = new Stdv(new Variance(times, mean)).value();
-        final double cutoff = mean + stdv * HashmapTest.SIGMA;
-        return new Mean(new Filtered<>(times, time -> time > cutoff)).value();
+        final double cutoff = mean + stdv * HashmapBenchmark.SIGMA;
+        return new Mean(
+            new Filtered<>(times, time -> time > cutoff)
+        ).value();
     }
 
     /**

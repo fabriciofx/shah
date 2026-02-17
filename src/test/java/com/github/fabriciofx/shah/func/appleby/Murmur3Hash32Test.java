@@ -5,6 +5,8 @@
 package com.github.fabriciofx.shah.func.appleby;
 
 import com.github.fabriciofx.shah.IsLessThan;
+import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
+import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
@@ -15,7 +17,6 @@ import com.github.fabriciofx.shah.test.CyclicKeyTest;
 import com.github.fabriciofx.shah.test.DiffDistTest;
 import com.github.fabriciofx.shah.test.DifferentialTest;
 import com.github.fabriciofx.shah.test.DistributionTest;
-import com.github.fabriciofx.shah.test.HashmapTest;
 import com.github.fabriciofx.shah.test.MomentChi2Test;
 import com.github.fabriciofx.shah.test.PerlinNoiseTest;
 import com.github.fabriciofx.shah.test.PermutationTest;
@@ -23,7 +24,6 @@ import com.github.fabriciofx.shah.test.PrngTest;
 import com.github.fabriciofx.shah.test.SanityTest;
 import com.github.fabriciofx.shah.test.SeedTest;
 import com.github.fabriciofx.shah.test.SparseKeyTest;
-import com.github.fabriciofx.shah.test.SpeedTest;
 import com.github.fabriciofx.shah.test.TextTest;
 import com.github.fabriciofx.shah.test.TwoBytesTest;
 import com.github.fabriciofx.shah.test.VerificationTest;
@@ -441,9 +441,9 @@ final class Murmur3Hash32Test {
     void passesBulkSpeedTest() {
         new Assertion<>(
             "murmur3 bulk speed test must complete",
-            new SpeedTest(
+            new SpeedBenchmark(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
-            ).value(),
+            ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
     }
@@ -452,10 +452,10 @@ final class Murmur3Hash32Test {
     void passesSmallKeySpeedTest() {
         new Assertion<>(
             "murmur3 small key speed test must complete",
-            new SpeedTest(
+            new SpeedBenchmark(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 4
-            ).value(),
+            ).run(),
             new IsLessThan(100_000.0, "small key ns/op")
         ).affirm();
     }
@@ -464,9 +464,9 @@ final class Murmur3Hash32Test {
     void passesHashmapTest() {
         new Assertion<>(
             "murmur3 hashmap test must complete",
-            new HashmapTest(
+            new HashmapBenchmark(
                 key -> new Murmur3Hash32(key, 0).hash()
-            ).value(),
+            ).run(),
             new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();
     }
