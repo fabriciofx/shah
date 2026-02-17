@@ -89,8 +89,9 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 4,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().max(),
             new IsLessThan(0.60, "avalanche bias")
         ).affirm();
     }
@@ -103,8 +104,9 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 8,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().max(),
             new IsLessThan(0.60, "avalanche bias")
         ).affirm();
     }

@@ -101,8 +101,9 @@ final class Lookup2Hash32Test {
                 ).hash(),
                 4,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().max(),
             new IsLessThan(0.30, "avalanche bias")
         ).affirm();
     }
@@ -118,8 +119,9 @@ final class Lookup2Hash32Test {
                 ).hash(),
                 8,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().max(),
             new IsLessThan(0.40, "avalanche bias")
         ).affirm();
     }

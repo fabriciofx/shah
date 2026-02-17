@@ -133,8 +133,9 @@ final class Murmur3Hash32Test {
                 ).hash(),
                 4,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
@@ -150,8 +151,9 @@ final class Murmur3Hash32Test {
                 ).hash(),
                 8,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
@@ -167,8 +169,9 @@ final class Murmur3Hash32Test {
                 ).hash(),
                 16,
                 12_345L,
+                54_321L,
                 500_000
-            ).value(),
+            ).value().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
