@@ -117,9 +117,7 @@ final class Murmur3Hash32Test {
     void evaluateEightBytes() {
         new Assertion<>(
             "must evaluate the murmur3 hash of an 8-byte string",
-            () -> new Murmur3Hash32(
-                new KeyOf("testtest"), 0
-            ).hash().asString(),
+            () -> new Murmur3Hash32(new KeyOf("testtest"), 0).hash().asString(),
             new IsText("f3b1232b")
         ).affirm();
     }
@@ -129,10 +127,13 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 4-byte keys",
             new AvalancheTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 4,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
@@ -143,10 +144,13 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 8-byte keys",
             new AvalancheTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 8,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
@@ -157,10 +161,13 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 16-byte keys",
             new AvalancheTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 16,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();

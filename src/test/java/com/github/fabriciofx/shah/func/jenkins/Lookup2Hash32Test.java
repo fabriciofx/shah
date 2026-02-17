@@ -95,10 +95,13 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 avalanche bias with 4-byte keys must be below 30%",
             new AvalancheTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 4,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.30, "avalanche bias")
         ).affirm();
@@ -109,10 +112,13 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 avalanche bias with 8-byte keys must be below 40%",
             new AvalancheTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 8,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.40, "avalanche bias")
         ).affirm();

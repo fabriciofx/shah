@@ -75,9 +75,7 @@ final class OaatHash32Test {
         new Assertion<>(
             "must evaluate the oaat hash of all characters",
             () -> new OaatHash32(
-                new KeyOf(
-                    "The quick brown fox jumps over the lazy dog"
-                )
+                new KeyOf("The quick brown fox jumps over the lazy dog")
             ).hash().asString(),
             new IsText("f5919e51")
         ).affirm();
@@ -88,10 +86,10 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat avalanche bias with 4-byte keys must be below 60%",
             new AvalancheTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
                 4,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.60, "avalanche bias")
         ).affirm();
@@ -102,10 +100,10 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat avalanche bias with 8-byte keys must be below 60%",
             new AvalancheTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
                 8,
-                500_000,
-                12_345L
+                12_345L,
+                500_000
             ).value(),
             new IsLessThan(0.60, "avalanche bias")
         ).affirm();
