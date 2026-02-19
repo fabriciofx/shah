@@ -420,9 +420,9 @@ final class Lookup2Hash32Test {
     }
 
     @Test
-    void passesHashmapTest() {
+    void performHashmapBenchmark() {
         new Assertion<>(
-            "lookup2 hashmap test must complete",
+            "must perform lookup2 hashmap benchmark",
             new HashmapBenchmark(
                 key -> new Lookup2Hash32(key, 0).hash()
             ).run(),

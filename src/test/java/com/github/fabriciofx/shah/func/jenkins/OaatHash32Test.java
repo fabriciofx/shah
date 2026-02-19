@@ -354,9 +354,9 @@ final class OaatHash32Test {
     }
 
     @Test
-    void passesHashmapTest() {
+    void performHashmapBenchmark() {
         new Assertion<>(
-            "oaat hashmap test must complete",
+            "must perform ooat hashmap benchmark",
             new HashmapBenchmark(
                 key -> new OaatHash32(key).hash()
             ).run(),

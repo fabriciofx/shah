@@ -44,6 +44,7 @@ import java.util.function.Function;
  * @checkstyle MagicNumberCheck (300 lines)
  * @checkstyle ParameterNumberCheck (300 lines)
  */
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 public final class HashmapBenchmark implements Benchmark<Double> {
     /**
      * Default number of timing trials.
@@ -61,63 +62,57 @@ public final class HashmapBenchmark implements Benchmark<Double> {
     private final Function<Key, Hash> func;
 
     /**
-     * Number of timing trials for lookups.
-     */
-    private final int trials;
-
-    /**
      * Words to insert and lookup.
      */
     private final Words words;
+
+    /**
+     * Number of timing trials for lookups.
+     */
+    private final int trials;
 
     /**
      * Ctor with defaults.
      * @param func The hash function under test
      */
     public HashmapBenchmark(final Function<Key, Hash> func) {
-        this(func, HashmapBenchmark.DEFAULT_TRIALS, new Words());
+        this(func, new Words(), HashmapBenchmark.DEFAULT_TRIALS);
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
-     * @param trials Number of timing trials
      * @param words Words to use for the benchmark
+     * @param trials Number of timing trials
      */
     public HashmapBenchmark(
         final Function<Key, Hash> func,
-        final int trials,
-        final Words words
+        final Words words,
+        final int trials
     ) {
         this.func = func;
-        this.trials = trials;
         this.words = words;
+        this.trials = trials;
     }
 
     @Override
     public Double run() {
         final Map<HashedKey, Boolean> map = new HashMap<>(this.words.size());
         for (final String word : this.words) {
-            map.put(
-                new HashedKey(
-                    this.func.apply(new KeyOf(word)).hashCode(),
-                    word
-                ),
-                true
-            );
+            final int code = this.func.apply(new KeyOf(word)).hashCode();
+            map.put(new HashedKey(code, word), true);
         }
         final List<Double> times = new ArrayList<>(this.trials);
         for (int trial = 0; trial < this.trials; ++trial) {
             boolean found = false;
             final long start = System.nanoTime();
             for (final String word : this.words) {
-                final Boolean value = map.get(
-                    new HashedKey(
-                        this.func.apply(new KeyOf(word)).hashCode(),
-                        word
-                    )
+                final int code = this.func.apply(new KeyOf(word)).hashCode();
+                final Boolean value = map.getOrDefault(
+                    new HashedKey(code, word),
+                    false
                 );
-                if (value != null) {
+                if (value) {
                     found = true;
                 }
             }
@@ -132,45 +127,5 @@ public final class HashmapBenchmark implements Benchmark<Double> {
         return new Mean(
             new Filtered<>(times, time -> time > cutoff)
         ).value();
-    }
-
-    /**
-     * A wrapper key that delegates {@code hashCode()} to the hash
-     * function under test, so that {@link java.util.HashMap} uses
-     * our hash function instead of Java's default.
-     *
-     * @since 0.0.1
-     */
-    private static final class HashedKey {
-        /**
-         * The computed hash code.
-         */
-        private final int code;
-
-        /**
-         * The original string value.
-         */
-        private final String text;
-
-        /**
-         * Ctor.
-         * @param code The pre-computed hash code
-         * @param text The key text
-         */
-        HashedKey(final int code, final String text) {
-            this.code = code;
-            this.text = text;
-        }
-
-        @Override
-        public int hashCode() {
-            return this.code;
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return other instanceof HashedKey
-                && this.text.equals(HashedKey.class.cast(other).text);
-        }
     }
 }

@@ -470,9 +470,9 @@ final class Murmur3Hash32Test {
     }
 
     @Test
-    void passesHashmapTest() {
+    void performHashmapBenchmark() {
         new Assertion<>(
-            "murmur3 hashmap test must complete",
+            "must perform murmur3 hashmap benchmark",
             new HashmapBenchmark(
                 key -> new Murmur3Hash32(key, 0).hash()
             ).run(),
