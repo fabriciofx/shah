@@ -28,12 +28,11 @@ public final class Bias {
     /**
      * Ctor.
      *
-     * @param matrix Avalanche matrix
+     * @param probs Avalanche probability matrix
      */
-    public Bias(final Matrix matrix) {
+    public Bias(final double[]... probs) {
         this.biases = new Cached<>(
             () -> {
-                final double[][] probs = matrix.value();
                 final double[][] bias =
                     new double[probs.length][probs[0].length];
                 for (int row = 0; row < probs.length; ++row) {
