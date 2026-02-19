@@ -93,6 +93,11 @@ public final class Hash64 implements Hash {
     }
 
     @Override
+    public byte byteAt(final int index) {
+        return (byte) ((this.value >>> (index << 3)) & 0xFFL);
+    }
+
+    @Override
     public boolean equals(final Object other) {
         return other instanceof Hash64
             && this.value == Hash64.class.cast(other).value;

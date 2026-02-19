@@ -13,7 +13,6 @@ import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.BicBias;
 import com.github.fabriciofx.shah.scalar.ByteDiff;
 import com.github.fabriciofx.shah.scalar.FirstBit;
-import com.github.fabriciofx.shah.scalar.HashByte;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -95,16 +94,16 @@ public final class BicTest implements Test<Double> {
                 for (int one = 0; one < hash.bits(); ++one) {
                     final int first = new FirstBit(
                         new ByteDiff(
-                            new HashByte(original, one >> 3),
-                            new HashByte(flipped, one >> 3)
+                            original.byteAt(one >> 3),
+                            flipped.byteAt(one >> 3)
                         ),
                         one
                     ).value();
                     for (int two = one + 1; two < hash.bits(); ++two) {
                         final int second = new FirstBit(
                             new ByteDiff(
-                                new HashByte(original, two >> 3),
-                                new HashByte(flipped, two >> 3)
+                                original.byteAt(two >> 3),
+                                flipped.byteAt(two >> 3)
                             ),
                             two
                         ).value();

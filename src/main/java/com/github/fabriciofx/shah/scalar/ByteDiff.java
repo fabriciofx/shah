@@ -30,16 +30,6 @@ public final class ByteDiff implements Scalar<Integer> {
     /**
      * Ctor.
      *
-     * @param first First HashByte
-     * @param second Second HashByte
-     */
-    public ByteDiff(final HashByte first, final HashByte second) {
-        this(first.value(), second.value());
-    }
-
-    /**
-     * Ctor.
-     *
      * @param first First byte
      * @param second Second byte
      */

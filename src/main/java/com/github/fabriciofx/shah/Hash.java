@@ -36,4 +36,11 @@ public interface Hash {
      * @return A new hash that is a difference
      */
     Hash diff(Hash other);
+
+    /**
+     * Retrieve the nth (0 - based) byte from hash.
+     * @param index Nth (0 - based) byte
+     * @return The nth byte
+     */
+    byte byteAt(int index);
 }

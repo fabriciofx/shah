@@ -85,6 +85,11 @@ public final class Hash32 implements Hash {
     }
 
     @Override
+    public byte byteAt(final int index) {
+        return (byte) ((this.value >>> (index << 3)) & 0xFF);
+    }
+
+    @Override
     public boolean equals(final Object other) {
         return other instanceof Hash32
             && this.value == Hash32.class.cast(other).value;
