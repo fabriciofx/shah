@@ -146,6 +146,11 @@ public final class Hash256 implements Hash {
     }
 
     @Override
+    public int bitAt(final int index) {
+        return (int) ((this.value[index >>> 6] >>> (index & 63)) & 1L);
+    }
+
+    @Override
     public boolean equals(final Object other) {
         return other instanceof Hash256
             && this.value[0] == Hash256.class.cast(other).value[0]

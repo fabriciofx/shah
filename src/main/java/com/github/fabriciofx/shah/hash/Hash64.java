@@ -98,6 +98,11 @@ public final class Hash64 implements Hash {
     }
 
     @Override
+    public int bitAt(final int index) {
+        return (int) (this.value >>> index) & 1;
+    }
+
+    @Override
     public boolean equals(final Object other) {
         return other instanceof Hash64
             && this.value == Hash64.class.cast(other).value;

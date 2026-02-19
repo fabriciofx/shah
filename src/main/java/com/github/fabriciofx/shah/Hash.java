@@ -43,4 +43,11 @@ public interface Hash {
      * @return The nth byte
      */
     byte byteAt(int index);
+
+    /**
+     * Retrieve the nth (0 - based) bit from hash.
+     * @param index Nth (0 - based) bit
+     * @return The nth bit
+     */
+    int bitAt(int index);
 }

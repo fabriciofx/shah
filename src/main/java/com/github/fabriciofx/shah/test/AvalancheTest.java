@@ -13,7 +13,6 @@ import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.avalanche.Bias;
 import com.github.fabriciofx.shah.metric.avalanche.Matrix;
 import com.github.fabriciofx.shah.scalar.BitDiff;
-import com.github.fabriciofx.shah.scalar.HashBit;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -100,8 +99,8 @@ public final class AvalancheTest implements Test<Matrix> {
                 final Key flipped = new Flipped(key, row);
                 final Hash changed = this.func.apply(flipped, this.seed);
                 for (int column = 0; column < hash.bits(); ++column) {
-                    final int obit = new HashBit(original, column).value();
-                    final int cbit = new HashBit(changed, column).value();
+                    final int obit = original.bitAt(column);
+                    final int cbit = changed.bitAt(column);
                     flips[row][column] += new BitDiff(obit, cbit).value();
                 }
             }

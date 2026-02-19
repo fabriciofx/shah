@@ -114,6 +114,11 @@ public final class Hash128 implements Hash {
     }
 
     @Override
+    public int bitAt(final int index) {
+        return (int) ((this.value[index >>> 6] >>> (index & 63)) & 1L);
+    }
+
+    @Override
     public boolean equals(final Object other) {
         return other instanceof Hash128
             && this.value[0] == Hash128.class.cast(other).value[0]
