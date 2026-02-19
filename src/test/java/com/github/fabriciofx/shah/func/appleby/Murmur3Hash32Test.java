@@ -181,10 +181,14 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass collision test",
             new CollisionTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
-                1_000_000,
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 16,
-                67_890L
+                67_890L,
+                12_345L,
+                1_000_000
             ).value(),
             new IsLessThan(2.0, "collision ratio")
         ).affirm();

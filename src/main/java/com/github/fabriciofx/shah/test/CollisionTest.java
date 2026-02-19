@@ -13,7 +13,7 @@ import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.CollisionRatio;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Collision test from SMHasher.
@@ -33,12 +33,7 @@ public final class CollisionTest implements Test<Double> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
-
-    /**
-     * Number of keys to hash.
-     */
-    private final int count;
+    private final BiFunction<Key, Long, Hash> func;
 
     /**
      * Key size.
@@ -46,37 +41,50 @@ public final class CollisionTest implements Test<Double> {
     private final int size;
 
     /**
-     * Random seed for reproducibility.
+     * Key seed.
      */
     private final long seed;
 
     /**
+     * Test seed.
+     */
+    private final long initial;
+
+    /**
+     * Number of keys to hash.
+     */
+    private final int count;
+
+    /**
      * Ctor.
      * @param func The hash function under test
-     * @param count Number of keys to hash
      * @param size Key size
-     * @param seed Random seed for reproducibility
+     * @param seed Key seed
+     * @param initial Test seed
+     * @param count Number of keys to hash
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CollisionTest(
-        final Function<Key, Hash> func,
-        final int count,
+        final BiFunction<Key, Long, Hash> func,
         final int size,
-        final long seed
+        final long seed,
+        final long initial,
+        final int count
     ) {
         this.func = func;
-        this.count = count;
         this.size = size;
         this.seed = seed;
+        this.initial = initial;
+        this.count = count;
     }
 
     @Override
     public Double value() {
         final Hashes hashes = new HashesOf();
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial);
         for (int idx = 0; idx < this.count; ++idx) {
             final Key key = new Randomized(new KeyOf(this.size), random);
-            hashes.add(this.func.apply(key));
+            hashes.add(this.func.apply(key, this.seed));
         }
         return new CollisionRatio(hashes).value();
     }
