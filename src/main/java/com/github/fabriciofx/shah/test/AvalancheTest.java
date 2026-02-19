@@ -101,8 +101,8 @@ public final class AvalancheTest implements Test<Matrix> {
                 final Hash changed = this.func.apply(flipped, this.seed);
                 for (int column = 0; column < hash.bits(); ++column) {
                     final int obit = new HashBit(original, column).value();
-                    final int fbit = new HashBit(changed, column).value();
-                    flips[row][column] += new BitDiff(obit, fbit).value();
+                    final int cbit = new HashBit(changed, column).value();
+                    flips[row][column] += new BitDiff(obit, cbit).value();
                 }
             }
         }

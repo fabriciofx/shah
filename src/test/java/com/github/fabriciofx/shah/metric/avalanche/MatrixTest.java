@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.shah.metric.avalanche;
 
+import com.github.fabriciofx.shah.IsGreaterThanOrEqualTo;
 import com.github.fabriciofx.shah.func.appleby.Murmur3Hash32;
 import com.github.fabriciofx.shah.test.AvalancheTest;
 import java.util.Arrays;
@@ -40,6 +41,22 @@ final class MatrixTest {
             "must two avalanche matrix be equals under the same parameters",
             Arrays.deepEquals(first.value(), second.value()),
             new IsTrue()
+        ).affirm();
+    }
+
+    @Test
+    void computeProbabilityOfFiftyPercent() {
+        final Matrix matrix = new AvalancheTest(
+            (key, seed) -> new Murmur3Hash32(key, Long.hashCode(seed)).hash(),
+            8,
+            12_345L,
+            54_321L,
+            100_000
+        ).value();
+        new Assertion<>(
+            "must compute a probability of 50%",
+            Math.ceil(matrix.probability()),
+            new IsGreaterThanOrEqualTo(0.50, "probability")
         ).affirm();
     }
 }

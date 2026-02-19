@@ -42,26 +42,11 @@ public final class Matrix implements Scalar<double[][]> {
     private final double[][] probs;
 
     /**
-     * Threshold.
-     */
-    private final double threshold;
-
-    /**
      * Ctor.
      * @param probs Probabilities matrix
      */
     public Matrix(final double[]... probs) {
-        this(Matrix.DEFAULT_THRESHOLD, probs);
-    }
-
-    /**
-     * Ctor.
-     * @param threshold Probability threshold
-     * @param probs Probabilities matrix
-     */
-    public Matrix(final double threshold, final double[]... probs) {
         this.probs = probs;
-        this.threshold = threshold;
     }
 
     @Override
@@ -70,15 +55,23 @@ public final class Matrix implements Scalar<double[][]> {
     }
 
     /**
-     * Calculate the probability of elements of the matrix under a threshold
+     * Computer the probability of elements of the matrix under a threshold
      * (normally 50%).
+     * @param threshold The threshold value. If not specified, a 50% threshold
+     *  will be assumed.
      * @return The probability of elements under a threshold
      */
-    public double probability() {
+    public double probability(final double... threshold) {
+        final double limit;
+        if (threshold.length == 0) {
+            limit = Matrix.DEFAULT_THRESHOLD;
+        } else {
+            limit = threshold[0];
+        }
         int count = 0;
         for (final double[] row : this.probs) {
             for (final double probability : row) {
-                if (probability < this.threshold) {
+                if (probability < limit) {
                     ++count;
                 }
             }
