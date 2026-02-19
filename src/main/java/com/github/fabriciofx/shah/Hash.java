@@ -29,4 +29,11 @@ public interface Hash {
      * @return The number of bits in the hash
      */
     int bits();
+
+    /**
+     * Compute the difference between it and other hash.
+     * @param other The other hash
+     * @return A new hash that is a difference
+     */
+    Hash diff(Hash other);
 }

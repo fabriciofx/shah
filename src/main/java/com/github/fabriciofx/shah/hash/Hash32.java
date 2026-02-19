@@ -5,6 +5,8 @@
 package com.github.fabriciofx.shah.hash;
 
 import com.github.fabriciofx.shah.Hash;
+import com.github.fabriciofx.shah.Scalar;
+import com.github.fabriciofx.shah.scalar.BytesDiff;
 import java.util.HexFormat;
 
 /**
@@ -20,6 +22,14 @@ public final class Hash32 implements Hash {
      * The hash.
      */
     private final int value;
+
+    /**
+     * Ctor.
+     * @param scalar A Scalar the returns a byte[]
+     */
+    public Hash32(final Scalar<byte[]> scalar) {
+        this(scalar.value());
+    }
 
     /**
      * Ctor.
@@ -62,6 +72,16 @@ public final class Hash32 implements Hash {
     @Override
     public int bits() {
         return 32;
+    }
+
+    @Override
+    public Hash diff(final Hash other) {
+        return new Hash32(
+            new BytesDiff(
+                this.asBytes(),
+                other.asBytes()
+            )
+        );
     }
 
     @Override

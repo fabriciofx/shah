@@ -13,7 +13,6 @@ import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.CollisionRatio;
-import com.github.fabriciofx.shah.scalar.HashDiff;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -95,7 +94,7 @@ public final class DifferentialTest implements Test<Double> {
                 final Key key = keys.get(idx);
                 final Hash original = this.func.apply(key);
                 final Hash flipped = this.func.apply(new Flipped(key, bit));
-                diffs.add(new HashDiff(original, flipped).value());
+                diffs.add(original.diff(flipped));
             }
             final double ratio = new CollisionRatio(diffs).value();
             if (ratio > worst) {

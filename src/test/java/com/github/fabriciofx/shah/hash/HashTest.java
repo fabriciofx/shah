@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.scalar;
+package com.github.fabriciofx.shah.hash;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.MurmurLike;
@@ -17,7 +17,7 @@ import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.IsTrue;
 
 /**
- * HashDiff tests.
+ * Hash tests.
  * @since 0.0.1
  * @checkstyle UnnecessaryParenthesesCheck (100 lines)
  */
@@ -25,9 +25,9 @@ import org.llorllale.cactoos.matchers.IsTrue;
     "PMD.UnitTestShouldIncludeAssert",
     "PMD.UnnecessaryLocalRule"
 })
-final class HashDiffTest {
+final class HashTest {
     @Test
-    void compareTwoHashDiff() {
+    void compareTwoDiff() {
         final Function<Long, Long> murmur = key -> {
             long hash = key;
             hash ^= (hash >>> 33);
@@ -54,10 +54,9 @@ final class HashDiffTest {
                 .order(ByteOrder.LITTLE_ENDIAN)
                 .putLong(second)
                 .array();
-            final Hash two = new HashDiff(
-                new MurmurLike(new KeyOf(hot)).hash(),
+            final Hash two = new MurmurLike(new KeyOf(hot)).hash().diff(
                 new MurmurLike(new KeyOf(cold)).hash()
-            ).value();
+            );
             final byte[] low = ByteBuffer
                 .allocate(Long.BYTES)
                 .order(ByteOrder.LITTLE_ENDIAN)
