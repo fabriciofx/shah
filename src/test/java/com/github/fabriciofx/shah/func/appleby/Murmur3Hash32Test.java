@@ -441,22 +441,28 @@ final class Murmur3Hash32Test {
     }
 
     @Test
-    void passesBulkSpeedTest() {
+    void computeSpeedBenchmark() {
         new Assertion<>(
-            "murmur3 bulk speed test must complete",
+            "must compute murmur32 speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Murmur3Hash32(key, seed).hash()
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
     }
 
     @Test
-    void passesSmallKeySpeedTest() {
+    void computeSmallKeysSpeedBenchmark() {
         new Assertion<>(
-            "murmur3 small key speed test must complete",
+            "must compute murmur32 small keys speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
                 4
             ).run(),
             new IsLessThan(100_000.0, "small key ns/op")

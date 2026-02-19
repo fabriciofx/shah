@@ -331,9 +331,9 @@ final class OaatHash32Test {
     }
 
     @Test
-    void passesBulkSpeedTest() {
+    void computeSpeedBenchmark() {
         new Assertion<>(
-            "oaat bulk speed test must complete",
+            "must compute oaat speed benchmark",
             new SpeedBenchmark(
                 key -> new OaatHash32(key).hash()
             ).run(),
