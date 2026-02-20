@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.BiFunction;
 
 /**
@@ -38,7 +38,7 @@ import java.util.function.BiFunction;
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class SeedTest implements Test<Double> {
+public final class SeedTest implements Test<Collisions> {
     /**
      * Default key text from SMHasher.
      */
@@ -89,11 +89,11 @@ public final class SeedTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Hashes hashes = new HashesOf();
         for (int seed = 0; seed < this.count; ++seed) {
             hashes.add(this.func.apply(this.key, seed));
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

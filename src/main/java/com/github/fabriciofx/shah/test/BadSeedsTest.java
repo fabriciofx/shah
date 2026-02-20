@@ -11,7 +11,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Filled;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import com.github.fabriciofx.shah.scalar.AllZero;
 import java.util.Arrays;
 import java.util.function.BiFunction;
@@ -144,7 +144,7 @@ public final class BadSeedsTest implements Test<Double> {
             }
             hashes.add(hash);
         }
-        if (passed && new CollisionRatio(hashes).value() > 0.0) {
+        if (passed && new Collisions(hashes).ratio() > 0.0) {
             passed = false;
         }
         return passed;

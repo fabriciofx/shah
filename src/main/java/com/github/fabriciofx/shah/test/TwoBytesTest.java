@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.Function;
 
 /**
@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class TwoBytesTest implements Test<Double> {
+public final class TwoBytesTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
@@ -56,7 +56,7 @@ public final class TwoBytesTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Hashes hashes = new HashesOf();
         final byte[] bytes = new byte[this.size];
         hashes.add(this.func.apply(new KeyOf(bytes)));
@@ -80,6 +80,6 @@ public final class TwoBytesTest implements Test<Double> {
                 bytes[first] = 0;
             }
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

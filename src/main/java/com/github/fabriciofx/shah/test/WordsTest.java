@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -34,7 +34,7 @@ import java.util.function.Function;
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class WordsTest implements Test<Double> {
+public final class WordsTest implements Test<Collisions> {
     /**
      * Default character set (alphanumeric).
      */
@@ -122,7 +122,7 @@ public final class WordsTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Random random = new Random(this.seed);
         final Hashes hashes = new HashesOf();
         final Set<String> seen = new HashSet<>();
@@ -142,6 +142,6 @@ public final class WordsTest implements Test<Double> {
                 generated += 1;
             }
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

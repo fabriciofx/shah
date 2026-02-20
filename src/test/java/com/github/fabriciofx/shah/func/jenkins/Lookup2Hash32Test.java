@@ -139,7 +139,7 @@ final class Lookup2Hash32Test {
                 67_890L,
                 12_345L,
                 1_000_000
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "collision ratio")
         ).affirm();
     }
@@ -191,7 +191,7 @@ final class Lookup2Hash32Test {
             new ZeroesTest(
                 key -> new Lookup2Hash32(key, 0).hash(),
                 204_800
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "zeroes collision ratio")
         ).affirm();
     }
@@ -204,7 +204,7 @@ final class Lookup2Hash32Test {
                 key -> new Lookup2Hash32(key, 0).hash(),
                 4,
                 8
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "cyclic collision ratio")
         ).affirm();
     }
@@ -216,7 +216,7 @@ final class Lookup2Hash32Test {
             new TwoBytesTest(
                 key -> new Lookup2Hash32(key, 0).hash(),
                 4
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "two-bytes collision ratio")
         ).affirm();
     }
@@ -229,7 +229,7 @@ final class Lookup2Hash32Test {
                 key -> new Lookup2Hash32(key, 0).hash(),
                 32,
                 3
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(10.0, "sparse collision ratio")
         ).affirm();
     }
@@ -242,7 +242,7 @@ final class Lookup2Hash32Test {
                 key -> new Lookup2Hash32(key, 0).hash(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(10.0, "permutation collision ratio")
         ).affirm();
     }
@@ -269,7 +269,7 @@ final class Lookup2Hash32Test {
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(10.0, "text collision ratio")
         ).affirm();
     }
@@ -309,7 +309,7 @@ final class Lookup2Hash32Test {
             new SeedTest(
                 (key, seed) -> new Lookup2Hash32(key, seed).hash(),
                 100_000
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(3.0, "seed collision ratio")
         ).affirm();
     }
@@ -342,7 +342,7 @@ final class Lookup2Hash32Test {
             "lookup2 must pass perlin noise test",
             new PerlinNoiseTest(
                 (key, seed) -> new Lookup2Hash32(key, seed).hash()
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();
     }
@@ -353,7 +353,7 @@ final class Lookup2Hash32Test {
             "lookup2 must pass PRNG test",
             new PrngTest(
                 key -> new Lookup2Hash32(key, 0).hash()
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "PRNG collision ratio")
         ).affirm();
     }
@@ -367,7 +367,7 @@ final class Lookup2Hash32Test {
                 100_000,
                 2,
                 10
-            ).metric(),
+            ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
         ).affirm();
     }

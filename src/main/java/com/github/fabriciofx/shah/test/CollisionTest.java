@@ -11,7 +11,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -20,7 +20,7 @@ import java.util.function.BiFunction;
  *
  * <p>Generate shah and compute the collision ratio (actual / expected).</p>
  *
- * <p>Generates random keys, shah them, and delegates to {@link CollisionRatio}
+ * <p>Generates random keys, shah them, and delegates to {@link Collisions}
  * to compute the collision ratio against the birthday-paradox expectation.</p>
  *
  * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
@@ -29,7 +29,7 @@ import java.util.function.BiFunction;
  * @since 0.0.1
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
-public final class CollisionTest implements Test<Double> {
+public final class CollisionTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
@@ -79,13 +79,13 @@ public final class CollisionTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Hashes hashes = new HashesOf();
         final Random random = new Random(this.initial);
         for (int idx = 0; idx < this.count; ++idx) {
             final Key key = new Randomized(new KeyOf(this.size), random);
             hashes.add(this.func.apply(key, this.seed));
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

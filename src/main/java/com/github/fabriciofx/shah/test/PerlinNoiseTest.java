@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.BiFunction;
 
 /**
@@ -32,7 +32,7 @@ import java.util.function.BiFunction;
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class PerlinNoiseTest implements Test<Double> {
+public final class PerlinNoiseTest implements Test<Collisions> {
     /**
      * Default X bits.
      */
@@ -101,7 +101,7 @@ public final class PerlinNoiseTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final int xmax = 1 << this.xbits;
         final int ymax = 1 << this.ybits;
         final Hashes hashes = new HashesOf();
@@ -123,6 +123,6 @@ public final class PerlinNoiseTest implements Test<Double> {
                 );
             }
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

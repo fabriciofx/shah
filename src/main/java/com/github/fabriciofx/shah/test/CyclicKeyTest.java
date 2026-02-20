@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -38,7 +38,7 @@ import java.util.function.Function;
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.AvoidArrayLoops"})
-public final class CyclicKeyTest implements Test<Double> {
+public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * Default random seed (matches SMHasher).
      */
@@ -119,7 +119,7 @@ public final class CyclicKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Random random = new Random(CyclicKeyTest.DEFAULT_SEED);
         final int keylen = this.cyclelen * this.reps;
         final Hashes hashes = new HashesOf();
@@ -145,7 +145,7 @@ public final class CyclicKeyTest implements Test<Double> {
             }
             hashes.add(this.func.apply(new KeyOf(key)));
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 
     /**

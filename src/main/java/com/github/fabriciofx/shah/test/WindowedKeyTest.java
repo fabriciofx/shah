@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.Function;
 
 /**
@@ -101,7 +101,7 @@ public final class WindowedKeyTest implements Test<Double> {
                 );
                 hashes.add(this.func.apply(new KeyOf(bytes)));
             }
-            final double ratio = new CollisionRatio(hashes).value();
+            final double ratio = new Collisions(hashes).ratio();
             if (ratio > worst) {
                 worst = ratio;
             }

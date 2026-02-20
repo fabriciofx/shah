@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.Function;
 
 /**
@@ -30,7 +30,7 @@ import java.util.function.Function;
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class PrngTest implements Test<Double> {
+public final class PrngTest implements Test<Collisions> {
     /**
      * Default count.
      */
@@ -65,7 +65,7 @@ public final class PrngTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Hash first = this.func.apply(new KeyOf(new byte[0]));
         final int hashbytes = first.bits() / 8;
         byte[] input = new byte[hashbytes];
@@ -75,6 +75,6 @@ public final class PrngTest implements Test<Double> {
             hashes.add(result);
             input = result.asBytes().clone();
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.Function;
 
 /**
@@ -35,7 +35,7 @@ import java.util.function.Function;
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class ZeroesTest implements Test<Double> {
+public final class ZeroesTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
@@ -57,11 +57,11 @@ public final class ZeroesTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final Hashes hashes = new HashesOf();
         for (int size = 0; size <= this.max; ++size) {
             hashes.add(this.func.apply(new KeyOf(size)));
         }
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 }

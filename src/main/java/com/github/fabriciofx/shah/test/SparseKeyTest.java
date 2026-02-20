@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.CollisionRatio;
+import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.Function;
 
 /**
@@ -36,7 +36,7 @@ import java.util.function.Function;
     "PMD.TestClassWithoutTestCases",
     "PMD.UnnecessaryLocalRule"
 })
-public final class SparseKeyTest implements Test<Double> {
+public final class SparseKeyTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
@@ -69,7 +69,7 @@ public final class SparseKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Collisions metric() {
         final int size = (this.bits + 7) / 8;
         final Hashes hashes = new HashesOf();
         final byte[] bytes = new byte[size];
@@ -82,7 +82,7 @@ public final class SparseKeyTest implements Test<Double> {
             0,
             hashes
         );
-        return new CollisionRatio(hashes).value();
+        return new Collisions(hashes);
     }
 
     /**
