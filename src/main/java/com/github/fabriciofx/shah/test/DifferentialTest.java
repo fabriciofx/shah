@@ -13,8 +13,6 @@ import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.Collisions;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -28,11 +26,9 @@ import java.util.function.Function;
  * paradox expectation. This tests whether single-bit changes in the
  * input produce sufficiently different hash values.</p>
  *
- * <p>The worst collision ratio across all bit flip positions is
- * returned.</p>
+ * <p>The worst collision ratio across all bit flip positions is returned.</p>
  *
- * <p>Supports hash outputs of any width (32, 64, 128, 256 bits,
- * etc.).</p>
+ * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
@@ -81,17 +77,13 @@ public final class DifferentialTest implements Test<Double> {
 
     @Override
     public Double metric() {
-        final int nbits = this.size * 8;
         final Random random = new Random(this.seed);
-        final List<Key> keys = new ArrayList<>(this.count);
-        for (int idx = 0; idx < this.count; ++idx) {
-            keys.add(new Randomized(new KeyOf(this.size), random));
-        }
+        final Key probe = new Randomized(new KeyOf(this.size), random);
         double worst = 0.0;
-        for (int bit = 0; bit < nbits; ++bit) {
+        for (int bit = 0; bit < probe.bits(); ++bit) {
             final Hashes diffs = new HashesOf();
             for (int idx = 0; idx < this.count; ++idx) {
-                final Key key = keys.get(idx);
+                final Key key = new Randomized(new KeyOf(this.size), random);
                 final Hash original = this.func.apply(key);
                 final Hash flipped = this.func.apply(new Flipped(key, bit));
                 diffs.add(original.diff(flipped));
