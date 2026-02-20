@@ -9,6 +9,7 @@ import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Scalar;
 import com.github.fabriciofx.shah.comparator.HashComparator;
 import com.github.fabriciofx.shah.scalar.Cached;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,22 +30,37 @@ public final class Sorted implements Hashes {
     private final Scalar<List<Hash>> items;
 
     /**
+     * Hash comparator.
+     */
+    private final Comparator<Hash> comparator;
+
+    /**
      * Ctor.
      * @param hashes Hashes to be sorted
      */
     public Sorted(final Hashes hashes) {
+        this(hashes, new HashComparator());
+    }
+
+    /**
+     * Ctor.
+     * @param hashes Hashes to be sorted
+     * @param comparator Hash comparator
+     */
+    public Sorted(final Hashes hashes, final Comparator<Hash> comparator) {
         this.items = new Cached<>(
             () -> StreamSupport
                 .stream(hashes.spliterator(), false)
-                .sorted(new HashComparator())
+                .sorted(comparator)
                 .collect(Collectors.toList())
         );
+        this.comparator = comparator;
     }
 
     @Override
     public void add(final Hash hash) {
         this.items.value().add(hash);
-        this.items.value().sort(new HashComparator());
+        this.items.value().sort(this.comparator);
     }
 
     @Override
