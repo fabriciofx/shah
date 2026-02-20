@@ -370,7 +370,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass appended zeroes test",
             new AppendedZeroesTest(
-                key -> new Murmur3Hash32(key, 0).hash()
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();

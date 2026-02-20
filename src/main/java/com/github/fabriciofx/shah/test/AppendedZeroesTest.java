@@ -7,9 +7,11 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.key.Appended;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.key.Randomized;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Appended zeroes test from SMHasher.
@@ -24,18 +26,18 @@ import java.util.function.Function;
  * <p>Returns the proportion of failed comparisons (0.0 means all
  * checks passed). A good hash function should always return 0.0.</p>
  *
- * <p>Supports hash outputs of any width (32, 64, 128, 256 bits,
- * etc.).</p>
+ * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
+ * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class AppendedZeroesTest implements Test<Double> {
     /**
-     * Base key length in bytes.
+     * Minimum key size.
      */
-    private static final int BASE_LEN = 32;
+    private static final int MIN_SIZE = 32;
 
     /**
      * Number of zero bytes to append (0..MAX_ZEROES-1).
@@ -48,14 +50,29 @@ public final class AppendedZeroesTest implements Test<Double> {
     private static final int DEFAULT_REPS = 100;
 
     /**
-     * Default random seed.
+     * Default key seed.
      */
     private static final long DEFAULT_SEED = 173_994L;
 
     /**
-     * The hash under test.
+     * The hash function under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
+
+    /**
+     * Key's size.
+     */
+    private final int size;
+
+    /**
+     * Key's seed.
+     */
+    private final long seed;
+
+    /**
+     * Max zeroes.
+     */
+    private final int max;
 
     /**
      * Number of repetitions.
@@ -63,36 +80,39 @@ public final class AppendedZeroesTest implements Test<Double> {
     private final int repetitions;
 
     /**
-     * Random seed for reproducibility.
-     */
-    private final long seed;
-
-    /**
      * Ctor.
      * @param func The hash function under test
      */
-    public AppendedZeroesTest(final Function<Key, Hash> func) {
+    public AppendedZeroesTest(final BiFunction<Key, Long, Hash> func) {
         this(
             func,
-            AppendedZeroesTest.DEFAULT_REPS,
-            AppendedZeroesTest.DEFAULT_SEED
+            AppendedZeroesTest.MIN_SIZE,
+            AppendedZeroesTest.DEFAULT_SEED,
+            AppendedZeroesTest.MAX_ZEROES,
+            AppendedZeroesTest.DEFAULT_REPS
         );
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param size The key's size
+     * @param seed The key's seed
+     * @param max The max number of zeroes
      * @param repetitions Number of repetitions
-     * @param seed Random seed for reproducibility
      */
     public AppendedZeroesTest(
-        final Function<Key, Hash> func,
-        final int repetitions,
-        final long seed
+        final BiFunction<Key, Long, Hash> func,
+        final int size,
+        final long seed,
+        final int max,
+        final int repetitions
     ) {
         this.func = func;
-        this.repetitions = repetitions;
+        this.size = size;
         this.seed = seed;
+        this.max = max;
+        this.repetitions = repetitions;
     }
 
     @Override
@@ -101,20 +121,11 @@ public final class AppendedZeroesTest implements Test<Double> {
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {
-            final byte[] base = new byte[AppendedZeroesTest.BASE_LEN];
-            random.nextBytes(base);
-            Hash previous = this.func.apply(
-                new KeyOf(new byte[0])
-            );
-            for (int zeroes = 0;
-                zeroes < AppendedZeroesTest.MAX_ZEROES; ++zeroes) {
-                final byte[] extended =
-                    new byte[AppendedZeroesTest.BASE_LEN + zeroes];
-                System.arraycopy(
-                    base, 0, extended, 0,
-                    AppendedZeroesTest.BASE_LEN
-                );
-                final Hash current = this.func.apply(new KeyOf(extended));
+            final Key key = new Randomized(new KeyOf(this.size), random);
+            Hash previous = this.func.apply(new KeyOf(), this.seed);
+            for (int zeroes = 0; zeroes < this.max; ++zeroes) {
+                final Key expanded = new Appended(key, new byte[zeroes]);
+                final Hash current = this.func.apply(expanded, this.seed);
                 ++checks;
                 if (current.equals(previous)) {
                     ++failures;

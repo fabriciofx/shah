@@ -290,7 +290,7 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat appended zeroes test (known weakness: all-zero collide)",
             new AppendedZeroesTest(
-                key -> new OaatHash32(key).hash()
+                (key, seed) -> new OaatHash32(key).hash()
             ).metric(),
             new IsLessThan(1.0, "appended zeroes failure ratio")
         ).affirm();

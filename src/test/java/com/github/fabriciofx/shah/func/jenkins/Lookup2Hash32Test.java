@@ -320,7 +320,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass appended zeroes test",
             new AppendedZeroesTest(
-                key -> new Lookup2Hash32(key, 0).hash()
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
