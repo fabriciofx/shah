@@ -85,12 +85,12 @@ public final class BicTest implements Test<Double> {
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe);
         double worst = 0.0;
-        for (int ibit = 0; ibit < probe.bits(); ++ibit) {
+        for (int bit = 0; bit < probe.bits(); ++bit) {
             final int[][][] bins = new int[hash.bits()][hash.bits()][4];
             for (int rep = 0; rep < this.repetitions; ++rep) {
                 final Key key = new Randomized(new KeyOf(this.size), random);
                 final Hash original = this.func.apply(key);
-                final Hash flipped = this.func.apply(new Flipped(key, ibit));
+                final Hash flipped = this.func.apply(new Flipped(key, bit));
                 for (int one = 0; one < hash.bits(); ++one) {
                     final int first = new FirstBit(
                         new ByteDiff(
