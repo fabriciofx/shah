@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.func.jenkins;
 import com.github.fabriciofx.shah.IsLessThan;
 import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
 import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
+import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
@@ -311,10 +312,9 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass words test",
             new WordsTest(
-                key -> new OaatHash32(key).hash(),
-                100_000,
-                2,
-                10
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L,
+                new Words(100_000, 2, 10)
             ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
         ).affirm();

@@ -70,6 +70,16 @@ public final class Words implements Collection<String> {
      * @param count Number of words
      * @param min Minimum word length
      * @param max Maximum word length
+     */
+    public Words(final int count, final int min, final int max) {
+        this(count, min, max, new Random(Words.DEFAULT_SEED));
+    }
+
+    /**
+     * Ctor.
+     * @param count Number of words
+     * @param min Minimum word length
+     * @param max Maximum word length
      * @param random Random generator for reproducibility
      */
     public Words(

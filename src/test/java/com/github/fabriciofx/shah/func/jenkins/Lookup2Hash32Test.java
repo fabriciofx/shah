@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.func.jenkins;
 import com.github.fabriciofx.shah.IsLessThan;
 import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
 import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
+import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
@@ -363,10 +364,12 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass words test",
             new WordsTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
-                100_000,
-                2,
-                10
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
+                new Words(100_000, 2, 10)
             ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
         ).affirm();
