@@ -438,7 +438,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass bad seeds test",
             new BadSeedsTest(
-                (key, seed) -> new Murmur3Hash32(key, seed).hash()
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();

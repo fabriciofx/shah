@@ -388,7 +388,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass bad seeds test",
             new BadSeedsTest(
-                (key, seed) -> new Lookup2Hash32(key, seed).hash()
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();

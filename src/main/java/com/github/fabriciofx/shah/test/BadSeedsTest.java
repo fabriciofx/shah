@@ -63,19 +63,19 @@ public final class BadSeedsTest implements Test<Double> {
     /**
      * The hash under test, accepting (key, seed).
      */
-    private final BiFunction<Key, Integer, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
 
     /**
      * Known bad seeds to test.
      */
-    private final int[] seeds;
+    private final long[] seeds;
 
     /**
      * Ctor with default seed 0.
      * @param func The hash function under test, accepting (key, seed)
      */
-    public BadSeedsTest(final BiFunction<Key, Integer, Hash> func) {
-        this(func, 0);
+    public BadSeedsTest(final BiFunction<Key, Long, Hash> func) {
+        this(func, 0L);
     }
 
     /**
@@ -84,8 +84,8 @@ public final class BadSeedsTest implements Test<Double> {
      * @param seeds Known seed values to test
      */
     public BadSeedsTest(
-        final BiFunction<Key, Integer, Hash> func,
-        final int... seeds
+        final BiFunction<Key, Long, Hash> func,
+        final long... seeds
     ) {
         this.func = func;
         this.seeds = Arrays.copyOf(seeds, seeds.length);
@@ -94,7 +94,7 @@ public final class BadSeedsTest implements Test<Double> {
     @Override
     public Double metric() {
         int failures = 0;
-        for (final int seed : this.seeds) {
+        for (final long seed : this.seeds) {
             if (!this.testSeed(seed)) {
                 ++failures;
             }
@@ -113,7 +113,7 @@ public final class BadSeedsTest implements Test<Double> {
      * @param seed The seed to test
      * @return True if the seed passes all checks
      */
-    private boolean testSeed(final int seed) {
+    private boolean testSeed(final long seed) {
         boolean passed = true;
         for (final int size : BadSeedsTest.SIZES) {
             if (!this.testSize(seed, size)) {
@@ -131,7 +131,7 @@ public final class BadSeedsTest implements Test<Double> {
      * @return True if the seed passes for this size (no zero hash for
      *  zero-filled key and no collisions)
      */
-    private boolean testSize(final int seed, final int size) {
+    private boolean testSize(final long seed, final int size) {
         final Hashes hashes = new HashesOf();
         boolean passed = true;
         for (final int fill : BadSeedsTest.FILLS) {
