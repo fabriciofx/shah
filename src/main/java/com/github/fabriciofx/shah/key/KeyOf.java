@@ -63,4 +63,9 @@ public final class KeyOf implements Key {
     public int bits() {
         return this.bytes.length * Byte.SIZE;
     }
+
+    @Override
+    public int size() {
+        return this.bytes.length;
+    }
 }

@@ -29,4 +29,10 @@ public interface Key {
      * @return The number of bits in the key
      */
     int bits();
+
+    /**
+     * Retrieve the number of bytes of the key.
+     * @return The number of bytes
+     */
+    int size();
 }

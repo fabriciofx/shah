@@ -73,4 +73,9 @@ public final class Randomized implements Key {
     public int bits() {
         return this.bytes.value().length * Byte.SIZE;
     }
+
+    @Override
+    public int size() {
+        return this.bytes.value().length;
+    }
 }

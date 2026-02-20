@@ -52,4 +52,9 @@ public final class Flipped implements Key {
     public int bits() {
         return this.bytes.value().length * Byte.SIZE;
     }
+
+    @Override
+    public int size() {
+        return this.bytes.value().length;
+    }
 }
