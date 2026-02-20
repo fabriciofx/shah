@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.shah.metric.avalanche;
 
+import com.github.fabriciofx.shah.Metric;
 import com.github.fabriciofx.shah.Scalar;
 import com.github.fabriciofx.shah.scalar.Cached;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.Arrays;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-public final class Bias {
+public final class Bias implements Metric<double[][]> {
     /**
      * Bias matrix.
      */
@@ -43,6 +44,11 @@ public final class Bias {
                 return bias;
             }
         );
+    }
+
+    @Override
+    public double[][] value() {
+        return this.biases.value();
     }
 
     /**

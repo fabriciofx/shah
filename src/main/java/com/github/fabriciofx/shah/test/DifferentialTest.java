@@ -80,7 +80,7 @@ public final class DifferentialTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final int nbits = this.size * 8;
         final Random random = new Random(this.seed);
         final List<Key> keys = new ArrayList<>(this.count);

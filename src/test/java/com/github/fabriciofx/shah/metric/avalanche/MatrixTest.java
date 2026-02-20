@@ -29,14 +29,14 @@ final class MatrixTest {
             12_345L,
             54_321L,
             100_000
-        ).value();
+        ).metric();
         final Matrix second = new AvalancheTest(
             (key, seed) -> new Murmur3Hash32(key, Long.hashCode(seed)).hash(),
             8,
             12_345L,
             54_321L,
             100_000
-        ).value();
+        ).metric();
         new Assertion<>(
             "must two avalanche matrix be equals under the same parameters",
             Arrays.deepEquals(first.value(), second.value()),
@@ -52,7 +52,7 @@ final class MatrixTest {
             12_345L,
             54_321L,
             100_000
-        ).value();
+        ).metric();
         new Assertion<>(
             "must compute a probability of 50%",
             Math.ceil(matrix.probability()),

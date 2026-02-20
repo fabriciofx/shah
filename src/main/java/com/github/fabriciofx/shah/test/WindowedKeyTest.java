@@ -79,7 +79,7 @@ public final class WindowedKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         int window = this.width;
         int keycount = 1 << window;
         while (WindowedKeyTest.estimate(

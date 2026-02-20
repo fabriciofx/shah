@@ -96,7 +96,7 @@ public final class AppendedZeroesTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Random random = new Random(this.seed);
         int checks = 0;
         int failures = 0;

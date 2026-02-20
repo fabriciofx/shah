@@ -69,7 +69,7 @@ public final class SparseKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final int size = (this.bits + 7) / 8;
         final Hashes hashes = new HashesOf();
         final byte[] bytes = new byte[size];

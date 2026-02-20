@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.shah.metric.avalanche;
 
+import com.github.fabriciofx.shah.Metric;
 import com.github.fabriciofx.shah.Scalar;
 import com.github.fabriciofx.shah.scalar.Cached;
 
@@ -27,7 +28,7 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * @checkstyle NestedForDepthCheck (100 lines)
  * @checkstyle ParameterNumberCheck (100 lines)
  */
-public final class Matrix implements Scalar<double[][]> {
+public final class Matrix implements Metric<double[][]> {
     /**
      * Threshold of 50%.
      */

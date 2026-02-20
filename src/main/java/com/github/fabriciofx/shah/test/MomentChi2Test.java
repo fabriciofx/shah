@@ -133,7 +133,7 @@ public final class MomentChi2Test implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final int bits = Math.min(
             this.func.apply(new KeyOf(this.inputsize)).bits(), 64
         );

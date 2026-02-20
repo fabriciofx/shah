@@ -135,7 +135,7 @@ final class Murmur3Hash32Test {
                 12_345L,
                 54_321L,
                 500_000
-            ).value().bias().mean(),
+            ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
@@ -153,7 +153,7 @@ final class Murmur3Hash32Test {
                 12_345L,
                 54_321L,
                 500_000
-            ).value().bias().mean(),
+            ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
@@ -171,7 +171,7 @@ final class Murmur3Hash32Test {
                 12_345L,
                 54_321L,
                 500_000
-            ).value().bias().mean(),
+            ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
         ).affirm();
     }
@@ -189,7 +189,7 @@ final class Murmur3Hash32Test {
                 67_890L,
                 12_345L,
                 1_000_000
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "collision ratio")
         ).affirm();
     }
@@ -203,7 +203,7 @@ final class Murmur3Hash32Test {
                 1_000_000,
                 16,
                 67_890L
-            ).value(),
+            ).metric(),
             new IsLessThan(0.01, "distribution score")
         ).affirm();
     }
@@ -217,7 +217,7 @@ final class Murmur3Hash32Test {
                 4,
                 100_000,
                 11_111L
-            ).value(),
+            ).metric(),
             new IsLessThan(0.05, "BIC bias")
         ).affirm();
     }
@@ -229,7 +229,7 @@ final class Murmur3Hash32Test {
             new SanityTest(
                 key -> new Murmur3Hash32(key, 0).hash(),
                 32
-            ).value(),
+            ).metric(),
             new IsLessThan(0.01, "sanity failure ratio")
         ).affirm();
     }
@@ -241,7 +241,7 @@ final class Murmur3Hash32Test {
             new ZeroesTest(
                 key -> new Murmur3Hash32(key, 0).hash(),
                 204_800
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "zeroes collision ratio")
         ).affirm();
     }
@@ -254,7 +254,7 @@ final class Murmur3Hash32Test {
                 key -> new Murmur3Hash32(key, 0).hash(),
                 4,
                 8
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "cyclic collision ratio")
         ).affirm();
     }
@@ -266,7 +266,7 @@ final class Murmur3Hash32Test {
             new TwoBytesTest(
                 key -> new Murmur3Hash32(key, 0).hash(),
                 4
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "two-bytes collision ratio")
         ).affirm();
     }
@@ -279,7 +279,7 @@ final class Murmur3Hash32Test {
                 key -> new Murmur3Hash32(key, 0).hash(),
                 32,
                 3
-            ).value(),
+            ).metric(),
             new IsLessThan(10.0, "sparse collision ratio")
         ).affirm();
     }
@@ -292,7 +292,7 @@ final class Murmur3Hash32Test {
                 key -> new Murmur3Hash32(key, 0).hash(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
-            ).value(),
+            ).metric(),
             new IsLessThan(10.0, "permutation collision ratio")
         ).affirm();
     }
@@ -305,7 +305,7 @@ final class Murmur3Hash32Test {
                 key -> new Murmur3Hash32(key, 0).hash(),
                 4,
                 12
-            ).value(),
+            ).metric(),
             new IsLessThan(10.0, "windowed collision ratio")
         ).affirm();
     }
@@ -319,7 +319,7 @@ final class Murmur3Hash32Test {
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
-            ).value(),
+            ).metric(),
             new IsLessThan(10.0, "text collision ratio")
         ).affirm();
     }
@@ -333,7 +333,7 @@ final class Murmur3Hash32Test {
                 4,
                 100_000,
                 54_321L
-            ).value(),
+            ).metric(),
             new IsLessThan(10.0, "differential collision ratio")
         ).affirm();
     }
@@ -347,7 +347,7 @@ final class Murmur3Hash32Test {
                 4,
                 100_000,
                 54_321L
-            ).value(),
+            ).metric(),
             new IsLessThan(0.01, "diff distribution score")
         ).affirm();
     }
@@ -359,7 +359,7 @@ final class Murmur3Hash32Test {
             new SeedTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 100_000
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "seed collision ratio")
         ).affirm();
     }
@@ -370,7 +370,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass appended zeroes test",
             new AppendedZeroesTest(
                 key -> new Murmur3Hash32(key, 0).hash()
-            ).value(),
+            ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
     }
@@ -381,7 +381,7 @@ final class Murmur3Hash32Test {
             "murmur3 must produce correct verification code",
             new VerificationTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
-            ).value(),
+            ).metric(),
             new IsEqual<>(0xB0F57EE3L)
         ).affirm();
     }
@@ -392,7 +392,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass perlin noise test",
             new PerlinNoiseTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();
     }
@@ -403,7 +403,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass PRNG test",
             new PrngTest(
                 key -> new Murmur3Hash32(key, 0).hash()
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "PRNG collision ratio")
         ).affirm();
     }
@@ -417,7 +417,7 @@ final class Murmur3Hash32Test {
                 100_000,
                 2,
                 10
-            ).value(),
+            ).metric(),
             new IsLessThan(2.0, "words collision ratio")
         ).affirm();
     }
@@ -428,7 +428,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass moment chi-squared test",
             new MomentChi2Test(
                 key -> new Murmur3Hash32(key, 0).hash()
-            ).value(),
+            ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
         ).affirm();
     }
@@ -439,7 +439,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass bad seeds test",
             new BadSeedsTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
-            ).value(),
+            ).metric(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();
     }

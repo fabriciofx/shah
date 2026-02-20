@@ -79,7 +79,7 @@ public final class CollisionTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         final Random random = new Random(this.initial);
         for (int idx = 0; idx < this.count; ++idx) {

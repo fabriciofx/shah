@@ -74,7 +74,7 @@ public final class DistributionTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         final Random random = new Random(this.seed);
         for (int idx = 0; idx < this.count; ++idx) {

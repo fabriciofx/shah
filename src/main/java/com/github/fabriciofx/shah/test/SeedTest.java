@@ -89,7 +89,7 @@ public final class SeedTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         for (int seed = 0; seed < this.count; ++seed) {
             hashes.add(this.func.apply(this.key, seed));

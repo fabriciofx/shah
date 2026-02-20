@@ -122,7 +122,7 @@ public final class WordsTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Random random = new Random(this.seed);
         final Hashes hashes = new HashesOf();
         final Set<String> seen = new HashSet<>();

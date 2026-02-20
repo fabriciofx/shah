@@ -11,13 +11,14 @@ package com.github.fabriciofx.shah;
  * (e.g., avalanche bias, bit independence, collision ratio, distribution
  * uniformity, etc.).</p>
  *
+ * @param <T> Type of the metric value
  * @since 0.0.1
  */
 @FunctionalInterface
-public interface Metric {
+public interface Metric<T> {
     /**
      * Compute the metric value.
-     * @return The metric score, where 0.0 means perfect
+     * @return The metric value
      */
-    double value();
+    T value();
 }

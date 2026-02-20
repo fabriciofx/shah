@@ -24,7 +24,7 @@ import com.github.fabriciofx.shah.Metric;
  * @checkstyle NestedForDepthCheck (100 lines)
  */
 @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.UnnecessaryLocalRule"})
-public final class BicBias implements Metric {
+public final class BicBias implements Metric<Double> {
     /**
      * Contingency tables: bins[outputBit1][outputBit2][outcome].
      */
@@ -46,7 +46,7 @@ public final class BicBias implements Metric {
     }
 
     @Override
-    public double value() {
+    public Double value() {
         final double expected = this.repetitions / 4.0;
         double worst = 0.0;
         for (final int[][] row : this.bins) {

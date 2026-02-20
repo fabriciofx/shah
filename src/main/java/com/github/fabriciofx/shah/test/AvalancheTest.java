@@ -87,7 +87,7 @@ public final class AvalancheTest implements Test<Matrix> {
     }
 
     @Override
-    public Matrix value() {
+    public Matrix metric() {
         final Random random = new Random(this.initial);
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe, this.seed);

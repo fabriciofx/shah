@@ -80,7 +80,7 @@ public final class BicTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Random random = new Random(this.seed);
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe);

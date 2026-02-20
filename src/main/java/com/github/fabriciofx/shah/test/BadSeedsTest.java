@@ -92,7 +92,7 @@ public final class BadSeedsTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         int failures = 0;
         for (final int seed : this.seeds) {
             if (!this.testSeed(seed)) {

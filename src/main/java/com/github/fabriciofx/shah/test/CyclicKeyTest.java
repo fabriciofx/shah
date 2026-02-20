@@ -119,7 +119,7 @@ public final class CyclicKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Random random = new Random(CyclicKeyTest.DEFAULT_SEED);
         final int keylen = this.cyclelen * this.reps;
         final Hashes hashes = new HashesOf();

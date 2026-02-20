@@ -65,7 +65,7 @@ public final class PrngTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hash first = this.func.apply(new KeyOf(new byte[0]));
         final int hashbytes = first.bits() / 8;
         byte[] input = new byte[hashbytes];

@@ -6,14 +6,14 @@ package com.github.fabriciofx.shah;
 
 /**
  * Test.
- * @param <T> Type of the test result
+ * @param <T> Type of the test metric
  * @since 0.0.1
  */
 @FunctionalInterface
 public interface Test<T> {
     /**
-     * Get the result of the test.
-     * @return The result of the test
+     * Get the metric of the test.
+     * @return The metric of the test
      */
-    T value();
+    T metric();
 }

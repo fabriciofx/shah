@@ -77,7 +77,7 @@ public final class TextTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         final int size = this.prefix.length + this.varying
             + this.suffix.length;

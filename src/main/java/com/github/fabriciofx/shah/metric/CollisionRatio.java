@@ -28,7 +28,7 @@ import com.github.fabriciofx.shah.hashes.Sorted;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-public final class CollisionRatio implements Metric {
+public final class CollisionRatio implements Metric<Double> {
     /**
      * Threshold for expected collisions to avoid division by small
      * numbers.
@@ -49,7 +49,7 @@ public final class CollisionRatio implements Metric {
     }
 
     @Override
-    public double value() {
+    public Double value() {
         final double ratio;
         int collisions = 0;
         for (int idx = 1; idx < this.hashes.count(); ++idx) {

@@ -65,7 +65,7 @@ public final class PermutationTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         int total = 1;
         for (int idx = 0; idx < this.positions; ++idx) {
             total *= this.values.length;

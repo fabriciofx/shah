@@ -56,7 +56,7 @@ public final class TwoBytesTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         final byte[] bytes = new byte[this.size];
         hashes.add(this.func.apply(new KeyOf(bytes)));

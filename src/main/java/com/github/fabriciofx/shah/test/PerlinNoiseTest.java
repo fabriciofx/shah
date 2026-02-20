@@ -101,7 +101,7 @@ public final class PerlinNoiseTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final int xmax = 1 << this.xbits;
         final int ymax = 1 << this.ybits;
         final Hashes hashes = new HashesOf();

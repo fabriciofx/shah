@@ -57,7 +57,7 @@ public final class VerificationTest implements Test<Long> {
     }
 
     @Override
-    public Long value() {
+    public Long metric() {
         final byte[] keybuf = new byte[VerificationTest.KEY_COUNT];
         final Hash sample = this.func.apply(new KeyOf(new byte[0]), 0);
         final int hashbytes = sample.bits() / 8;

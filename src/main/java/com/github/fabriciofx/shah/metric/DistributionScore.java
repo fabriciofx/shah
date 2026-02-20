@@ -31,7 +31,7 @@ import com.github.fabriciofx.shah.Metric;
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
  */
-public final class DistributionScore implements Metric {
+public final class DistributionScore implements Metric<Double> {
     /**
      * Small value to check error.
      */
@@ -51,7 +51,7 @@ public final class DistributionScore implements Metric {
     }
 
     @Override
-    public double value() {
+    public Double value() {
         final int bits = this.hashes.item(0).bits();
         double worst = 0.0;
         for (int start = 0; start < bits; ++start) {

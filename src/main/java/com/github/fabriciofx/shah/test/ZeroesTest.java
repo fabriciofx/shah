@@ -57,7 +57,7 @@ public final class ZeroesTest implements Test<Double> {
     }
 
     @Override
-    public Double value() {
+    public Double metric() {
         final Hashes hashes = new HashesOf();
         for (int size = 0; size <= this.max; ++size) {
             hashes.add(this.func.apply(new KeyOf(size)));
