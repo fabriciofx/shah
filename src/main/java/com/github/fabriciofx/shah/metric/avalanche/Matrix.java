@@ -5,6 +5,7 @@
 package com.github.fabriciofx.shah.metric.avalanche;
 
 import com.github.fabriciofx.shah.Scalar;
+import com.github.fabriciofx.shah.scalar.Cached;
 
 /**
  * Avalanche matrix.
@@ -26,10 +27,6 @@ import com.github.fabriciofx.shah.Scalar;
  * @checkstyle NestedForDepthCheck (100 lines)
  * @checkstyle ParameterNumberCheck (100 lines)
  */
-@SuppressWarnings({
-    "PMD.ArrayIsStoredDirectly",
-    "PMD.MethodReturnsInternalArray"
-})
 public final class Matrix implements Scalar<double[][]> {
     /**
      * Threshold of 50%.
@@ -39,19 +36,32 @@ public final class Matrix implements Scalar<double[][]> {
     /**
      * Probabilities matrix.
      */
-    private final double[][] probs;
+    private final Scalar<double[][]> probs;
 
     /**
      * Ctor.
-     * @param probs Probabilities matrix
+     * @param repetitions Number of repetitions
+     * @param flips Flips matrix
      */
-    public Matrix(final double[]... probs) {
-        this.probs = probs;
+    public Matrix(final int repetitions, final int[]... flips) {
+        this.probs = new Cached<>(
+            () -> {
+                final double[][] matrix =
+                    new double[flips.length][flips[0].length];
+                for (int row = 0; row < flips.length; ++row) {
+                    for (int column = 0; column < flips[0].length; ++column) {
+                        matrix[row][column] = flips[row][column]
+                            / (double) repetitions;
+                    }
+                }
+                return matrix;
+            }
+        );
     }
 
     @Override
     public double[][] value() {
-        return this.probs;
+        return this.probs.value();
     }
 
     /**
@@ -69,14 +79,14 @@ public final class Matrix implements Scalar<double[][]> {
             limit = threshold[0];
         }
         int count = 0;
-        for (final double[] row : this.probs) {
+        for (final double[] row : this.value()) {
             for (final double probability : row) {
                 if (probability < limit) {
                     ++count;
                 }
             }
         }
-        return count / (double) (this.probs.length * this.probs[0].length);
+        return count / (double) (this.value().length * this.value()[0].length);
     }
 
     /**
@@ -84,6 +94,6 @@ public final class Matrix implements Scalar<double[][]> {
      * @return The bias
      */
     public Bias bias() {
-        return new Bias(this.probs);
+        return new Bias(this.value());
     }
 }

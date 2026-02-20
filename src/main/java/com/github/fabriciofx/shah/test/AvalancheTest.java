@@ -105,13 +105,6 @@ public final class AvalancheTest implements Test<Matrix> {
                 }
             }
         }
-        final double[][] probs = new double[probe.bits()][hash.bits()];
-        for (int row = 0; row < probe.bits(); ++row) {
-            for (int column = 0; column < hash.bits(); ++column) {
-                probs[row][column] = flips[row][column]
-                    / (double) this.repetitions;
-            }
-        }
-        return new Matrix(probs);
+        return new Matrix(this.repetitions, flips);
     }
 }
