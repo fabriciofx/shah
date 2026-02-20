@@ -11,7 +11,7 @@ package com.github.fabriciofx.shah;
  *
  * @since 0.0.1
  */
-public interface Hash {
+public interface Hash extends Comparable<Hash> {
     /**
      * Get the hash as a byte array.
      * @return The byte array representation of the hash

@@ -112,4 +112,9 @@ public final class Hash64 implements Hash {
     public int hashCode() {
         return Long.hashCode(this.value);
     }
+
+    @Override
+    public int compareTo(final Hash other) {
+        return Long.compare(this.value, Hash64.class.cast(other).value);
+    }
 }

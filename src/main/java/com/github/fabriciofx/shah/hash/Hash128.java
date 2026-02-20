@@ -132,4 +132,19 @@ public final class Hash128 implements Hash {
             + (code >>> 2);
         return Long.hashCode(code);
     }
+
+    @Override
+    public int compareTo(final Hash other) {
+        int cmp = Long.compare(
+            this.value[0],
+            Hash128.class.cast(other).value[0]
+        );
+        if (cmp == 0) {
+            cmp = Long.compare(
+                this.value[1],
+                Hash128.class.cast(other).value[1]
+            );
+        }
+        return cmp;
+    }
 }

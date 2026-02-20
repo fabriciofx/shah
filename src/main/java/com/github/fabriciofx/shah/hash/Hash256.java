@@ -171,4 +171,31 @@ public final class Hash256 implements Hash {
             + (code >>> 2);
         return Long.hashCode(code);
     }
+
+    @Override
+    public int compareTo(final Hash other) {
+        int cmp = Long.compare(
+            this.value[0],
+            Hash256.class.cast(other).value[0]
+        );
+        if (cmp == 0) {
+            cmp = Long.compare(
+                this.value[1],
+                Hash256.class.cast(other).value[1]
+            );
+        }
+        if (cmp == 0) {
+            cmp = Long.compare(
+                this.value[2],
+                Hash256.class.cast(other).value[2]
+            );
+        }
+        if (cmp == 0) {
+            cmp = Long.compare(
+                this.value[3],
+                Hash256.class.cast(other).value[3]
+            );
+        }
+        return cmp;
+    }
 }

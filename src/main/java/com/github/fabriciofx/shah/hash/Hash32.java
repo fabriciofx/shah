@@ -104,4 +104,9 @@ public final class Hash32 implements Hash {
     public int hashCode() {
         return this.value;
     }
+
+    @Override
+    public int compareTo(final Hash other) {
+        return Integer.compare(this.value, Hash32.class.cast(other).value);
+    }
 }
