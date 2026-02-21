@@ -264,7 +264,7 @@ final class Lookup2Hash32Test {
                 key -> new Lookup2Hash32(key, 0).hash(),
                 4,
                 12
-            ).metric(),
+            ).metric().worst(),
             new IsLessThan(10.0, "windowed collision ratio")
         ).affirm();
     }

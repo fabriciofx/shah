@@ -10,7 +10,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.metric.Ratios;
 import java.util.function.Function;
 
 /**
@@ -41,7 +41,7 @@ import java.util.function.Function;
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class WindowedKeyTest implements Test<Double> {
+public final class WindowedKeyTest implements Test<Ratios> {
     /**
      * Maximum window width (2^25 keys cap).
      */
@@ -79,7 +79,7 @@ public final class WindowedKeyTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Ratios metric() {
         int window = this.width;
         int keycount = 1 << window;
         while (WindowedKeyTest.estimate(
@@ -91,7 +91,7 @@ public final class WindowedKeyTest implements Test<Double> {
             window += 1;
         }
         final int keybits = this.size * 8;
-        double worst = 0.0;
+        final Ratios ratios = new Ratios();
         for (int start = 0; start <= keybits; ++start) {
             final Hashes hashes = new HashesOf();
             for (int val = 0; val < keycount; ++val) {
@@ -101,12 +101,9 @@ public final class WindowedKeyTest implements Test<Double> {
                 );
                 hashes.add(this.func.apply(new KeyOf(bytes)));
             }
-            final double ratio = new Collisions(hashes).ratio();
-            if (ratio > worst) {
-                worst = ratio;
-            }
+            ratios.add(hashes);
         }
-        return worst;
+        return ratios;
     }
 
     /**

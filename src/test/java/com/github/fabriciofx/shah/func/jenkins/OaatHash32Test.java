@@ -240,7 +240,7 @@ final class OaatHash32Test {
                 key -> new OaatHash32(key).hash(),
                 4,
                 12
-            ).metric(),
+            ).metric().worst(),
             new IsLessThan(200.0, "windowed collision ratio")
         ).affirm();
     }
