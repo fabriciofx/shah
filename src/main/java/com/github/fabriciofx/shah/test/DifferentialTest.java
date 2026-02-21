@@ -12,7 +12,7 @@ import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
-import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.metric.Ratios;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -34,7 +34,7 @@ import java.util.function.BiFunction;
  * @since 0.0.1
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
-public final class DifferentialTest implements Test<Double> {
+public final class DifferentialTest implements Test<Ratios> {
     /**
      * The hash under test.
      */
@@ -84,10 +84,10 @@ public final class DifferentialTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Ratios metric() {
         final Random random = new Random(this.initial);
         final Key probe = new Randomized(new KeyOf(this.size), random);
-        double worst = 0.0;
+        final Ratios ratios = new Ratios();
         for (int bit = 0; bit < probe.bits(); ++bit) {
             final Hashes diffs = new HashesOf();
             for (int idx = 0; idx < this.count; ++idx) {
@@ -99,11 +99,8 @@ public final class DifferentialTest implements Test<Double> {
                 );
                 diffs.add(original.diff(flipped));
             }
-            final double ratio = new Collisions(diffs).ratio();
-            if (ratio > worst) {
-                worst = ratio;
-            }
+            ratios.add(diffs);
         }
-        return worst;
+        return ratios;
     }
 }

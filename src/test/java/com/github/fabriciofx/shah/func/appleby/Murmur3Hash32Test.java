@@ -346,7 +346,7 @@ final class Murmur3Hash32Test {
                 4,
                 54_321L,
                 100_000
-            ).metric(),
+            ).metric().worst(),
             new IsLessThan(10.0, "differential collision ratio")
         ).affirm();
     }
