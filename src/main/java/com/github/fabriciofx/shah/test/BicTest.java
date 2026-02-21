@@ -19,18 +19,15 @@ import java.util.function.Function;
 /**
  * Bit Independence Criterion (BIC) test from SMHasher.
  *
- * <p>Generate contingency tables and compute the worst BIC bias. The worst bias
- * as a value between 0.0 and 1.0</p>
+ * <p>Generate contingency tables and create a BIC bias.</p>
  *
- * <p>When a single input bit is flipped, the resulting changes in
- * any pair of output bits should be statistically independent.
- * For each pair of output bits (i, j), a 2x2 contingency table
- * is built counting the four possible outcomes {00, 01, 10, 11}.
- * The worst bias across all input bits is reported via
+ * <p>When a single input bit is flipped, the resulting changes in any pair of
+ * output bits should be statistically independent. For each pair of output bits
+ * (i, j), a 2x2 contingency table is built counting the four possible outcomes
+ * {00, 01, 10, 11}. The worst bias across all input bits is reported via
  * {@link BicBias}.</p>
  *
- * <p>Supports hash outputs of any width (32, 64, 128, 256 bits,
- * etc.).</p>
+ * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
@@ -38,7 +35,7 @@ import java.util.function.Function;
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class BicTest implements Test<Double> {
+public final class BicTest implements Test<BicBias> {
     /**
      * The hash under test.
      */
@@ -80,13 +77,13 @@ public final class BicTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public BicBias metric() {
         final Random random = new Random(this.seed);
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe);
-        double worst = 0.0;
+        final int[][][][] bins =
+            new int[probe.bits()][hash.bits()][hash.bits()][4];
         for (int bit = 0; bit < probe.bits(); ++bit) {
-            final int[][][] bins = new int[hash.bits()][hash.bits()][4];
             for (int rep = 0; rep < this.repetitions; ++rep) {
                 final Key key = new Randomized(new KeyOf(this.size), random);
                 final Hash original = this.func.apply(key);
@@ -108,15 +105,11 @@ public final class BicTest implements Test<Double> {
                             two
                         ).value();
                         final int index = first | (second << 1);
-                        bins[one][two][index] += 1;
+                        bins[bit][one][two][index] += 1;
                     }
                 }
             }
-            final double bias = new BicBias(bins, this.repetitions).value();
-            if (bias > worst) {
-                worst = bias;
-            }
         }
-        return worst;
+        return new BicBias(bins, this.repetitions);
     }
 }

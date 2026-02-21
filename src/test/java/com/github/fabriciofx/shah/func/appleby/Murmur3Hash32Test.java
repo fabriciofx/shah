@@ -218,7 +218,7 @@ final class Murmur3Hash32Test {
                 4,
                 100_000,
                 11_111L
-            ).metric(),
+            ).metric().max(),
             new IsLessThan(0.05, "BIC bias")
         ).affirm();
     }

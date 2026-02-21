@@ -150,7 +150,7 @@ final class OaatHash32Test {
                 4,
                 100_000,
                 11_111L
-            ).metric(),
+            ).metric().max(),
             new IsLessThan(2.0, "BIC bias")
         ).affirm();
     }
