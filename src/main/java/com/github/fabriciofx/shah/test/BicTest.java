@@ -14,7 +14,7 @@ import com.github.fabriciofx.shah.metric.BicBias;
 import com.github.fabriciofx.shah.scalar.ByteDiff;
 import com.github.fabriciofx.shah.scalar.FirstBit;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Bit Independence Criterion (BIC) test from SMHasher.
@@ -37,14 +37,24 @@ import java.util.function.Function;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class BicTest implements Test<BicBias> {
     /**
-     * The hash under test.
+     * The hash function under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
 
     /**
-     * Key size.
+     * Seed for the hash function.
+     */
+    private final long seed;
+
+    /**
+     * Key's size.
      */
     private final int size;
+
+    /**
+     * Key's seed.
+     */
+    private final long initial;
 
     /**
      * Number of repetitions.
@@ -52,60 +62,60 @@ public final class BicTest implements Test<BicBias> {
     private final int repetitions;
 
     /**
-     * Random seed for reproducibility.
-     */
-    private final long seed;
-
-    /**
      * Ctor.
      * @param func The hash function under test
-     * @param size Key size in key
+     * @param seed Seed for the hash function
+     * @param size Key's size in bytes
+     * @param initial Key's seed
      * @param repetitions Number of repetitions
-     * @param seed Random seed for reproducibility
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public BicTest(
-        final Function<Key, Hash> func,
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
         final int size,
-        final int repetitions,
-        final long seed
+        final long initial,
+        final int repetitions
     ) {
         this.func = func;
-        this.size = size;
-        this.repetitions = repetitions;
         this.seed = seed;
+        this.size = size;
+        this.initial = initial;
+        this.repetitions = repetitions;
     }
 
     @Override
     public BicBias metric() {
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial);
         final Key probe = new Randomized(new KeyOf(this.size), random);
-        final Hash hash = this.func.apply(probe);
+        final Hash hash = this.func.apply(probe, this.seed);
         final int[][][][] bins =
             new int[probe.bits()][hash.bits()][hash.bits()][4];
         for (int bit = 0; bit < probe.bits(); ++bit) {
             for (int rep = 0; rep < this.repetitions; ++rep) {
                 final Key key = new Randomized(new KeyOf(this.size), random);
-                final Hash original = this.func.apply(key);
-                final Hash flipped = this.func.apply(new Flipped(key, bit));
+                final Hash original = this.func.apply(key, this.seed);
+                final Hash flipped = this.func.apply(
+                    new Flipped(key, bit),
+                    this.seed
+                );
                 for (int one = 0; one < hash.bits(); ++one) {
+                    final int idx = one >> 3;
                     final int first = new FirstBit(
-                        new ByteDiff(
-                            original.byteAt(one >> 3),
-                            flipped.byteAt(one >> 3)
-                        ),
+                        new ByteDiff(original.byteAt(idx), flipped.byteAt(idx)),
                         one
                     ).value();
                     for (int two = one + 1; two < hash.bits(); ++two) {
+                        final int pos = two >> 3;
                         final int second = new FirstBit(
                             new ByteDiff(
-                                original.byteAt(two >> 3),
-                                flipped.byteAt(two >> 3)
+                                original.byteAt(pos),
+                                flipped.byteAt(pos)
                             ),
                             two
                         ).value();
                         final int index = first | (second << 1);
-                        bins[bit][one][two][index] += 1;
+                        ++bins[bit][one][two][index];
                     }
                 }
             }

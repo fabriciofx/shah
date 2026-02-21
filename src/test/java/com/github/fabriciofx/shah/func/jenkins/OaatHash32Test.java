@@ -146,10 +146,11 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat BIC bias with 4-byte keys must be below 200%",
             new BicTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                11_111L,
                 4,
-                100_000,
-                11_111L
+                12_345L,
+                100_000
             ).metric().max(),
             new IsLessThan(2.0, "BIC bias")
         ).affirm();

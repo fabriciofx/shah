@@ -164,10 +164,14 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 BIC bias with 4-byte keys must be below 60%",
             new BicTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                11_111L,
                 4,
-                100_000,
-                11_111L
+                12_345L,
+                100_000
             ).metric().max(),
             new IsLessThan(0.60, "BIC bias")
         ).affirm();
