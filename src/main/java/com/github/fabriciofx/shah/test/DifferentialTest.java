@@ -14,7 +14,7 @@ import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Differential test from SMHasher.
@@ -38,12 +38,22 @@ public final class DifferentialTest implements Test<Double> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
 
     /**
-     * Key size.
+     * Hash function seed.
+     */
+    private final long seed;
+
+    /**
+     * Key's size.
      */
     private final int size;
+
+    /**
+     * Key's seed.
+     */
+    private final long initial;
 
     /**
      * Number of keys to test.
@@ -51,41 +61,42 @@ public final class DifferentialTest implements Test<Double> {
     private final int count;
 
     /**
-     * Random seed for reproducibility.
-     */
-    private final long seed;
-
-    /**
      * Ctor.
      * @param func The hash function under test
-     * @param size Key size in bytes
+     * @param seed Hash function seed
+     * @param size Key's size in bytes
+     * @param initial Key's seed
      * @param count Number of keys
-     * @param seed Random seed for reproducibility
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DifferentialTest(
-        final Function<Key, Hash> func,
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
         final int size,
-        final int count,
-        final long seed
+        final long initial,
+        final int count
     ) {
         this.func = func;
-        this.size = size;
-        this.count = count;
         this.seed = seed;
+        this.size = size;
+        this.initial = initial;
+        this.count = count;
     }
 
     @Override
     public Double metric() {
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial);
         final Key probe = new Randomized(new KeyOf(this.size), random);
         double worst = 0.0;
         for (int bit = 0; bit < probe.bits(); ++bit) {
             final Hashes diffs = new HashesOf();
             for (int idx = 0; idx < this.count; ++idx) {
                 final Key key = new Randomized(new KeyOf(this.size), random);
-                final Hash original = this.func.apply(key);
-                final Hash flipped = this.func.apply(new Flipped(key, bit));
+                final Hash original = this.func.apply(key, this.seed);
+                final Hash flipped = this.func.apply(
+                    new Flipped(key, bit),
+                    this.seed
+                );
                 diffs.add(original.diff(flipped));
             }
             final double ratio = new Collisions(diffs).ratio();

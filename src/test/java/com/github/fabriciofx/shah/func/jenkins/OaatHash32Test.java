@@ -262,10 +262,11 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat differential test (known weakness with small keys)",
             new DifferentialTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L,
                 4,
-                100_000,
-                54_321L
+                54_321L,
+                100_000
             ).metric(),
             new IsLessThan(5000.0, "differential collision ratio")
         ).affirm();

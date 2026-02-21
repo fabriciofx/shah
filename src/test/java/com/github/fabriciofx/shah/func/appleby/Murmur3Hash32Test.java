@@ -330,10 +330,14 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass differential test",
             new DifferentialTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
                 4,
-                100_000,
-                54_321L
+                54_321L,
+                100_000
             ).metric(),
             new IsLessThan(10.0, "differential collision ratio")
         ).affirm();
