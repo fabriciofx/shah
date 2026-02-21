@@ -9,9 +9,9 @@ import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
+import com.github.fabriciofx.shah.key.Cycled;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
-import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
@@ -38,28 +38,8 @@ import java.util.function.BiFunction;
  * @checkstyle NestedForDepthCheck (200 lines)
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.AvoidArrayLoops"})
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class CyclicKeyTest implements Test<Collisions> {
-    /**
-     * Default random seed (matches SMHasher).
-     */
-    private static final long DEFAULT_SEED = 483_723L;
-
-    /**
-     * Mix constant from SMHasher f3mix.
-     */
-    private static final int MIX_XOR = 0x746a94f1;
-
-    /**
-     * First mix multiplier.
-     */
-    private static final int MIX_MUL1 = 0x85ebca6b;
-
-    /**
-     * Second mix multiplier.
-     */
-    private static final int MIX_MUL2 = 0xc2b2ae35;
-
     /**
      * Default number of keys.
      */
@@ -131,46 +111,12 @@ public final class CyclicKeyTest implements Test<Collisions> {
 
     @Override
     public Collisions metric() {
-        final Random random = new Random(CyclicKeyTest.DEFAULT_SEED);
         final int size = this.length * this.repetitions;
         final Hashes hashes = new HashesOf();
         for (int idx = 0; idx < this.count; ++idx) {
-            final byte[] cycle = new byte[this.length];
-            random.nextBytes(cycle);
-            final int mixed = CyclicKeyTest.finalMix(
-                idx ^ CyclicKeyTest.MIX_XOR
-            );
-            cycle[0] = (byte) mixed;
-            if (this.length > 1) {
-                cycle[1] = (byte) (mixed >>> 8);
-            }
-            if (this.length > 2) {
-                cycle[2] = (byte) (mixed >>> 16);
-            }
-            if (this.length > 3) {
-                cycle[3] = (byte) (mixed >>> 24);
-            }
-            final byte[] bytes = new byte[size];
-            for (int pos = 0; pos < size; ++pos) {
-                bytes[pos] = cycle[pos % this.length];
-            }
-            hashes.add(this.func.apply(new KeyOf(bytes), this.seed));
+            final Key cycled = new Cycled(new KeyOf(size), this.length, idx);
+            hashes.add(this.func.apply(cycled, this.seed));
         }
         return new Collisions(hashes);
-    }
-
-    /**
-     * MurmurHash3 32-bit finalizer (f3mix from SMHasher Stats.h).
-     * @param value Input value
-     * @return Mixed value
-     */
-    private static int finalMix(final int value) {
-        int mixed = value;
-        mixed ^= mixed >>> 16;
-        mixed *= CyclicKeyTest.MIX_MUL1;
-        mixed ^= mixed >>> 13;
-        mixed *= CyclicKeyTest.MIX_MUL2;
-        mixed ^= mixed >>> 16;
-        return mixed;
     }
 }
