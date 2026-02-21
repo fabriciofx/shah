@@ -279,10 +279,11 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat diff dist test (known weakness with small keys)",
             new DiffDistTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L,
                 4,
-                100_000,
-                54_321L
+                54_321L,
+                100_000
             ).metric(),
             new IsLessThan(1.0, "diff distribution score")
         ).affirm();
