@@ -389,7 +389,8 @@ final class Murmur3Hash32Test {
                 (key, seed) -> new Murmur3Hash32(
                     key,
                     Long.hashCode(seed)
-                ).hash()
+                ).hash(),
+                12_345L
             ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();

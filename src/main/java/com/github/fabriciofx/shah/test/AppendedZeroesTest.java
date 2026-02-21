@@ -52,12 +52,17 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Default key seed.
      */
-    private static final long DEFAULT_SEED = 173_994L;
+    private static final long DEFAULT_INITIAL = 173_994L;
 
     /**
      * The hash function under test.
      */
     private final BiFunction<Key, Long, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final long seed;
 
     /**
      * Key's size.
@@ -67,7 +72,7 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Key's seed.
      */
-    private final long seed;
+    private final long initial;
 
     /**
      * Max zeroes.
@@ -82,12 +87,17 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      */
-    public AppendedZeroesTest(final BiFunction<Key, Long, Hash> func) {
+    public AppendedZeroesTest(
+        final BiFunction<Key, Long, Hash> func,
+        final long seed
+    ) {
         this(
             func,
+            seed,
             AppendedZeroesTest.MIN_SIZE,
-            AppendedZeroesTest.DEFAULT_SEED,
+            AppendedZeroesTest.DEFAULT_INITIAL,
             AppendedZeroesTest.MAX_ZEROES,
             AppendedZeroesTest.DEFAULT_REPS
         );
@@ -96,28 +106,31 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param size The key's size
-     * @param seed The key's seed
+     * @param initial The key's seed
      * @param max The max number of zeroes
      * @param repetitions Number of repetitions
      */
     public AppendedZeroesTest(
         final BiFunction<Key, Long, Hash> func,
-        final int size,
         final long seed,
+        final int size,
+        final long initial,
         final int max,
         final int repetitions
     ) {
         this.func = func;
-        this.size = size;
         this.seed = seed;
+        this.size = size;
+        this.initial = initial;
         this.max = max;
         this.repetitions = repetitions;
     }
 
     @Override
     public Double metric() {
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial);
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {
