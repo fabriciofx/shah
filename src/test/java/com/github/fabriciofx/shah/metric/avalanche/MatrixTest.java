@@ -25,15 +25,15 @@ final class MatrixTest {
     void twoMatricesBeEqualsUnderTheSameParameters() {
         final Matrix first = new AvalancheTest(
             (key, seed) -> new Murmur3Hash32(key, Long.hashCode(seed)).hash(),
-            8,
             12_345L,
+            8,
             54_321L,
             100_000
         ).metric();
         final Matrix second = new AvalancheTest(
             (key, seed) -> new Murmur3Hash32(key, Long.hashCode(seed)).hash(),
-            8,
             12_345L,
+            8,
             54_321L,
             100_000
         ).metric();
@@ -48,8 +48,8 @@ final class MatrixTest {
     void computeProbabilityOfFiftyPercent() {
         final Matrix matrix = new AvalancheTest(
             (key, seed) -> new Murmur3Hash32(key, Long.hashCode(seed)).hash(),
-            8,
             12_345L,
+            8,
             54_321L,
             100_000
         ).metric();

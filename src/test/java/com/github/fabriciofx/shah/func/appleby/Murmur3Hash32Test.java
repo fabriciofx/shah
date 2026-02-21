@@ -132,8 +132,8 @@ final class Murmur3Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                4,
                 12_345L,
+                4,
                 54_321L,
                 500_000
             ).metric().bias().mean(),
@@ -150,8 +150,8 @@ final class Murmur3Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                8,
                 12_345L,
+                8,
                 54_321L,
                 500_000
             ).metric().bias().mean(),
@@ -168,8 +168,8 @@ final class Murmur3Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                16,
                 12_345L,
+                16,
                 54_321L,
                 500_000
             ).metric().bias().mean(),

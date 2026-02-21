@@ -88,8 +88,8 @@ final class OaatHash32Test {
             "oaat avalanche bias with 4-byte keys must be below 60%",
             new AvalancheTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                4,
                 12_345L,
+                4,
                 54_321L,
                 500_000
             ).metric().bias().max(),
@@ -103,8 +103,8 @@ final class OaatHash32Test {
             "oaat avalanche bias with 8-byte keys must be below 60%",
             new AvalancheTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                8,
                 12_345L,
+                8,
                 54_321L,
                 500_000
             ).metric().bias().max(),

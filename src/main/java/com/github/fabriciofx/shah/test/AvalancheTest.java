@@ -44,14 +44,14 @@ public final class AvalancheTest implements Test<Matrix> {
     private final BiFunction<Key, Long, Hash> func;
 
     /**
-     * Size in key.
-     */
-    private final int size;
-
-    /**
      * Seed for the hash function.
      */
     private final long seed;
+
+    /**
+     * Size in key.
+     */
+    private final int size;
 
     /**
      * Initial value for key generation.
@@ -66,22 +66,22 @@ public final class AvalancheTest implements Test<Matrix> {
     /**
      * Ctor.
      * @param func The hash function under test
-     * @param size Size in key
      * @param seed Seed for the hash function.
+     * @param size Size in key
      * @param initial Initial value for key generation
      * @param repetitions Number of repetitions
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public AvalancheTest(
         final BiFunction<Key, Long, Hash> func,
-        final int size,
         final long seed,
+        final int size,
         final long initial,
         final int repetitions
     ) {
         this.func = func;
-        this.size = size;
         this.seed = seed;
+        this.size = size;
         this.initial = initial;
         this.repetitions = repetitions;
     }

@@ -100,8 +100,8 @@ final class Lookup2Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                4,
                 12_345L,
+                4,
                 54_321L,
                 500_000
             ).metric().bias().max(),
@@ -118,8 +118,8 @@ final class Lookup2Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                8,
                 12_345L,
+                8,
                 54_321L,
                 500_000
             ).metric().bias().max(),
