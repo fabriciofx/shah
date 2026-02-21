@@ -186,8 +186,8 @@ final class Murmur3Hash32Test {
                     key,
                     Long.hashCode(seed)
                 ).hash(),
-                16,
                 67_890L,
+                16,
                 12_345L,
                 1_000_000
             ).metric().ratio(),

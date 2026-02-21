@@ -118,8 +118,8 @@ final class OaatHash32Test {
             "oaat must pass collision test",
             new CollisionTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                16,
                 67_890L,
+                16,
                 12_345L,
                 1_000_000
             ).metric().ratio(),

@@ -36,17 +36,17 @@ public final class CollisionTest implements Test<Collisions> {
     private final BiFunction<Key, Long, Hash> func;
 
     /**
-     * Key size.
-     */
-    private final int size;
-
-    /**
-     * Key seed.
+     * Hash function seed.
      */
     private final long seed;
 
     /**
-     * Test seed.
+     * Key's size.
+     */
+    private final int size;
+
+    /**
+     * Key's seed.
      */
     private final long initial;
 
@@ -58,22 +58,22 @@ public final class CollisionTest implements Test<Collisions> {
     /**
      * Ctor.
      * @param func The hash function under test
-     * @param size Key size
      * @param seed Key seed
+     * @param size Key size
      * @param initial Test seed
      * @param count Number of keys to hash
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CollisionTest(
         final BiFunction<Key, Long, Hash> func,
-        final int size,
         final long seed,
+        final int size,
         final long initial,
         final int count
     ) {
         this.func = func;
-        this.size = size;
         this.seed = seed;
+        this.size = size;
         this.initial = initial;
         this.count = count;
     }
