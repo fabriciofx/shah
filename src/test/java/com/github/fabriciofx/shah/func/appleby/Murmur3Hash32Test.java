@@ -256,7 +256,11 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass cyclic key test",
             new CyclicKeyTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
                 4,
                 8
             ).metric().ratio(),

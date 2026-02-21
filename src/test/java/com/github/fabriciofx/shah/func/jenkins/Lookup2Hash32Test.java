@@ -206,7 +206,11 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass cyclic key test",
             new CyclicKeyTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
                 4,
                 8
             ).metric().ratio(),

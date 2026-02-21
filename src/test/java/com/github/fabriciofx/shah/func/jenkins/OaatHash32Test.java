@@ -185,7 +185,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass cyclic key test",
             new CyclicKeyTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L,
                 4,
                 8
             ).metric().ratio(),

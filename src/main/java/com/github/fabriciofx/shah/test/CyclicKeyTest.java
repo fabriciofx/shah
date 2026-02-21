@@ -12,7 +12,7 @@ import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Cyclic key test from SMHasher.
@@ -36,6 +36,7 @@ import java.util.function.Function;
  * @since 0.0.1
  * @checkstyle MagicNumberCheck (200 lines)
  * @checkstyle NestedForDepthCheck (200 lines)
+ * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.AvoidArrayLoops"})
 public final class CyclicKeyTest implements Test<Collisions> {
@@ -62,88 +63,98 @@ public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * Default number of keys.
      */
-    private static final int DEFAULT_KEYCOUNT = 100_000;
+    private static final int DEFAULT_COUNT = 100_000;
 
     /**
-     * The hash under test.
+     * The hash function under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
+
+    /**
+     * Seed for hash function.
+     */
+    private final long seed;
 
     /**
      * Cycle length (pattern length in bytes).
      */
-    private final int cyclelen;
+    private final int length;
 
     /**
      * Number of cycle repetitions.
      */
-    private final int reps;
+    private final int repetitions;
 
     /**
      * Number of keys to generate.
      */
-    private final int keycount;
+    private final int count;
 
     /**
      * Ctor with default key count.
      * @param func The hash function under test
-     * @param cyclelen Cycle pattern length in bytes
-     * @param reps Number of cycle repetitions
+     * @param seed The hash function seed
+     * @param length Cycle pattern length in bytes
+     * @param repetitions Number of cycle repetitions
      */
     public CyclicKeyTest(
-        final Function<Key, Hash> func,
-        final int cyclelen,
-        final int reps
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
+        final int length,
+        final int repetitions
     ) {
-        this(func, cyclelen, reps, CyclicKeyTest.DEFAULT_KEYCOUNT);
+        this(func, seed, length, CyclicKeyTest.DEFAULT_COUNT, repetitions);
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
-     * @param cyclelen Cycle pattern length in bytes
-     * @param reps Number of cycle repetitions
-     * @param keycount Number of keys to generate
+     * @param seed The hash function seed
+     * @param length Cycle pattern length in bytes
+     * @param count Number of keys to generate
+     * @param repetitions Number of cycle repetitions
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CyclicKeyTest(
-        final Function<Key, Hash> func,
-        final int cyclelen,
-        final int reps,
-        final int keycount
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
+        final int length,
+        final int count,
+        final int repetitions
     ) {
         this.func = func;
-        this.cyclelen = cyclelen;
-        this.reps = reps;
-        this.keycount = keycount;
+        this.seed = seed;
+        this.length = length;
+        this.count = count;
+        this.repetitions = repetitions;
     }
 
     @Override
     public Collisions metric() {
         final Random random = new Random(CyclicKeyTest.DEFAULT_SEED);
-        final int keylen = this.cyclelen * this.reps;
+        final int size = this.length * this.repetitions;
         final Hashes hashes = new HashesOf();
-        for (int idx = 0; idx < this.keycount; ++idx) {
-            final byte[] cycle = new byte[this.cyclelen];
+        for (int idx = 0; idx < this.count; ++idx) {
+            final byte[] cycle = new byte[this.length];
             random.nextBytes(cycle);
             final int mixed = CyclicKeyTest.finalMix(
                 idx ^ CyclicKeyTest.MIX_XOR
             );
             cycle[0] = (byte) mixed;
-            if (this.cyclelen > 1) {
+            if (this.length > 1) {
                 cycle[1] = (byte) (mixed >>> 8);
             }
-            if (this.cyclelen > 2) {
+            if (this.length > 2) {
                 cycle[2] = (byte) (mixed >>> 16);
             }
-            if (this.cyclelen > 3) {
+            if (this.length > 3) {
                 cycle[3] = (byte) (mixed >>> 24);
             }
-            final byte[] key = new byte[keylen];
-            for (int pos = 0; pos < keylen; ++pos) {
-                key[pos] = cycle[pos % this.cyclelen];
+            final byte[] bytes = new byte[size];
+            for (int pos = 0; pos < size; ++pos) {
+                bytes[pos] = cycle[pos % this.length];
             }
-            hashes.add(this.func.apply(new KeyOf(key)));
+            hashes.add(this.func.apply(new KeyOf(bytes), this.seed));
         }
         return new Collisions(hashes);
     }
