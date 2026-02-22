@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.metric;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Metric;
+import com.github.fabriciofx.shah.scalar.Window;
 
 /**
  * Distribution (window) score metric from SMHasher.
@@ -64,9 +65,7 @@ public final class DistributionScore implements Metric<Double> {
                 final int mask = nbins - 1;
                 final int[] bins = new int[nbins];
                 for (final Hash hash : this.hashes) {
-                    final int window = DistributionScore.extract(
-                        hash, start, bits
-                    );
+                    final int window = new Window(hash, start).value();
                     bins[window & mask] += 1;
                 }
                 final double score = DistributionScore.score(
@@ -78,30 +77,6 @@ public final class DistributionScore implements Metric<Double> {
             }
         }
         return worst;
-    }
-
-    /**
-     * Extract bits from a byte array at a circular bit offset.
-     * Reads up to 16 bits starting at the given bit position,
-     * wrapping around if necessary.
-     * @param hash The hash value as byte array
-     * @param start Starting bit position
-     * @param total Total number of bits in the hash
-     * @return The extracted bits as an int
-     */
-    private static int extract(
-        final Hash hash,
-        final int start,
-        final int total
-    ) {
-        final byte[] bytes = hash.asBytes();
-        int result = 0;
-        for (int bit = 0; bit < 16; ++bit) {
-            final int pos = (start + bit) % total;
-            final int bte = (bytes[pos >> 3] >> (pos & 7)) & 1;
-            result |= bte << bit;
-        }
-        return result;
     }
 
     /**
