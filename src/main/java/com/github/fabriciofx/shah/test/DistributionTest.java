@@ -13,7 +13,7 @@ import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.DistributionScore;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Distribution test from SMHasher.
@@ -32,11 +32,26 @@ import java.util.function.Function;
  * @since 0.0.1
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
-public final class DistributionTest implements Test<Double> {
+public final class DistributionTest implements Test<DistributionScore> {
     /**
-     * The hash under test.
+     * The hash function under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
+
+    /**
+     * Seed for hash function.
+     */
+    private final long seed;
+
+    /**
+     * Key's size.
+     */
+    private final int size;
+
+    /**
+     * Key's seed.
+     */
+    private final long initial;
 
     /**
      * Number of keys to hash.
@@ -44,43 +59,36 @@ public final class DistributionTest implements Test<Double> {
     private final int count;
 
     /**
-     * Key size.
-     */
-    private final int size;
-
-    /**
-     * Random seed for reproducibility.
-     */
-    private final long seed;
-
-    /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
+     * @param size Key's size
+     * @param initial Key's seed
      * @param count Number of keys to hash
-     * @param size Key size
-     * @param seed Random seed for reproducibility
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DistributionTest(
-        final Function<Key, Hash> func,
-        final int count,
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
         final int size,
-        final long seed
+        final long initial,
+        final int count
     ) {
         this.func = func;
-        this.count = count;
-        this.size = size;
         this.seed = seed;
+        this.size = size;
+        this.initial = initial;
+        this.count = count;
     }
 
     @Override
-    public Double metric() {
+    public DistributionScore metric() {
         final Hashes hashes = new HashesOf();
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial);
         for (int idx = 0; idx < this.count; ++idx) {
             final Key key = new Randomized(new KeyOf(this.size), random);
-            hashes.add(this.func.apply(key));
+            hashes.add(this.func.apply(key, this.seed));
         }
-        return new DistributionScore(hashes).value();
+        return new DistributionScore(hashes);
     }
 }

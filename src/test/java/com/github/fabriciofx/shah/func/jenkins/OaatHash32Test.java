@@ -132,11 +132,12 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass distribution test",
             new DistributionTest(
-                key -> new OaatHash32(key).hash(),
-                1_000_000,
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L,
                 16,
-                67_890L
-            ).metric(),
+                67_890L,
+                1_000_000
+            ).metric().value(),
             new IsLessThan(0.01, "distribution score")
         ).affirm();
     }

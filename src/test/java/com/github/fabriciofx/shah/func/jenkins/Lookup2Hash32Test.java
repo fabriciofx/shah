@@ -150,11 +150,15 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass distribution test",
             new DistributionTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
-                1_000_000,
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
                 16,
-                67_890L
-            ).metric(),
+                67_890L,
+                1_000_000
+            ).metric().value(),
             new IsLessThan(0.01, "distribution score")
         ).affirm();
     }

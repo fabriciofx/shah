@@ -200,11 +200,15 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass distribution test",
             new DistributionTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
-                1_000_000,
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L,
                 16,
-                67_890L
-            ).metric(),
+                67_890L,
+                1_000_000
+            ).metric().value(),
             new IsLessThan(0.01, "distribution score")
         ).affirm();
     }
