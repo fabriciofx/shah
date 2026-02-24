@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Cycled;
@@ -48,12 +49,12 @@ public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * The hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Seed for hash function.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Cycle length (pattern length in bytes).
@@ -78,8 +79,8 @@ public final class CyclicKeyTest implements Test<Collisions> {
      * @param repetitions Number of cycle repetitions
      */
     public CyclicKeyTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int length,
         final int repetitions
     ) {
@@ -96,8 +97,8 @@ public final class CyclicKeyTest implements Test<Collisions> {
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CyclicKeyTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int length,
         final int count,
         final int repetitions

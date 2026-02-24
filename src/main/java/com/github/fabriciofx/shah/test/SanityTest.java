@@ -6,12 +6,14 @@ package com.github.fabriciofx.shah.test;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
+import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Sanity test from SMHasher.
@@ -36,6 +38,7 @@ import java.util.function.Function;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
+ * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings({
     "PMD.TestClassWithoutTestCases",
@@ -46,7 +49,7 @@ public final class SanityTest implements Test<Double> {
     /**
      * Minimum key length in bytes.
      */
-    private static final int MIN_LEN = 4;
+    private static final int MIN_SIZE = 4;
 
     /**
      * Default number of repetitions.
@@ -54,14 +57,19 @@ public final class SanityTest implements Test<Double> {
     private static final int DEFAULT_REPS = 10;
 
     /**
-     * Default random seed.
+     * Default key's seed.
      */
-    private static final long DEFAULT_SEED = 883_741L;
+    private static final Seed DEFAULT_INITIAL = new Seed64(883_741L);
 
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Maximum key length to test.
@@ -69,62 +77,77 @@ public final class SanityTest implements Test<Double> {
     private final int max;
 
     /**
+     * Random seed for reproducibility.
+     */
+    private final Seed initial;
+
+    /**
      * Number of repetitions.
      */
     private final int repetitions;
 
     /**
-     * Random seed for reproducibility.
-     */
-    private final long seed;
-
-    /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param max Maximum key length to test
      */
-    public SanityTest(final Function<Key, Hash> func, final int max) {
-        this(func, max, SanityTest.DEFAULT_REPS, SanityTest.DEFAULT_SEED);
+    public SanityTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
+        final int max
+    ) {
+        this(
+            func,
+            seed,
+            max,
+            SanityTest.DEFAULT_INITIAL,
+            SanityTest.DEFAULT_REPS
+        );
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param max Maximum key length to test
+     * @param initial Random seed for reproducibility
      * @param repetitions Number of repetitions
-     * @param seed Random seed for reproducibility
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public SanityTest(
-        final Function<Key, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int max,
-        final int repetitions,
-        final long seed
+        final Seed initial,
+        final int repetitions
     ) {
         this.func = func;
-        this.max = max;
-        this.repetitions = repetitions;
         this.seed = seed;
+        this.max = max;
+        this.initial = initial;
+        this.repetitions = repetitions;
     }
 
     @Override
     public Double metric() {
-        final Random random = new Random(this.seed);
+        final Random random = new Random(this.initial.asLong());
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {
-            for (int len = SanityTest.MIN_LEN; len <= this.max; ++len) {
+            for (int len = SanityTest.MIN_SIZE; len <= this.max; ++len) {
                 final Key key = new Randomized(new KeyOf(len), random);
-                final Hash original = this.func.apply(key);
+                final Hash original = this.func.apply(key, this.seed);
                 for (int bit = 0; bit < key.bits(); ++bit) {
                     final Key flip = new Flipped(key, bit);
-                    final Hash flipped = this.func.apply(flip);
+                    final Hash flipped = this.func.apply(flip, this.seed);
                     ++checks;
                     if (original.equals(flipped)) {
                         ++failures;
                     }
                     final Hash restored = this.func.apply(
-                        new Flipped(flip, bit)
+                        new Flipped(flip, bit),
+                        this.seed
                     );
                     ++checks;
                     if (!original.equals(restored)) {

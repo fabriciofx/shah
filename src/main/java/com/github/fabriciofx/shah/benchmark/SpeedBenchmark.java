@@ -7,16 +7,17 @@ package com.github.fabriciofx.shah.benchmark;
 import com.github.fabriciofx.shah.Benchmark;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.collection.Filtered;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
+import com.github.fabriciofx.shah.seed.Seed64;
 import com.github.fabriciofx.shah.stat.Mean;
 import com.github.fabriciofx.shah.stat.Stdv;
 import com.github.fabriciofx.shah.stat.Variance;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Speed benchmark from SMHasher.
@@ -68,7 +69,7 @@ public final class SpeedBenchmark implements Benchmark<Double> {
     /**
      * The seeded hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Key size in bytes.
@@ -81,49 +82,10 @@ public final class SpeedBenchmark implements Benchmark<Double> {
     private final int trials;
 
     /**
-     * Ctor with defaults (256 KB bulk key, 999 trials, seedless).
-     * @param func The hash function under test (seedless)
-     */
-    public SpeedBenchmark(final Function<Key, Hash> func) {
-        this(
-            func,
-            SpeedBenchmark.DEFAULT_KEY_SIZE,
-            SpeedBenchmark.DEFAULT_TRIALS
-        );
-    }
-
-    /**
-     * Ctor with specified key size (seedless).
-     * @param func The hash function under test (seedless)
-     * @param size Key size in bytes
-     */
-    public SpeedBenchmark(
-        final Function<Key, Hash> func,
-        final int size
-    ) {
-        this(func, size, SpeedBenchmark.DEFAULT_TRIALS);
-    }
-
-    /**
-     * Ctor (seedless).
-     * @param func The hash function under test (seedless)
-     * @param size Key size in bytes
-     * @param trials Number of timing trials
-     * @checkstyle ParameterNumberCheck (5 lines)
-     */
-    public SpeedBenchmark(
-        final Function<Key, Hash> func,
-        final int size,
-        final int trials
-    ) {
-        this((key, seed) -> func.apply(key), trials, size);
-    }
-
-    /**
      * Ctor with defaults (256 KB bulk key, 999 trials, seeded).
      * @param func The hash function under test, accepting (key, seed)
      */
-    public SpeedBenchmark(final BiFunction<Key, Long, Hash> func) {
+    public SpeedBenchmark(final BiFunction<Key, Seed, Hash> func) {
         this(
             func,
             SpeedBenchmark.DEFAULT_KEY_SIZE,
@@ -137,7 +99,7 @@ public final class SpeedBenchmark implements Benchmark<Double> {
      * @param size Key size in bytes
      */
     public SpeedBenchmark(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final int size
     ) {
         this(func, size, SpeedBenchmark.DEFAULT_TRIALS);
@@ -145,25 +107,25 @@ public final class SpeedBenchmark implements Benchmark<Double> {
 
     /**
      * Ctor (seeded).
-     * @param func The hash function under test, accepting (key, seed)
+     * @param func The hash function under test
      * @param size Key size in bytes
      * @param trials Number of timing trials
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public SpeedBenchmark(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final int size,
         final int trials
     ) {
         this.func = func;
-        this.trials = trials;
         this.size = size;
+        this.trials = trials;
     }
 
     @Override
     public Double run() {
         final Key key = new Randomized(new KeyOf(this.size));
-        this.func.apply(key, 0L);
+        this.func.apply(key, new Seed64(0L));
         final List<Long> times = new ArrayList<>(this.trials);
         for (int idx = 0; idx < this.trials; ++idx) {
             final long elapsed = new SpeedMeasure(

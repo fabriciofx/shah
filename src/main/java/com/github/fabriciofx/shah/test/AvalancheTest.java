@@ -6,6 +6,7 @@ package com.github.fabriciofx.shah.test;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -41,12 +42,12 @@ public final class AvalancheTest implements Test<Matrix> {
     /**
      * The hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Seed for the hash function.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Size in key.
@@ -56,7 +57,7 @@ public final class AvalancheTest implements Test<Matrix> {
     /**
      * Initial value for key generation.
      */
-    private final long initial;
+    private final Seed initial;
 
     /**
      * Number of repetitions.
@@ -73,10 +74,10 @@ public final class AvalancheTest implements Test<Matrix> {
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public AvalancheTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
-        final long initial,
+        final Seed initial,
         final int repetitions
     ) {
         this.func = func;
@@ -88,7 +89,7 @@ public final class AvalancheTest implements Test<Matrix> {
 
     @Override
     public Matrix metric() {
-        final Random random = new Random(this.initial);
+        final Random random = new Random(this.initial.asLong());
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe, this.seed);
         final int[][] flips = new int[probe.bits()][hash.bits()];

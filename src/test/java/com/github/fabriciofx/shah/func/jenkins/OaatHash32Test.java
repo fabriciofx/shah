@@ -9,6 +9,7 @@ import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
 import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
 import com.github.fabriciofx.shah.test.BicTest;
@@ -88,9 +89,9 @@ final class OaatHash32Test {
             "oaat avalanche bias with 4-byte keys must be below 60%",
             new AvalancheTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().max(),
             new IsLessThan(0.60, "avalanche bias")
@@ -103,9 +104,9 @@ final class OaatHash32Test {
             "oaat avalanche bias with 8-byte keys must be below 60%",
             new AvalancheTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 8,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().max(),
             new IsLessThan(0.60, "avalanche bias")
@@ -118,9 +119,9 @@ final class OaatHash32Test {
             "oaat must pass collision test",
             new CollisionTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                67_890L,
+                new Seed32(67_890),
                 16,
-                12_345L,
+                new Seed32(12_345),
                 1_000_000
             ).metric().ratio(),
             new IsLessThan(2.0, "collision ratio")
@@ -133,9 +134,9 @@ final class OaatHash32Test {
             "oaat must pass distribution test",
             new DistributionTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 16,
-                67_890L,
+                new Seed32(67_890),
                 1_000_000
             ).metric().value(),
             new IsLessThan(0.01, "distribution score")
@@ -148,9 +149,9 @@ final class OaatHash32Test {
             "oaat BIC bias with 4-byte keys must be below 200%",
             new BicTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                11_111L,
+                new Seed32(11_111),
                 4,
-                12_345L,
+                new Seed32(12_345),
                 100_000
             ).metric().max(),
             new IsLessThan(2.0, "BIC bias")
@@ -162,7 +163,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass sanity test",
             new SanityTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 32
             ).metric(),
             new IsLessThan(0.01, "sanity failure ratio")
@@ -174,7 +176,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat zeroes test (known weakness: all-zero keys collide)",
             new ZeroesTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 204_800
             ).metric().ratio(),
             new IsLessThan(100_000.0, "zeroes collision ratio")
@@ -187,7 +190,7 @@ final class OaatHash32Test {
             "oaat must pass cyclic key test",
             new CyclicKeyTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 4,
                 8
             ).metric().ratio(),
@@ -200,7 +203,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat two-bytes test (known elevated collision rate)",
             new TwoBytesTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 4
             ).metric().ratio(),
             new IsLessThan(25.0, "two-bytes collision ratio")
@@ -212,7 +216,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass sparse key test",
             new SparseKeyTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 32,
                 3
             ).metric().ratio(),
@@ -225,7 +230,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass permutation test",
             new PermutationTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
             ).metric().ratio(),
@@ -238,7 +244,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat windowed key test (known weakness with auto-sized window)",
             new WindowedKeyTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 4,
                 12
             ).metric().worst(),
@@ -251,7 +258,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass text test",
             new TextTest(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32(),
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
@@ -266,9 +274,9 @@ final class OaatHash32Test {
             "oaat differential test (known weakness with small keys)",
             new DifferentialTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric().worst(),
             new IsLessThan(5000.0, "differential collision ratio")
@@ -281,9 +289,9 @@ final class OaatHash32Test {
             "oaat diff dist test (known weakness with small keys)",
             new DiffDistTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric(),
             new IsLessThan(1.0, "diff distribution score")
@@ -296,7 +304,7 @@ final class OaatHash32Test {
             "oaat appended zeroes test (known weakness: all-zero collide)",
             new AppendedZeroesTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(1.0, "appended zeroes failure ratio")
         ).affirm();
@@ -307,7 +315,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat PRNG test (known weakness: zero fixed point)",
             new PrngTest(
-                key -> new OaatHash32(key).hash()
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32()
             ).metric().ratio(),
             new IsLessThan(100_000.0, "PRNG collision ratio")
         ).affirm();
@@ -319,7 +328,7 @@ final class OaatHash32Test {
             "oaat must pass words test",
             new WordsTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L,
+                new Seed32(12_345),
                 new Words(100_000, 2, 10)
             ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
@@ -332,7 +341,7 @@ final class OaatHash32Test {
             "oaat must pass moment chi-squared test",
             new MomentChi2Test(
                 (key, seed) -> new OaatHash32(key).hash(),
-                12_345L
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
         ).affirm();
@@ -343,7 +352,7 @@ final class OaatHash32Test {
         new Assertion<>(
             "must compute oaat speed benchmark",
             new SpeedBenchmark(
-                key -> new OaatHash32(key).hash()
+                (key, seed) -> new OaatHash32(key).hash()
             ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
@@ -354,7 +363,7 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat small key speed test must complete",
             new SpeedBenchmark(
-                key -> new OaatHash32(key).hash(),
+                (key, seed) -> new OaatHash32(key).hash(),
                 4
             ).run(),
             new IsLessThan(100_000.0, "small key ns/op")
@@ -366,7 +375,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "must perform ooat hashmap benchmark",
             new HashmapBenchmark(
-                key -> new OaatHash32(key).hash()
+                (key, seed) -> new OaatHash32(key).hash(),
+                new Seed32()
             ).run(),
             new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();

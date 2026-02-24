@@ -6,6 +6,7 @@ package com.github.fabriciofx.shah.test;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.Appended;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -57,12 +58,12 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * The hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Hash function seed.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Key's size.
@@ -90,8 +91,8 @@ public final class AppendedZeroesTest implements Test<Double> {
      * @param seed The hash function seed
      */
     public AppendedZeroesTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed
     ) {
         this(
             func,
@@ -113,8 +114,8 @@ public final class AppendedZeroesTest implements Test<Double> {
      * @param repetitions Number of repetitions
      */
     public AppendedZeroesTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
         final long initial,
         final int max,

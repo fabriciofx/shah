@@ -7,7 +7,9 @@ package com.github.fabriciofx.shah.benchmark;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Scalar;
-import java.util.Random;
+import com.github.fabriciofx.shah.Seed;
+import com.github.fabriciofx.shah.seed.Seed64;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 
 /**
@@ -34,7 +36,7 @@ public final class SpeedMeasure implements Scalar<Long> {
     /**
      * Hash function under measurement.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Key.
@@ -63,7 +65,7 @@ public final class SpeedMeasure implements Scalar<Long> {
      * @param size The key's size
      */
     public SpeedMeasure(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final Key key,
         final int size
     ) {
@@ -78,7 +80,7 @@ public final class SpeedMeasure implements Scalar<Long> {
      * @param minimum Minimum key size
      */
     public SpeedMeasure(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final Key key,
         final int size,
         final int minimum
@@ -95,7 +97,7 @@ public final class SpeedMeasure implements Scalar<Long> {
      * @param inner Number of interactions for small keys
      */
     public SpeedMeasure(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final Key key,
         final int size,
         final int minimum,
@@ -111,17 +113,17 @@ public final class SpeedMeasure implements Scalar<Long> {
     @Override
     public Long value() {
         final long elapsed;
-        long seed = new Random().nextLong();
+        long value = ThreadLocalRandom.current().nextLong();
         if (this.size <= this.minimum) {
             final long start = System.nanoTime();
             for (int idx = 0; idx < this.inner; ++idx) {
-                final Hash hash = this.func.apply(this.key, seed);
-                seed += hash.byteAt(0);
+                final Hash hash = this.func.apply(this.key, new Seed64(value));
+                value += hash.byteAt(0);
             }
             elapsed = (System.nanoTime() - start) / this.inner;
         } else {
             final long start = System.nanoTime();
-            this.func.apply(this.key, seed);
+            this.func.apply(this.key, new Seed64(value));
             elapsed = System.nanoTime() - start;
         }
         return elapsed;

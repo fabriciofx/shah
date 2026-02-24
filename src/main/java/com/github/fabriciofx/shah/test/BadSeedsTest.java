@@ -7,12 +7,14 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Filled;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
 import com.github.fabriciofx.shah.scalar.AllZero;
+import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
@@ -62,19 +64,19 @@ public final class BadSeedsTest implements Test<Double> {
     /**
      * The hash under test, accepting (key, seed).
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Known bad seeds to test.
      */
-    private final long[] seeds;
+    private final Seed[] seeds;
 
     /**
      * Ctor with default seed 0.
      * @param func The hash function under test, accepting (key, seed)
      */
-    public BadSeedsTest(final BiFunction<Key, Long, Hash> func) {
-        this(func, 0L);
+    public BadSeedsTest(final BiFunction<Key, Seed, Hash> func) {
+        this(func, new Seed64(0L));
     }
 
     /**
@@ -83,8 +85,8 @@ public final class BadSeedsTest implements Test<Double> {
      * @param seeds Known seed values to test
      */
     public BadSeedsTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long... seeds
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed... seeds
     ) {
         this.func = func;
         this.seeds = Arrays.copyOf(seeds, seeds.length);
@@ -93,7 +95,7 @@ public final class BadSeedsTest implements Test<Double> {
     @Override
     public Double metric() {
         int failures = 0;
-        for (final long seed : this.seeds) {
+        for (final Seed seed : this.seeds) {
             if (!this.testSeed(seed)) {
                 ++failures;
             }
@@ -112,7 +114,7 @@ public final class BadSeedsTest implements Test<Double> {
      * @param seed The seed to test
      * @return True if the seed passes all checks
      */
-    private boolean testSeed(final long seed) {
+    private boolean testSeed(final Seed seed) {
         boolean passed = true;
         for (final int size : BadSeedsTest.SIZES) {
             if (!this.testSize(seed, size)) {
@@ -130,7 +132,7 @@ public final class BadSeedsTest implements Test<Double> {
      * @return True if the seed passes for this size (no zero hash for
      *  zero-filled key and no collisions)
      */
-    private boolean testSize(final long seed, final int size) {
+    private boolean testSize(final Seed seed, final int size) {
         final Hashes hashes = new HashesOf();
         boolean passed = true;
         for (final int fill : BadSeedsTest.FILLS) {

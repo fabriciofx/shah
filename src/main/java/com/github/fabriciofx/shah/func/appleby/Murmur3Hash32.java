@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.func.appleby;
 import com.github.fabriciofx.shah.Func;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.hash.Hash32;
 
 /**
@@ -24,14 +25,14 @@ public final class Murmur3Hash32 implements Func {
     /**
      * Random seed for reproducibility.
      */
-    private final int seed;
+    private final Seed seed;
 
     /**
      * Ctor.
      * @param key The key to be hashed
-     * @param seed Random seed for reproducibility
+     * @param seed The seed
      */
-    public Murmur3Hash32(final Key key, final int seed) {
+    public Murmur3Hash32(final Key key, final Seed seed) {
         this.key = key;
         this.seed = seed;
     }
@@ -40,7 +41,7 @@ public final class Murmur3Hash32 implements Func {
     public Hash hash() {
         final byte[] bytes = this.key.asBytes();
         final int length = bytes.length;
-        int hash = this.seed;
+        int hash = this.seed.asInt();
         int offset = 0;
         int data;
         for (int idx = length >> 2; idx != 0; --idx) {

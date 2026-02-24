@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.hashes.HashesOf;
@@ -29,12 +30,12 @@ public final class WordsTest implements Test<Collisions> {
     /**
      * The hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Key's seed.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Words.
@@ -48,8 +49,8 @@ public final class WordsTest implements Test<Collisions> {
      * @param words The words
      */
     public WordsTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final Words words
     ) {
         this.func = func;

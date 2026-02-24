@@ -7,11 +7,12 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Zeroes key test from SMHasher.
@@ -39,7 +40,12 @@ public final class ZeroesTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Maximum key size to test.
@@ -49,10 +55,16 @@ public final class ZeroesTest implements Test<Collisions> {
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param max Maximum key size to test
      */
-    public ZeroesTest(final Function<Key, Hash> func, final int max) {
+    public ZeroesTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
+        final int max
+    ) {
         this.func = func;
+        this.seed = seed;
         this.max = max;
     }
 
@@ -60,7 +72,7 @@ public final class ZeroesTest implements Test<Collisions> {
     public Collisions metric() {
         final Hashes hashes = new HashesOf();
         for (int size = 0; size <= this.max; ++size) {
-            hashes.add(this.func.apply(new KeyOf(size)));
+            hashes.add(this.func.apply(new KeyOf(size), this.seed));
         }
         return new Collisions(hashes);
     }

@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Flipped;
@@ -38,12 +39,12 @@ public final class DifferentialTest implements Test<Ratios> {
     /**
      * The hash under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Hash function seed.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Key's size.
@@ -53,7 +54,7 @@ public final class DifferentialTest implements Test<Ratios> {
     /**
      * Key's seed.
      */
-    private final long initial;
+    private final Seed initial;
 
     /**
      * Number of keys to test.
@@ -70,10 +71,10 @@ public final class DifferentialTest implements Test<Ratios> {
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DifferentialTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
-        final long initial,
+        final Seed initial,
         final int count
     ) {
         this.func = func;
@@ -85,7 +86,7 @@ public final class DifferentialTest implements Test<Ratios> {
 
     @Override
     public Ratios metric() {
-        final Random random = new Random(this.initial);
+        final Random random = new Random(this.initial.asLong());
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Ratios ratios = new Ratios();
         for (int bit = 0; bit < probe.bits(); ++bit) {

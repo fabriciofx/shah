@@ -6,8 +6,10 @@ package com.github.fabriciofx.shah.test;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -44,40 +46,61 @@ public final class VerificationTest implements Test<Long> {
     private static final int BYTE_MASK = 0xFF;
 
     /**
-     * The hash under test, accepting (key, seed).
+     * The hash under test.
      */
-    private final BiFunction<Key, Integer, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Ctor.
-     * @param func The hash function under test, accepting (key, seed)
+     * @param func The hash function under test
      */
-    public VerificationTest(final BiFunction<Key, Integer, Hash> func) {
+    public VerificationTest(final BiFunction<Key, Seed, Hash> func) {
+        this(func, new Seed32(0));
+    }
+
+    /**
+     * Ctor.
+     * @param func The hash function under test
+     * @param seed The hash function seed
+     */
+    public VerificationTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed
+    ) {
         this.func = func;
+        this.seed = seed;
     }
 
     @Override
     public Long metric() {
         final byte[] keybuf = new byte[VerificationTest.KEY_COUNT];
-        final Hash sample = this.func.apply(new KeyOf(new byte[0]), 0);
-        final int hashbytes = sample.bits() / 8;
+        final Hash probe = this.func.apply(new KeyOf(new byte[0]), this.seed);
+        final int hashbytes = probe.bits() / 8;
         final byte[] hashes =
             new byte[hashbytes * VerificationTest.KEY_COUNT];
-        for (int idx = 0; idx < VerificationTest.KEY_COUNT; idx += 1) {
+        for (int idx = 0; idx < VerificationTest.KEY_COUNT; ++idx) {
             keybuf[idx] = (byte) idx;
             final byte[] slice = new byte[idx];
             System.arraycopy(keybuf, 0, slice, 0, idx);
             System.arraycopy(
                 this.func.apply(
                     new KeyOf(slice),
-                    VerificationTest.KEY_COUNT - idx
+                    new Seed32(VerificationTest.KEY_COUNT - idx)
                 ).asBytes(), 0,
                 hashes, idx * hashbytes,
                 hashbytes
             );
         }
         return VerificationTest.littleEndian(
-            this.func.apply(new KeyOf(hashes), 0).asBytes()
+            this.func.apply(
+                new KeyOf(hashes),
+                new Seed32(0)
+            ).asBytes()
         );
     }
 

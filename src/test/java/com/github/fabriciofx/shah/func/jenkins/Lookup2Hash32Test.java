@@ -9,6 +9,7 @@ import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
 import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
 import com.github.fabriciofx.shah.test.BadSeedsTest;
@@ -54,7 +55,10 @@ final class Lookup2Hash32Test {
     void evaluateAnEmptyString() {
         new Assertion<>(
             "must evaluate the lookup2 hash of an empty string",
-            () -> new Lookup2Hash32(new KeyOf(""), 0).hash().asString(),
+            () -> new Lookup2Hash32(
+                new KeyOf(""),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("0dd149bd")
         ).affirm();
     }
@@ -63,7 +67,10 @@ final class Lookup2Hash32Test {
     void evaluateCharacterA() {
         new Assertion<>(
             "must evaluate the lookup2 hash of character 'a'",
-            () -> new Lookup2Hash32(new KeyOf("a"), 0).hash().asString(),
+            () -> new Lookup2Hash32(
+                new KeyOf("a"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("18c8ee29")
         ).affirm();
     }
@@ -72,7 +79,10 @@ final class Lookup2Hash32Test {
     void evaluateHello() {
         new Assertion<>(
             "must evaluate the lookup2 hash of hello string",
-            () -> new Lookup2Hash32(new KeyOf("hello"), 0).hash().asString(),
+            () -> new Lookup2Hash32(
+                new KeyOf("hello"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("9e3906b7")
         ).affirm();
     }
@@ -85,7 +95,7 @@ final class Lookup2Hash32Test {
                 new KeyOf(
                     "The quick brown fox jumps over the lazy dog"
                 ),
-                0
+                new Seed32(0)
             ).hash().asString(),
             new IsText("de5815fc")
         ).affirm();
@@ -96,13 +106,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 avalanche bias with 4-byte keys must be below 30%",
             new AvalancheTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().max(),
             new IsLessThan(0.30, "avalanche bias")
@@ -114,13 +121,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 avalanche bias with 8-byte keys must be below 40%",
             new AvalancheTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 8,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().max(),
             new IsLessThan(0.40, "avalanche bias")
@@ -132,13 +136,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass collision test",
             new CollisionTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                67_890L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(67_890),
                 16,
-                12_345L,
+                new Seed32(12_345),
                 1_000_000
             ).metric().ratio(),
             new IsLessThan(2.0, "collision ratio")
@@ -150,13 +151,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass distribution test",
             new DistributionTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 16,
-                67_890L,
+                new Seed32(67_890),
                 1_000_000
             ).metric().value(),
             new IsLessThan(0.01, "distribution score")
@@ -168,13 +166,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 BIC bias with 4-byte keys must be below 60%",
             new BicTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                11_111L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(11_111),
                 4,
-                12_345L,
+                new Seed32(12_345),
                 100_000
             ).metric().max(),
             new IsLessThan(0.60, "BIC bias")
@@ -186,7 +181,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass sanity test",
             new SanityTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 32
             ).metric(),
             new IsLessThan(0.01, "sanity failure ratio")
@@ -198,7 +194,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass zeroes test",
             new ZeroesTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 204_800
             ).metric().ratio(),
             new IsLessThan(2.0, "zeroes collision ratio")
@@ -210,11 +207,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass cyclic key test",
             new CyclicKeyTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
                 8
             ).metric().ratio(),
@@ -227,7 +221,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass two-bytes test",
             new TwoBytesTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 4
             ).metric().ratio(),
             new IsLessThan(2.0, "two-bytes collision ratio")
@@ -239,7 +234,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass sparse key test",
             new SparseKeyTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 32,
                 3
             ).metric().ratio(),
@@ -252,7 +248,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass permutation test",
             new PermutationTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
             ).metric().ratio(),
@@ -265,7 +262,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass windowed key test",
             new WindowedKeyTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 4,
                 12
             ).metric().worst(),
@@ -278,7 +276,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass text test",
             new TextTest(
-                key -> new Lookup2Hash32(key, 0).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(),
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
@@ -292,13 +291,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass differential test",
             new DifferentialTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric().worst(),
             new IsLessThan(10.0, "differential collision ratio")
@@ -310,13 +306,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 diff dist test (known weakness with small keys)",
             new DiffDistTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric(),
             new IsLessThan(0.20, "diff distribution score")
@@ -340,11 +333,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass appended zeroes test",
             new AppendedZeroesTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
@@ -366,10 +356,7 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass perlin noise test",
             new PerlinNoiseTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Lookup2Hash32(key, seed).hash()
             ).metric().ratio(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();
@@ -380,7 +367,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass PRNG test",
             new PrngTest(
-                key -> new Lookup2Hash32(key, 0).hash()
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(0)
             ).metric().ratio(),
             new IsLessThan(2.0, "PRNG collision ratio")
         ).affirm();
@@ -391,11 +379,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass words test",
             new WordsTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 new Words(100_000, 2, 10)
             ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
@@ -407,11 +392,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 moment chi-squared (known weakness, fails SMHasher)",
             new MomentChi2Test(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(1000.0, "moment chi-squared")
         ).affirm();
@@ -422,10 +404,7 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass bad seeds test",
             new BadSeedsTest(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Lookup2Hash32(key, seed).hash()
             ).metric(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();
@@ -436,10 +415,7 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "must compute lookup2 speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Lookup2Hash32(key, seed).hash()
             ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
@@ -450,10 +426,7 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "must compute lookup2 small keys speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Lookup2Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
                 4
             ).run(),
             new IsLessThan(100_000.0, "small key ns/op")
@@ -465,7 +438,8 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "must perform lookup2 hashmap benchmark",
             new HashmapBenchmark(
-                key -> new Lookup2Hash32(key, 0).hash()
+                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                new Seed32()
             ).run(),
             new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();

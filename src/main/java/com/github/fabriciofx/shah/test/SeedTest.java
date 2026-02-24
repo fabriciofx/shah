@@ -7,10 +7,12 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.function.BiFunction;
 
 /**
@@ -46,9 +48,9 @@ public final class SeedTest implements Test<Collisions> {
         "The quick brown fox jumps over the lazy dog";
 
     /**
-     * The hash under test, accepting (key, seed).
+     * The hash under test.
      */
-    private final BiFunction<Key, Integer, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Number of seeds to test.
@@ -66,7 +68,7 @@ public final class SeedTest implements Test<Collisions> {
      * @param count Number of seeds to test
      */
     public SeedTest(
-        final BiFunction<Key, Integer, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final int count
     ) {
         this(func, count, new KeyOf(SeedTest.DEFAULT_TEXT));
@@ -79,7 +81,7 @@ public final class SeedTest implements Test<Collisions> {
      * @param key The fixed key to hash with varying seeds
      */
     public SeedTest(
-        final BiFunction<Key, Integer, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final int count,
         final Key key
     ) {
@@ -92,7 +94,7 @@ public final class SeedTest implements Test<Collisions> {
     public Collisions metric() {
         final Hashes hashes = new HashesOf();
         for (int seed = 0; seed < this.count; ++seed) {
-            hashes.add(this.func.apply(this.key, seed));
+            hashes.add(this.func.apply(this.key, new Seed64(seed)));
         }
         return new Collisions(hashes);
     }

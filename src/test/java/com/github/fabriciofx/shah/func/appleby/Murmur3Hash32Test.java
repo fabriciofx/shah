@@ -9,6 +9,7 @@ import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
 import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.test.AppendedZeroesTest;
 import com.github.fabriciofx.shah.test.AvalancheTest;
 import com.github.fabriciofx.shah.test.BadSeedsTest;
@@ -59,7 +60,10 @@ final class Murmur3Hash32Test {
     void evaluateAnEmptyString() {
         new Assertion<>(
             "must evaluate the murmur3 hash of an empty string",
-            () -> new Murmur3Hash32(new KeyOf(""), 0).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf(""),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("00000000")
         ).affirm();
     }
@@ -68,7 +72,10 @@ final class Murmur3Hash32Test {
     void evaluateCharacterA() {
         new Assertion<>(
             "must evaluate the murmur3 hash of character 'a'",
-            () -> new Murmur3Hash32(new KeyOf("a"), 0).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf("a"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("b269253c")
         ).affirm();
     }
@@ -81,7 +88,7 @@ final class Murmur3Hash32Test {
                 new KeyOf(
                     "The quick brown fox jumps over the lazy dog"
                 ),
-                0
+                new Seed32(0)
             ).hash().asString(),
             new IsText("23f74f2e")
         ).affirm();
@@ -91,7 +98,10 @@ final class Murmur3Hash32Test {
     void evaluateHello() {
         new Assertion<>(
             "must evaluate the murmur3 hash of hello string",
-            () -> new Murmur3Hash32(new KeyOf("hello"), 0).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf("hello"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("47fa8b24")
         ).affirm();
     }
@@ -100,7 +110,10 @@ final class Murmur3Hash32Test {
     void evaluateWithSeed() {
         new Assertion<>(
             "must evaluate the murmur3 hash with a non-zero seed",
-            () -> new Murmur3Hash32(new KeyOf("hello"), 42).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf("hello"),
+                new Seed32(42)
+            ).hash().asString(),
             new IsText("e1d2dbe2")
         ).affirm();
     }
@@ -109,7 +122,10 @@ final class Murmur3Hash32Test {
     void evaluateExactlyFourBytes() {
         new Assertion<>(
             "must evaluate the murmur3 hash of a 4-byte string",
-            () -> new Murmur3Hash32(new KeyOf("test"), 0).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf("test"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("13d26bba")
         ).affirm();
     }
@@ -118,7 +134,10 @@ final class Murmur3Hash32Test {
     void evaluateEightBytes() {
         new Assertion<>(
             "must evaluate the murmur3 hash of an 8-byte string",
-            () -> new Murmur3Hash32(new KeyOf("testtest"), 0).hash().asString(),
+            () -> new Murmur3Hash32(
+                new KeyOf("testtest"),
+                new Seed32(0)
+            ).hash().asString(),
             new IsText("f3b1232b")
         ).affirm();
     }
@@ -128,13 +147,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 4-byte keys",
             new AvalancheTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
@@ -146,13 +162,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 8-byte keys",
             new AvalancheTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 8,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
@@ -164,13 +177,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass avalanche test with 16-byte keys",
             new AvalancheTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 16,
-                54_321L,
+                new Seed32(54_321),
                 500_000
             ).metric().bias().mean(),
             new IsLessThan(0.01, "avalanche bias")
@@ -182,13 +192,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass collision test",
             new CollisionTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                67_890L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(67_890),
                 16,
-                12_345L,
+                new Seed32(12_345),
                 1_000_000
             ).metric().ratio(),
             new IsLessThan(2.0, "collision ratio")
@@ -200,13 +207,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass distribution test",
             new DistributionTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 16,
-                67_890L,
+                new Seed32(67_890),
                 1_000_000
             ).metric().value(),
             new IsLessThan(0.01, "distribution score")
@@ -218,13 +222,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass BIC test with 4-byte keys",
             new BicTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                11_111L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(11_111),
                 4,
-                12_345L,
+                new Seed32(12_345),
                 100_000
             ).metric().max(),
             new IsLessThan(0.05, "BIC bias")
@@ -236,7 +237,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass sanity test",
             new SanityTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(0),
                 32
             ).metric(),
             new IsLessThan(0.01, "sanity failure ratio")
@@ -248,7 +250,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass zeroes test",
             new ZeroesTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(0),
                 204_800
             ).metric().ratio(),
             new IsLessThan(2.0, "zeroes collision ratio")
@@ -260,11 +263,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass cyclic key test",
             new CyclicKeyTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
                 8
             ).metric().ratio(),
@@ -277,7 +277,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass two-bytes test",
             new TwoBytesTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(),
                 4
             ).metric().ratio(),
             new IsLessThan(2.0, "two-bytes collision ratio")
@@ -289,7 +290,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass sparse key test",
             new SparseKeyTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(),
                 32,
                 3
             ).metric().ratio(),
@@ -302,7 +304,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass permutation test",
             new PermutationTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
             ).metric().ratio(),
@@ -315,7 +318,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass windowed key test",
             new WindowedKeyTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(),
                 4,
                 12
             ).metric().worst(),
@@ -328,7 +332,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass text test",
             new TextTest(
-                key -> new Murmur3Hash32(key, 0).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(),
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
@@ -342,13 +347,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass differential test",
             new DifferentialTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric().worst(),
             new IsLessThan(10.0, "differential collision ratio")
@@ -360,13 +362,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass diff distribution test",
             new DiffDistTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 4,
-                54_321L,
+                new Seed32(54_321),
                 100_000
             ).metric(),
             new IsLessThan(0.01, "diff distribution score")
@@ -390,11 +389,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass appended zeroes test",
             new AppendedZeroesTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
@@ -416,10 +412,7 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass perlin noise test",
             new PerlinNoiseTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).metric().ratio(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();
@@ -430,7 +423,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass PRNG test",
             new PrngTest(
-                key -> new Murmur3Hash32(key, 0).hash()
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32()
             ).metric().ratio(),
             new IsLessThan(2.0, "PRNG collision ratio")
         ).affirm();
@@ -441,11 +435,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass words test",
             new WordsTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L,
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345),
                 new Words(100_000, 2, 10)
             ).metric().ratio(),
             new IsLessThan(2.0, "words collision ratio")
@@ -457,11 +448,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass moment chi-squared test",
             new MomentChi2Test(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
-                12_345L
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(12_345)
             ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
         ).affirm();
@@ -472,10 +460,7 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass bad seeds test",
             new BadSeedsTest(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).metric(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();
@@ -486,10 +471,7 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "must compute murmur32 speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash()
+                (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).run(),
             new IsLessThan(100_000_000.0, "bulk ns/op")
         ).affirm();
@@ -500,10 +482,7 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "must compute murmur32 small keys speed benchmark",
             new SpeedBenchmark(
-                (key, seed) -> new Murmur3Hash32(
-                    key,
-                    Long.hashCode(seed)
-                ).hash(),
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 4
             ).run(),
             new IsLessThan(100_000.0, "small key ns/op")
@@ -515,7 +494,8 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "must perform murmur3 hashmap benchmark",
             new HashmapBenchmark(
-                key -> new Murmur3Hash32(key, 0).hash()
+                (key, seed) -> new Murmur3Hash32(key, seed).hash(),
+                new Seed32(0)
             ).run(),
             new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();

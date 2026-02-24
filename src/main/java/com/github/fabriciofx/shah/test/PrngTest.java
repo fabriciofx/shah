@@ -7,11 +7,12 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * PRNG test from SMHasher.
@@ -39,7 +40,12 @@ public final class PrngTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Number of PRNG iterations.
@@ -49,29 +55,36 @@ public final class PrngTest implements Test<Collisions> {
     /**
      * Ctor with default count.
      * @param func The hash function under test
+     * @param seed The hash function seed
      */
-    public PrngTest(final Function<Key, Hash> func) {
-        this(func, PrngTest.DEFAULT_COUNT);
+    public PrngTest(final BiFunction<Key, Seed, Hash> func, final Seed seed) {
+        this(func, seed, PrngTest.DEFAULT_COUNT);
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param count Number of PRNG iterations
      */
-    public PrngTest(final Function<Key, Hash> func, final int count) {
+    public PrngTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
+        final int count
+    ) {
         this.func = func;
+        this.seed = seed;
         this.count = count;
     }
 
     @Override
     public Collisions metric() {
-        final Hash first = this.func.apply(new KeyOf(new byte[0]));
-        final int hashbytes = first.bits() / 8;
-        byte[] input = new byte[hashbytes];
+        final Hash probe = this.func.apply(new KeyOf(), this.seed);
+        final int size = probe.bits() / 8;
+        byte[] input = new byte[size];
         final Hashes hashes = new HashesOf();
         for (int idx = 0; idx < this.count; ++idx) {
-            final Hash result = this.func.apply(new KeyOf(input));
+            final Hash result = this.func.apply(new KeyOf(input), this.seed);
             hashes.add(result);
             input = result.asBytes().clone();
         }

@@ -7,10 +7,12 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.function.BiFunction;
 
 /**
@@ -49,9 +51,9 @@ public final class PerlinNoiseTest implements Test<Collisions> {
     private static final int DEFAULT_SIZE = 4;
 
     /**
-     * The hash under test, accepting (key, seed).
+     * The hash under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Key's size.
@@ -72,7 +74,7 @@ public final class PerlinNoiseTest implements Test<Collisions> {
      * Ctor with defaults (10-bit X, 10-bit Y, 4-byte keys).
      * @param func The hash function under test, accepting (key, seed)
      */
-    public PerlinNoiseTest(final BiFunction<Key, Long, Hash> func) {
+    public PerlinNoiseTest(final BiFunction<Key, Seed, Hash> func) {
         this(
             func,
             PerlinNoiseTest.DEFAULT_SIZE,
@@ -89,7 +91,7 @@ public final class PerlinNoiseTest implements Test<Collisions> {
      * @param ybits Number of bits for Y coordinate (seed)
      */
     public PerlinNoiseTest(
-        final BiFunction<Key, Long, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
         final int size,
         final int xbits,
         final int ybits
@@ -118,7 +120,12 @@ public final class PerlinNoiseTest implements Test<Collisions> {
                 bytes[3] = (byte) (xcoord >>> 24);
             }
             for (long ycoord = 0; ycoord < ymax; ++ycoord) {
-                hashes.add(this.func.apply(new KeyOf(bytes), ycoord));
+                hashes.add(
+                    this.func.apply(
+                        new KeyOf(bytes),
+                        new Seed64(ycoord)
+                    )
+                );
             }
         }
         return new Collisions(hashes);

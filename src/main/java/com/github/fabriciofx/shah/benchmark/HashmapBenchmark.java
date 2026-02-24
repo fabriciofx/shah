@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.benchmark;
 import com.github.fabriciofx.shah.Benchmark;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.collection.Filtered;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Hash map benchmark from SMHasher.
@@ -59,7 +60,12 @@ public final class HashmapBenchmark implements Benchmark<Double> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Words to insert and lookup.
@@ -74,23 +80,30 @@ public final class HashmapBenchmark implements Benchmark<Double> {
     /**
      * Ctor with defaults.
      * @param func The hash function under test
+     * @param seed The hash function seed
      */
-    public HashmapBenchmark(final Function<Key, Hash> func) {
-        this(func, new Words(), HashmapBenchmark.DEFAULT_TRIALS);
+    public HashmapBenchmark(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed
+    ) {
+        this(func, seed, new Words(), HashmapBenchmark.DEFAULT_TRIALS);
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param words Words to use for the benchmark
      * @param trials Number of timing trials
      */
     public HashmapBenchmark(
-        final Function<Key, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final Words words,
         final int trials
     ) {
         this.func = func;
+        this.seed = seed;
         this.words = words;
         this.trials = trials;
     }
@@ -99,7 +112,10 @@ public final class HashmapBenchmark implements Benchmark<Double> {
     public Double run() {
         final Map<HashedKey, Boolean> map = new HashMap<>(this.words.size());
         for (final String word : this.words) {
-            final int code = this.func.apply(new KeyOf(word)).hashCode();
+            final int code = this.func.apply(
+                new KeyOf(word),
+                this.seed
+            ).hashCode();
             map.put(new HashedKey(code, word), true);
         }
         final List<Double> times = new ArrayList<>(this.trials);
@@ -107,7 +123,10 @@ public final class HashmapBenchmark implements Benchmark<Double> {
             boolean found = false;
             final long start = System.nanoTime();
             for (final String word : this.words) {
-                final int code = this.func.apply(new KeyOf(word)).hashCode();
+                final int code = this.func.apply(
+                    new KeyOf(word),
+                    this.seed
+                ).hashCode();
                 final Boolean value = map.getOrDefault(
                     new HashedKey(code, word),
                     false

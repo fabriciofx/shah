@@ -6,6 +6,7 @@ package com.github.fabriciofx.shah.test;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.KeyOf;
 import java.util.function.BiFunction;
@@ -82,12 +83,12 @@ public final class MomentChi2Test implements Test<Double> {
     /**
      * The hash function under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Hash function seed.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Key's size.
@@ -110,8 +111,8 @@ public final class MomentChi2Test implements Test<Double> {
      * @param seed The hash function seed
      */
     public MomentChi2Test(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed
     ) {
         this(
             func,
@@ -132,8 +133,8 @@ public final class MomentChi2Test implements Test<Double> {
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public MomentChi2Test(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
         final int step,
         final int count

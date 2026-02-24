@@ -7,11 +7,12 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Ratios;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Windowed key test from SMHasher.
@@ -39,6 +40,7 @@ import java.util.function.Function;
  * @since 0.0.1
  * @checkstyle MagicNumberCheck (200 lines)
  * @checkstyle NestedForDepthCheck (200 lines)
+ * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class WindowedKeyTest implements Test<Ratios> {
@@ -50,7 +52,12 @@ public final class WindowedKeyTest implements Test<Ratios> {
     /**
      * The hash under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
+
+    /**
+     * Hash function seed.
+     */
+    private final Seed seed;
 
     /**
      * Key length in bytes.
@@ -65,15 +72,18 @@ public final class WindowedKeyTest implements Test<Ratios> {
     /**
      * Ctor.
      * @param func The hash function under test
+     * @param seed The hash function seed
      * @param size Key length in bytes
      * @param width Window width in bits
      */
     public WindowedKeyTest(
-        final Function<Key, Hash> func,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
         final int width
     ) {
         this.func = func;
+        this.seed = seed;
         this.size = size;
         this.width = width;
     }
@@ -84,7 +94,7 @@ public final class WindowedKeyTest implements Test<Ratios> {
         int keycount = 1 << window;
         while (WindowedKeyTest.estimate(
             keycount,
-            this.func.apply(new KeyOf(this.size)).bits()
+            this.func.apply(new KeyOf(this.size), this.seed).bits()
         ) < 0.5
             && window < WindowedKeyTest.MAX_WINDOW) {
             keycount *= 2;
@@ -99,7 +109,7 @@ public final class WindowedKeyTest implements Test<Ratios> {
                 WindowedKeyTest.setAndRotate(
                     bytes, val, window, start
                 );
-                hashes.add(this.func.apply(new KeyOf(bytes)));
+                hashes.add(this.func.apply(new KeyOf(bytes), this.seed));
             }
             ratios.add(hashes);
         }

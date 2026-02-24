@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.test;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -33,12 +34,12 @@ public final class CollisionTest implements Test<Collisions> {
     /**
      * The hash under test.
      */
-    private final BiFunction<Key, Long, Hash> func;
+    private final BiFunction<Key, Seed, Hash> func;
 
     /**
      * Hash function seed.
      */
-    private final long seed;
+    private final Seed seed;
 
     /**
      * Key's size.
@@ -48,7 +49,7 @@ public final class CollisionTest implements Test<Collisions> {
     /**
      * Key's seed.
      */
-    private final long initial;
+    private final Seed initial;
 
     /**
      * Number of keys to hash.
@@ -65,10 +66,10 @@ public final class CollisionTest implements Test<Collisions> {
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CollisionTest(
-        final BiFunction<Key, Long, Hash> func,
-        final long seed,
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
         final int size,
-        final long initial,
+        final Seed initial,
         final int count
     ) {
         this.func = func;
@@ -81,7 +82,7 @@ public final class CollisionTest implements Test<Collisions> {
     @Override
     public Collisions metric() {
         final Hashes hashes = new HashesOf();
-        final Random random = new Random(this.initial);
+        final Random random = new Random(this.initial.asLong());
         for (int idx = 0; idx < this.count; ++idx) {
             final Key key = new Randomized(new KeyOf(this.size), random);
             hashes.add(this.func.apply(key, this.seed));

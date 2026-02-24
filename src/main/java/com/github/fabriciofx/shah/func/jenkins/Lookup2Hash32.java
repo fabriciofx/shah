@@ -7,6 +7,7 @@ package com.github.fabriciofx.shah.func.jenkins;
 import com.github.fabriciofx.shah.Func;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.hash.Hash32;
 
 /**
@@ -39,17 +40,17 @@ public final class Lookup2Hash32 implements Func {
     private final Key key;
 
     /**
-     * The seed, an arbitrary value.
+     * The seed.
      */
-    private final int seed;
+    private final Seed seed;
 
     /**
      * Ctor.
      *
      * @param key The key to be hashed
-     * @param seed The seed, an arbitrary value
+     * @param seed The seed
      */
-    public Lookup2Hash32(final Key key, final int seed) {
+    public Lookup2Hash32(final Key key, final Seed seed) {
         this.key = key;
         this.seed = seed;
     }
@@ -61,7 +62,7 @@ public final class Lookup2Hash32 implements Func {
         int length = bytes.length;
         int first = Lookup2Hash32.GOLDEN_RATIO;
         int second = Lookup2Hash32.GOLDEN_RATIO;
-        int third = this.seed;
+        int third = this.seed.asInt();
         int idx = 0;
         while (length >= 12) {
             first += (bytes[idx] & 0xff)
