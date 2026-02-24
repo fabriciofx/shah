@@ -5,6 +5,7 @@
 package com.github.fabriciofx.shah.seed;
 
 import com.github.fabriciofx.shah.Seed;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Seed64.
@@ -15,6 +16,13 @@ public final class Seed64 implements Seed {
      * The seed value.
      */
     private final long value;
+
+    /**
+     * Ctor.
+     */
+    public Seed64() {
+        this(ThreadLocalRandom.current().nextLong());
+    }
 
     /**
      * Ctor.
