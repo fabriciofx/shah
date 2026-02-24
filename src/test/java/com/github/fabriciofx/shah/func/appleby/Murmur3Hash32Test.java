@@ -454,7 +454,11 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass moment chi-squared test",
             new MomentChi2Test(
-                key -> new Murmur3Hash32(key, 0).hash()
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L
             ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
         ).affirm();

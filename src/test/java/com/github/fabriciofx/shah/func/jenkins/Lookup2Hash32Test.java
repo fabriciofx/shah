@@ -404,7 +404,11 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 moment chi-squared (known weakness, fails SMHasher)",
             new MomentChi2Test(
-                key -> new Lookup2Hash32(key, 0).hash()
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash(),
+                12_345L
             ).metric(),
             new IsLessThan(1000.0, "moment chi-squared")
         ).affirm();

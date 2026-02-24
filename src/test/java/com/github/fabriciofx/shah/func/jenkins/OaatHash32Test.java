@@ -331,7 +331,8 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat must pass moment chi-squared test",
             new MomentChi2Test(
-                key -> new OaatHash32(key).hash()
+                (key, seed) -> new OaatHash32(key).hash(),
+                12_345L
             ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
         ).affirm();

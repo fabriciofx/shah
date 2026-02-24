@@ -8,7 +8,7 @@ import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.KeyOf;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Moment chi-squared test from SMHasher.
@@ -70,9 +70,9 @@ public final class MomentChi2Test implements Test<Double> {
     private static final int DEFAULT_STEP = 2;
 
     /**
-     * Default input size in bytes.
+     * Default key size in bytes.
      */
-    private static final int INPUT_SIZE = 4;
+    private static final int DEFAULT_SIZE = 4;
 
     /**
      * Number of bytes to extract for popcount (max 8).
@@ -80,14 +80,19 @@ public final class MomentChi2Test implements Test<Double> {
     private static final int POPCOUNT_MAX = 8;
 
     /**
-     * The hash under test.
+     * The hash function under test.
      */
-    private final Function<Key, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
 
     /**
-     * Number of keys to generate.
+     * Hash function seed.
      */
-    private final int count;
+    private final long seed;
+
+    /**
+     * Key's size.
+     */
+    private final int size;
 
     /**
      * Step between consecutive key values.
@@ -95,52 +100,91 @@ public final class MomentChi2Test implements Test<Double> {
     private final int step;
 
     /**
-     * Input key size in bytes.
+     * Number of keys to generate.
      */
-    private final int inputsize;
+    private final int count;
 
     /**
      * Ctor with defaults.
      * @param func The hash function under test
+     * @param seed The hash function seed
      */
-    public MomentChi2Test(final Function<Key, Hash> func) {
+    public MomentChi2Test(
+        final BiFunction<Key, Long, Hash> func,
+        final long seed
+    ) {
         this(
             func,
-            MomentChi2Test.DEFAULT_COUNT,
+            seed,
+            MomentChi2Test.DEFAULT_SIZE,
             MomentChi2Test.DEFAULT_STEP,
-            MomentChi2Test.INPUT_SIZE
+            MomentChi2Test.DEFAULT_COUNT
         );
     }
 
     /**
      * Ctor.
      * @param func The hash function under test
-     * @param count Number of keys to generate
+     * @param seed The hash function seed
+     * @param size Key size in bytes
      * @param step Step between consecutive key values
-     * @param inputsize Input key size in bytes
+     * @param count Number of keys to generate
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     public MomentChi2Test(
-        final Function<Key, Hash> func,
-        final int count,
+        final BiFunction<Key, Long, Hash> func,
+        final long seed,
+        final int size,
         final int step,
-        final int inputsize
+        final int count
     ) {
         this.func = func;
-        this.count = count;
+        this.seed = seed;
+        this.size = size;
         this.step = step;
-        this.inputsize = inputsize;
+        this.count = count;
     }
 
     @Override
     public Double metric() {
         final int bits = Math.min(
-            this.func.apply(new KeyOf(this.inputsize)).bits(), 64
+            this.func.apply(new KeyOf(this.size), this.seed).bits(),
+            64
         );
         final double[] ref = MomentChi2Test.refs(bits);
         return MomentChi2Test.worstChi(
-            this.accumulate(bits), this.count, ref[0], ref[1]
+            this.accumulate(bits),
+            this.count,
+            ref[0],
+            ref[1]
         );
+    }
+
+    /**
+     * Accumulate popcount moments over all keys.
+     * Returns 8 values: mean/var for bits-1, bits-0, dbits-1, dbits-0.
+     * @param bits Number of hash bits to analyze
+     * @return Array of 8 accumulated moment values
+     */
+    private double[] accumulate(final int bits) {
+        final double[] result = new double[8];
+        final byte[] bytes = new byte[this.size];
+        MomentChi2Test.toLittleEndian(bytes, (long) -this.step);
+        long prev = MomentChi2Test.hashToLong(
+            this.func.apply(new KeyOf(bytes.clone()), this.seed),
+            bits
+        );
+        for (int idx = 0; idx < this.count; ++idx) {
+            MomentChi2Test.toLittleEndian(bytes, (long) idx * this.step);
+            final long hash = MomentChi2Test.hashToLong(
+                this.func.apply(new KeyOf(bytes.clone()), this.seed),
+                bits
+            );
+            MomentChi2Test.addMoments(result, 0, hash, bits);
+            MomentChi2Test.addMoments(result, 4, prev ^ hash, bits);
+            prev = hash;
+        }
+        return result;
     }
 
     /**
@@ -192,51 +236,20 @@ public final class MomentChi2Test implements Test<Double> {
     }
 
     /**
-     * Accumulate popcount moments over all keys.
-     * Returns 8 values: mean/var for bits-1, bits-0, dbits-1, dbits-0.
-     * @param hashbits Number of hash bits to analyze
-     * @return Array of 8 accumulated moment values
-     */
-    private double[] accumulate(final int hashbits) {
-        final double[] result = new double[8];
-        final byte[] keybuf = new byte[this.inputsize];
-        MomentChi2Test.toLittleEndian(
-            keybuf, (long) -this.step
-        );
-        long prev = MomentChi2Test.hashToLong(
-            this.func.apply(new KeyOf(keybuf.clone())), hashbits
-        );
-        for (int idx = 0; idx < this.count; idx += 1) {
-            MomentChi2Test.toLittleEndian(
-                keybuf, (long) idx * this.step
-            );
-            final long hval = MomentChi2Test.hashToLong(
-                this.func.apply(new KeyOf(keybuf.clone())), hashbits
-            );
-            MomentChi2Test.addMoments(result, 0, hval, hashbits);
-            MomentChi2Test.addMoments(
-                result, 4, prev ^ hval, hashbits
-            );
-            prev = hval;
-        }
-        return result;
-    }
-
-    /**
      * Add popcount-based 5th power moments to the accumulator.
      * @param acc Accumulator array
      * @param off Offset into accumulator (0 for raw, 4 for derivative)
-     * @param val Hash value (up to 64 bits)
+     * @param value Hash value (up to 64 bits)
      * @param bits Number of hash bits
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     private static void addMoments(
         final double[] acc,
         final int off,
-        final long val,
+        final long value,
         final int bits
     ) {
-        final int ones = Long.bitCount(val);
+        final int ones = Long.bitCount(value);
         final double pow = Math.pow(ones, 5);
         final double zpow = Math.pow(bits - ones, 5);
         acc[off] += pow;
@@ -253,11 +266,12 @@ public final class MomentChi2Test implements Test<Double> {
      */
     private static long hashToLong(final Hash hash, final int bits) {
         final byte[] bytes = hash.asBytes();
-        final int nbytes = Math.min(
-            bytes.length, MomentChi2Test.POPCOUNT_MAX
+        final int length = Math.min(
+            bytes.length,
+            MomentChi2Test.POPCOUNT_MAX
         );
         long result = 0L;
-        for (int idx = 0; idx < nbytes; idx += 1) {
+        for (int idx = 0; idx < length; ++idx) {
             result |= (long) (bytes[idx] & 0xFF) << (idx * 8);
         }
         if (bits < 64) {
@@ -269,12 +283,12 @@ public final class MomentChi2Test implements Test<Double> {
     /**
      * Store a long value into a byte array in little-endian order.
      * @param buf Target buffer
-     * @param val Value to store
+     * @param value Value to store
      */
-    private static void toLittleEndian(final byte[] buf, final long val) {
-        final int len = Math.min(buf.length, 8);
-        for (int idx = 0; idx < len; idx += 1) {
-            buf[idx] = (byte) (val >>> (idx * 8));
+    private static void toLittleEndian(final byte[] buf, final long value) {
+        final int length = Math.min(buf.length, 8);
+        for (int idx = 0; idx < length; ++idx) {
+            buf[idx] = (byte) (value >>> (idx * 8));
         }
     }
 
