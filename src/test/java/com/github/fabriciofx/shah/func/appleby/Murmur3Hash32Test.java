@@ -416,7 +416,10 @@ final class Murmur3Hash32Test {
         new Assertion<>(
             "murmur3 must pass perlin noise test",
             new PerlinNoiseTest(
-                (key, seed) -> new Murmur3Hash32(key, seed).hash()
+                (key, seed) -> new Murmur3Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric().ratio(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();

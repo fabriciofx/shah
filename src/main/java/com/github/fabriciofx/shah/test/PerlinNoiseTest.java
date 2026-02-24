@@ -25,7 +25,7 @@ import java.util.function.BiFunction;
  * of the given input length and Y is passed as the hash seed.
  * This produces {@code 2^(xBits+yBits)} total hashes.</p>
  *
- * <p>Returns the collision ratio among all generated hashes.</p>
+ * <p>Returns the collisions among all generated hashes.</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
@@ -44,14 +44,19 @@ public final class PerlinNoiseTest implements Test<Collisions> {
     private static final int DEFAULT_YBITS = 10;
 
     /**
-     * Default input length.
+     * Default key size.
      */
-    private static final int DEFAULT_INPUT_LEN = 4;
+    private static final int DEFAULT_SIZE = 4;
 
     /**
      * The hash under test, accepting (key, seed).
      */
-    private final BiFunction<Key, Integer, Hash> func;
+    private final BiFunction<Key, Long, Hash> func;
+
+    /**
+     * Key's size.
+     */
+    private final int size;
 
     /**
      * Number of bits for X coordinate.
@@ -64,40 +69,35 @@ public final class PerlinNoiseTest implements Test<Collisions> {
     private final int ybits;
 
     /**
-     * Input key length in bytes.
-     */
-    private final int inputlen;
-
-    /**
      * Ctor with defaults (10-bit X, 10-bit Y, 4-byte keys).
      * @param func The hash function under test, accepting (key, seed)
      */
-    public PerlinNoiseTest(final BiFunction<Key, Integer, Hash> func) {
+    public PerlinNoiseTest(final BiFunction<Key, Long, Hash> func) {
         this(
             func,
+            PerlinNoiseTest.DEFAULT_SIZE,
             PerlinNoiseTest.DEFAULT_XBITS,
-            PerlinNoiseTest.DEFAULT_YBITS,
-            PerlinNoiseTest.DEFAULT_INPUT_LEN
+            PerlinNoiseTest.DEFAULT_YBITS
         );
     }
 
     /**
      * Ctor.
      * @param func The hash function under test, accepting (key, seed)
+     * @param size Input key length in bytes
      * @param xbits Number of bits for X coordinate
      * @param ybits Number of bits for Y coordinate (seed)
-     * @param inputlen Input key length in bytes
      */
     public PerlinNoiseTest(
-        final BiFunction<Key, Integer, Hash> func,
+        final BiFunction<Key, Long, Hash> func,
+        final int size,
         final int xbits,
-        final int ybits,
-        final int inputlen
+        final int ybits
     ) {
         this.func = func;
+        this.size = size;
         this.xbits = xbits;
         this.ybits = ybits;
-        this.inputlen = inputlen;
     }
 
     @Override
@@ -105,22 +105,20 @@ public final class PerlinNoiseTest implements Test<Collisions> {
         final int xmax = 1 << this.xbits;
         final int ymax = 1 << this.ybits;
         final Hashes hashes = new HashesOf();
-        for (int xval = 0; xval < xmax; ++xval) {
-            final byte[] keybuf = new byte[this.inputlen];
-            keybuf[0] = (byte) xval;
-            if (this.inputlen > 1) {
-                keybuf[1] = (byte) (xval >>> 8);
+        for (int xcoord = 0; xcoord < xmax; ++xcoord) {
+            final byte[] bytes = new byte[this.size];
+            bytes[0] = (byte) xcoord;
+            if (this.size > 1) {
+                bytes[1] = (byte) (xcoord >>> 8);
             }
-            if (this.inputlen > 2) {
-                keybuf[2] = (byte) (xval >>> 16);
+            if (this.size > 2) {
+                bytes[2] = (byte) (xcoord >>> 16);
             }
-            if (this.inputlen > 3) {
-                keybuf[3] = (byte) (xval >>> 24);
+            if (this.size > 3) {
+                bytes[3] = (byte) (xcoord >>> 24);
             }
-            for (int yval = 0; yval < ymax; ++yval) {
-                hashes.add(
-                    this.func.apply(new KeyOf(keybuf), yval)
-                );
+            for (long ycoord = 0; ycoord < ymax; ++ycoord) {
+                hashes.add(this.func.apply(new KeyOf(bytes), ycoord));
             }
         }
         return new Collisions(hashes);

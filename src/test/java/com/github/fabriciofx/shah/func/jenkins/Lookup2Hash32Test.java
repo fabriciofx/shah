@@ -366,7 +366,10 @@ final class Lookup2Hash32Test {
         new Assertion<>(
             "lookup2 must pass perlin noise test",
             new PerlinNoiseTest(
-                (key, seed) -> new Lookup2Hash32(key, seed).hash()
+                (key, seed) -> new Lookup2Hash32(
+                    key,
+                    Long.hashCode(seed)
+                ).hash()
             ).metric().ratio(),
             new IsLessThan(2.0, "perlin noise collision ratio")
         ).affirm();
