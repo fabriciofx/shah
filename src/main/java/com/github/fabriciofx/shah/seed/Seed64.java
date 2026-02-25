@@ -5,7 +5,6 @@
 package com.github.fabriciofx.shah.seed;
 
 import com.github.fabriciofx.shah.Seed;
-import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -60,6 +59,6 @@ public final class Seed64 implements Seed {
 
     @Override
     public Random random() {
-        return new SecureRandom(this.asBytes());
+        return new Random(this.value);
     }
 }
