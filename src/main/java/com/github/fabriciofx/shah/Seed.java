@@ -4,6 +4,8 @@
  */
 package com.github.fabriciofx.shah;
 
+import java.util.Random;
+
 /**
  * Seed.
  * @since 0.0.1
@@ -26,4 +28,10 @@ public interface Seed {
      * @return The long that represents the seed
      */
     long asLong();
+
+    /**
+     * Create a {@link Random} from seed.
+     * @return A {@link Random}
+     */
+    Random random();
 }
