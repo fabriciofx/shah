@@ -86,7 +86,7 @@ public final class DifferentialTest implements Test<Ratios> {
 
     @Override
     public Ratios metric() {
-        final Random random = new Random(this.initial.asLong());
+        final Random random = this.initial.random();
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Ratios ratios = new Ratios();
         for (int bit = 0; bit < probe.bits(); ++bit) {

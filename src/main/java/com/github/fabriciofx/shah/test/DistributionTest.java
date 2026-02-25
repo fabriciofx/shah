@@ -85,7 +85,7 @@ public final class DistributionTest implements Test<DistributionScore> {
     @Override
     public DistributionScore metric() {
         final Hashes hashes = new HashesOf();
-        final Random random = new Random(this.initial.asLong());
+        final Random random = this.initial.random();
         for (int idx = 0; idx < this.count; ++idx) {
             final Key key = new Randomized(new KeyOf(this.size), random);
             hashes.add(this.func.apply(key, this.seed));

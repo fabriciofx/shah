@@ -87,7 +87,7 @@ public final class BicTest implements Test<BicBias> {
 
     @Override
     public BicBias metric() {
-        final Random random = new Random(this.initial.asLong());
+        final Random random = this.initial.random();
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe, this.seed);
         final int[][][][] bins =

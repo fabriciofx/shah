@@ -11,6 +11,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.Appended;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
+import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -53,7 +54,7 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Default key seed.
      */
-    private static final long DEFAULT_INITIAL = 173_994L;
+    private static final Seed DEFAULT_INITIAL = new Seed64(173_994L);
 
     /**
      * The hash function under test.
@@ -73,7 +74,7 @@ public final class AppendedZeroesTest implements Test<Double> {
     /**
      * Key's seed.
      */
-    private final long initial;
+    private final Seed initial;
 
     /**
      * Max zeroes.
@@ -117,7 +118,7 @@ public final class AppendedZeroesTest implements Test<Double> {
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,
-        final long initial,
+        final Seed initial,
         final int max,
         final int repetitions
     ) {
@@ -131,7 +132,7 @@ public final class AppendedZeroesTest implements Test<Double> {
 
     @Override
     public Double metric() {
-        final Random random = new Random(this.initial);
+        final Random random = this.initial.random();
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {

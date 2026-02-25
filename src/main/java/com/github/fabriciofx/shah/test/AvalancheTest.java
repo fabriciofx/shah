@@ -89,7 +89,7 @@ public final class AvalancheTest implements Test<Matrix> {
 
     @Override
     public Matrix metric() {
-        final Random random = new Random(this.initial.asLong());
+        final Random random = this.initial.random();
         final Key probe = new Randomized(new KeyOf(this.size), random);
         final Hash hash = this.func.apply(probe, this.seed);
         final int[][] flips = new int[probe.bits()][hash.bits()];

@@ -131,7 +131,7 @@ public final class SanityTest implements Test<Double> {
 
     @Override
     public Double metric() {
-        final Random random = new Random(this.initial.asLong());
+        final Random random = this.initial.random();
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {
