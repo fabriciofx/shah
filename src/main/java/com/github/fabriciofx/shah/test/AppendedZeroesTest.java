@@ -138,8 +138,8 @@ public final class AppendedZeroesTest implements Test<Double> {
             final Key key = new Randomized(new KeyOf(this.size), random);
             Hash previous = this.func.apply(new KeyOf(), this.seed);
             for (int zeroes = 0; zeroes < this.max; ++zeroes) {
-                final Key expanded = new Appended(key, new byte[zeroes]);
-                final Hash current = this.func.apply(expanded, this.seed);
+                final Key extended = new Appended(key, new byte[zeroes]);
+                final Hash current = this.func.apply(extended, this.seed);
                 ++checks;
                 if (current.equals(previous)) {
                     ++failures;
