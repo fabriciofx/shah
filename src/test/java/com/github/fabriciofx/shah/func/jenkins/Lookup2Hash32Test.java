@@ -184,7 +184,7 @@ final class Lookup2Hash32Test {
                 (key, seed) -> new Lookup2Hash32(key, seed).hash(),
                 new Seed32(),
                 32
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "sanity failure ratio")
         ).affirm();
     }
@@ -335,7 +335,7 @@ final class Lookup2Hash32Test {
             new AppendedZeroesTest(
                 (key, seed) -> new Lookup2Hash32(key, seed).hash(),
                 new Seed32(12_345)
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
     }
@@ -405,7 +405,7 @@ final class Lookup2Hash32Test {
             "lookup2 must pass bad seeds test",
             new BadSeedsTest(
                 (key, seed) -> new Lookup2Hash32(key, seed).hash()
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();
     }

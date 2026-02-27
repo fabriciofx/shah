@@ -11,6 +11,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.key.Appended;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
+import com.github.fabriciofx.shah.metric.Ratio;
 import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -35,7 +36,7 @@ import java.util.function.BiFunction;
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
-public final class AppendedZeroesTest implements Test<Double> {
+public final class AppendedZeroesTest implements Test<Ratio> {
     /**
      * Minimum key size.
      */
@@ -131,7 +132,7 @@ public final class AppendedZeroesTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Ratio metric() {
         final Random random = this.initial.random();
         int checks = 0;
         int failures = 0;
@@ -148,12 +149,6 @@ public final class AppendedZeroesTest implements Test<Double> {
                 previous = current;
             }
         }
-        final double ratio;
-        if (checks == 0) {
-            ratio = 0.0;
-        } else {
-            ratio = (double) failures / checks;
-        }
-        return ratio;
+        return new Ratio(checks, failures);
     }
 }

@@ -166,7 +166,7 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32(),
                 32
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "sanity failure ratio")
         ).affirm();
     }
@@ -305,7 +305,7 @@ final class OaatHash32Test {
             new AppendedZeroesTest(
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32(12_345)
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(1.0, "appended zeroes failure ratio")
         ).affirm();
     }

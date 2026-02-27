@@ -240,7 +240,7 @@ final class Murmur3Hash32Test {
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(0),
                 32
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "sanity failure ratio")
         ).affirm();
     }
@@ -391,7 +391,7 @@ final class Murmur3Hash32Test {
             new AppendedZeroesTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345)
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "appended zeroes failure ratio")
         ).affirm();
     }
@@ -461,7 +461,7 @@ final class Murmur3Hash32Test {
             "murmur3 must pass bad seeds test",
             new BadSeedsTest(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
-            ).metric(),
+            ).metric().value(),
             new IsLessThan(0.01, "bad seeds failure ratio")
         ).affirm();
     }

@@ -13,6 +13,7 @@ import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Filled;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.metric.Ratio;
 import com.github.fabriciofx.shah.scalar.AllZero;
 import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ import java.util.function.BiFunction;
  * @checkstyle MagicNumberCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class BadSeedsTest implements Test<Double> {
+public final class BadSeedsTest implements Test<Ratio> {
     /**
      * Key lengths to test, matching SMHasher's TestSecret.
      */
@@ -93,20 +94,14 @@ public final class BadSeedsTest implements Test<Double> {
     }
 
     @Override
-    public Double metric() {
+    public Ratio metric() {
         int failures = 0;
         for (final Seed seed : this.seeds) {
             if (!this.testSeed(seed)) {
                 ++failures;
             }
         }
-        final double ratio;
-        if (this.seeds.length == 0) {
-            ratio = 0.0;
-        } else {
-            ratio = (double) failures / this.seeds.length;
-        }
-        return ratio;
+        return new Ratio(failures, this.seeds.length);
     }
 
     /**
