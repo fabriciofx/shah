@@ -77,15 +77,15 @@ public final class Collisions implements Metric<Integer> {
      * @return The ratio {@code actual / expected} is returned. SMHasher
      *  considers a ratio above 2.0 as a failure
      */
-    public double ratio() {
-        final double ratio;
+    public Ratio ratio() {
+        final Ratio ratio;
         final double expected = (double) this.hashes.count()
             * (this.hashes.count() - 1)
             / (2.0 * Math.pow(2.0, this.hashes.item(0).bits()));
         if (expected < Collisions.EPSILON) {
-            ratio = this.colls.value();
+            ratio = new Ratio(this.colls.value(), 1.0);
         } else {
-            ratio = this.colls.value() / expected;
+            ratio = new Ratio(this.colls.value(), expected);
         }
         return ratio;
     }

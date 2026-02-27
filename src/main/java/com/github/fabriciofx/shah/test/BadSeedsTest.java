@@ -140,7 +140,7 @@ public final class BadSeedsTest implements Test<Ratio> {
             }
             hashes.add(hash);
         }
-        if (passed && new Collisions(hashes).ratio() > 0.0) {
+        if (passed && new Collisions(hashes).ratio().value() > 0.0) {
             passed = false;
         }
         return passed;

@@ -123,7 +123,7 @@ final class OaatHash32Test {
                 16,
                 new Seed32(12_345),
                 1_000_000
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(2.0, "collision ratio")
         ).affirm();
     }
@@ -179,7 +179,7 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32(),
                 204_800
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(100_000.0, "zeroes collision ratio")
         ).affirm();
     }
@@ -193,7 +193,7 @@ final class OaatHash32Test {
                 new Seed32(12_345),
                 4,
                 8
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(10.0, "cyclic collision ratio")
         ).affirm();
     }
@@ -206,7 +206,7 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32(),
                 4
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(25.0, "two-bytes collision ratio")
         ).affirm();
     }
@@ -220,7 +220,7 @@ final class OaatHash32Test {
                 new Seed32(),
                 32,
                 3
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(10.0, "sparse collision ratio")
         ).affirm();
     }
@@ -234,7 +234,7 @@ final class OaatHash32Test {
                 new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(10.0, "permutation collision ratio")
         ).affirm();
     }
@@ -248,7 +248,7 @@ final class OaatHash32Test {
                 new Seed32(),
                 4,
                 12
-            ).metric().worst(),
+            ).metric().ratios().worst().value(),
             new IsLessThan(200.0, "windowed collision ratio")
         ).affirm();
     }
@@ -263,7 +263,7 @@ final class OaatHash32Test {
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(10.0, "text collision ratio")
         ).affirm();
     }
@@ -278,7 +278,7 @@ final class OaatHash32Test {
                 4,
                 new Seed32(54_321),
                 100_000
-            ).metric().worst(),
+            ).metric().ratios().worst().value(),
             new IsLessThan(5000.0, "differential collision ratio")
         ).affirm();
     }
@@ -317,7 +317,7 @@ final class OaatHash32Test {
             new PrngTest(
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32()
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(100_000.0, "PRNG collision ratio")
         ).affirm();
     }
@@ -330,7 +330,7 @@ final class OaatHash32Test {
                 (key, seed) -> new OaatHash32(key).hash(),
                 new Seed32(12_345),
                 new Words(100_000, 2, 10)
-            ).metric().ratio(),
+            ).metric().ratio().value(),
             new IsLessThan(2.0, "words collision ratio")
         ).affirm();
     }

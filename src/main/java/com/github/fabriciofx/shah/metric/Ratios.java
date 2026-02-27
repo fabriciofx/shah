@@ -4,24 +4,20 @@
  */
 package com.github.fabriciofx.shah.metric;
 
-import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Metric;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Ratios.
- *
- * <p>Compute collision ratios among hashes.</p>
- *
  * @since 0.0.1
  */
-public final class Ratios implements Metric<List<Double>> {
+public final class Ratios implements Metric<List<Ratio>> {
     /**
-     * List of Hashes.
+     * List of Ratio.
      */
-    private final List<Hashes> items;
+    private final List<Ratio> items;
 
     /**
      * Ctor.
@@ -32,38 +28,37 @@ public final class Ratios implements Metric<List<Double>> {
 
     /**
      * Ctor.
-     * @param items A list of hashes
+     * @param items A list of ratio
      */
-    public Ratios(final List<Hashes> items) {
+    public Ratios(final List<Ratio> items) {
         this.items = items;
     }
 
-    @Override
-    public List<Double> value() {
-        final List<Double> values = new ArrayList<>(this.items.size());
-        for (final Hashes item : this.items) {
-            values.add(new Collisions(item).ratio());
-        }
-        return values;
-    }
-
     /**
-     * Add a hashes.
-     * @param hashes A hashes
+     * Add a ratio to ratios.
+     * @param ratio A ratio
      */
-    public void add(final Hashes hashes) {
-        this.items.add(hashes);
+    public void add(final Ratio ratio) {
+        this.items.add(ratio);
+    }
+
+    @Override
+    public List<Ratio> value() {
+        return Collections.unmodifiableList(this.items);
     }
 
     /**
-     * Compute the worst ratio among hashes collision ratios.
+     * Compute the worst ratio.
      * @return The worst ratio
      */
-    public double worst() {
-        return this.value()
-            .stream()
-            .mapToDouble(Double::doubleValue)
-            .max()
-            .orElse(0.0);
+    public Ratio worst() {
+        Ratio worst = this.items.get(0);
+        for (int idx = 1; idx < this.items.size(); ++idx) {
+            final Ratio item = this.items.get(idx);
+            if (item.value() > worst.value()) {
+                worst = item;
+            }
+        }
+        return worst;
     }
 }

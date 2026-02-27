@@ -4,14 +4,15 @@
  */
 package com.github.fabriciofx.shah.test;
 
+import com.github.fabriciofx.shah.Family;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.family.FamilyOf;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
-import com.github.fabriciofx.shah.metric.Ratios;
 import java.util.function.BiFunction;
 
 /**
@@ -43,7 +44,7 @@ import java.util.function.BiFunction;
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class WindowedKeyTest implements Test<Ratios> {
+public final class WindowedKeyTest implements Test<Family> {
     /**
      * Maximum window width (2^25 keys cap).
      */
@@ -89,7 +90,7 @@ public final class WindowedKeyTest implements Test<Ratios> {
     }
 
     @Override
-    public Ratios metric() {
+    public Family metric() {
         int window = this.width;
         int keycount = 1 << window;
         while (WindowedKeyTest.estimate(
@@ -101,7 +102,7 @@ public final class WindowedKeyTest implements Test<Ratios> {
             window += 1;
         }
         final int keybits = this.size * 8;
-        final Ratios ratios = new Ratios();
+        final Family family = new FamilyOf();
         for (int start = 0; start <= keybits; ++start) {
             final Hashes hashes = new HashesOf();
             for (int val = 0; val < keycount; ++val) {
@@ -111,9 +112,9 @@ public final class WindowedKeyTest implements Test<Ratios> {
                 );
                 hashes.add(this.func.apply(new KeyOf(bytes), this.seed));
             }
-            ratios.add(hashes);
+            family.add(hashes);
         }
-        return ratios;
+        return family;
     }
 
     /**

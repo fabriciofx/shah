@@ -4,16 +4,17 @@
  */
 package com.github.fabriciofx.shah.test;
 
+import com.github.fabriciofx.shah.Family;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.family.FamilyOf;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
-import com.github.fabriciofx.shah.metric.Ratios;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -35,7 +36,7 @@ import java.util.function.BiFunction;
  * @since 0.0.1
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
-public final class DifferentialTest implements Test<Ratios> {
+public final class DifferentialTest implements Test<Family> {
     /**
      * The hash under test.
      */
@@ -85,10 +86,10 @@ public final class DifferentialTest implements Test<Ratios> {
     }
 
     @Override
-    public Ratios metric() {
+    public Family metric() {
         final Random random = this.initial.random();
         final Key probe = new Randomized(new KeyOf(this.size), random);
-        final Ratios ratios = new Ratios();
+        final Family family = new FamilyOf();
         for (int bit = 0; bit < probe.bits(); ++bit) {
             final Hashes diffs = new HashesOf();
             for (int idx = 0; idx < this.count; ++idx) {
@@ -100,8 +101,8 @@ public final class DifferentialTest implements Test<Ratios> {
                 );
                 diffs.add(original.diff(flipped));
             }
-            ratios.add(diffs);
+            family.add(diffs);
         }
-        return ratios;
+        return family;
     }
 }
