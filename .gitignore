@@ -9,3 +9,4 @@ target/
 .classpath
 .recommenders
 sonar-project.properties
+*.class
