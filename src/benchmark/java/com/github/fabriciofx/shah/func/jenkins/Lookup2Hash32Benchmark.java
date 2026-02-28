@@ -1,3 +1,4 @@
+// @checkstyle JavadocPackageCheck disabled
 /*
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
@@ -26,9 +27,19 @@ import org.openjdk.jmh.infra.Blackhole;
  */
 @State(Scope.Thread)
 public class Lookup2Hash32Benchmark {
+    /**
+     * The key size in bytes.
+     */
     private static final int SIZE = 128 * 1024;
+
+    /**
+     * Hash function under benchmark.
+     */
     private Func func;
 
+    /**
+     * Set up each benchmark before running.
+     */
     @Setup(Level.Trial)
     public void setup() {
         this.func = new Lookup2Hash32(
@@ -37,6 +48,10 @@ public class Lookup2Hash32Benchmark {
         );
     }
 
+    /**
+     * Benchmark hashes per second.
+     * @param blackhole The benchmark blackhole
+     */
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
@@ -44,6 +59,10 @@ public class Lookup2Hash32Benchmark {
         blackhole.consume(this.func.hash());
     }
 
+    /**
+     * Benchmark bytes per second.
+     * @param blackhole The benchmark blackhole
+     */
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)

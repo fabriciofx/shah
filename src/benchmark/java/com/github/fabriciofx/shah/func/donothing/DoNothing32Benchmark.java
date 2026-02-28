@@ -1,3 +1,4 @@
+// @checkstyle JavadocPackageCheck disabled
 /*
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
@@ -20,17 +21,32 @@ import org.openjdk.jmh.infra.Blackhole;
 /**
  * DoNothing32Benchmark.
  * @since 0.0.1
+ * @checkstyle ConstantUsageCheck (200 lines)
  */
 @State(Scope.Thread)
 public class DoNothing32Benchmark {
+    /**
+     * The key size in bytes.
+     */
     private static final int SIZE = 128 * 1024;
+
+    /**
+     * Hash function under benchmark.
+     */
     private Func func;
 
+    /**
+     * Set up each benchmark before running.
+     */
     @Setup(Level.Trial)
     public void setup() {
         this.func = new DoNothing32();
     }
 
+    /**
+     * Benchmark hashes per second.
+     * @param blackhole The benchmark blackhole
+     */
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
@@ -38,6 +54,10 @@ public class DoNothing32Benchmark {
         blackhole.consume(this.func.hash());
     }
 
+    /**
+     * Benchmark bytes per second.
+     * @param blackhole The benchmark blackhole
+     */
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)

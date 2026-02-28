@@ -7,7 +7,6 @@ package com.github.fabriciofx.shah.func.donothing;
 import com.github.fabriciofx.shah.Func;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.hash.Hash128;
-import com.github.fabriciofx.shah.hash.Hash64;
 
 /**
  * DoNothing128.

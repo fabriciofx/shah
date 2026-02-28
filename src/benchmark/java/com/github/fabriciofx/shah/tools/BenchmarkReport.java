@@ -15,16 +15,32 @@ import java.util.stream.Stream;
  *
  * @since 0.0.1
  */
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 public final class BenchmarkReport {
-    public static void main(String[] args) throws IOException {
+    /**
+     * Ctor.
+     */
+    private BenchmarkReport() {
+    }
+
+    /**
+     * Execute the script.
+     * @param args Command line parameters
+     * @throws IOException If something goes wrong
+     */
+    public static void main(final String[] args) throws IOException {
         final Path root = Path.of(System.getProperty("user.dir"))
             .resolve("target");
         final Path input = root.resolve("benchmark-results.csv");
         final Path output = root.resolve("benchmark-report.md");
-        final StringBuilder markdown = new StringBuilder();
-        markdown.append("## Benchmark Results\n\n");
-        markdown.append("| Hash function | Size (in KiB) | MiB/s ± error | hash/s ± error |\n");
-        markdown.append("|:--------------|:-------------:|:-------------:|:--------------:|\n");
+        final StringBuilder markdown = new StringBuilder(170);
+        markdown.append(
+            """
+            ## Benchmark Results\n
+            | Hash function | Size (in KiB) | MiB/s ± error | hash/s ± error |
+            |:--------------|:-------------:|:-------------:|:--------------:|
+            """
+        );
         try (Stream<String> stream = Files.lines(input)) {
             final Iterator<String> iter = stream
                 .skip(1)
@@ -56,15 +72,14 @@ public final class BenchmarkReport {
                     Double.parseDouble(parts[11]),
                     Double.parseDouble(parts[12])
                 );
-                markdown.append("| ")
-                    .append(name)
-                    .append(" | ")
-                    .append(size)
-                    .append(" | ")
-                    .append(mibsec)
-                    .append(" | ")
-                    .append(hashsec)
-                    .append(" |\n");
+                final String line = String.format(
+                    "| %s | %d | %s | %s |\n",
+                    name,
+                    size,
+                    mibsec,
+                    hashsec
+                );
+                markdown.append(line);
             }
         }
         Files.writeString(output, markdown.toString());
