@@ -30,7 +30,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
+@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class PrngTest implements Test<Collisions> {
     /**
      * Default count.
@@ -80,13 +80,12 @@ public final class PrngTest implements Test<Collisions> {
     @Override
     public Collisions metric() {
         final Hash probe = this.func.apply(new KeyOf(), this.seed);
-        final int size = probe.bits() / 8;
-        byte[] input = new byte[size];
+        Key key = new KeyOf(probe.bits() / 8);
         final Hashes hashes = new HashesOf();
         for (int idx = 0; idx < this.count; ++idx) {
-            final Hash result = this.func.apply(new KeyOf(input), this.seed);
-            hashes.add(result);
-            input = result.asBytes().clone();
+            final Hash hash = this.func.apply(key, this.seed);
+            hashes.add(hash);
+            key = new KeyOf(hash.asBytes());
         }
         return new Collisions(hashes);
     }
