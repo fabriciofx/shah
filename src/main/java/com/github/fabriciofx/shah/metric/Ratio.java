@@ -4,13 +4,13 @@
  */
 package com.github.fabriciofx.shah.metric;
 
-import com.github.fabriciofx.shah.Scalar;
+import com.github.fabriciofx.shah.Metric;
 
 /**
  * Ratio.
  * @since 0.0.1
  */
-public final class Ratio implements Scalar<Double> {
+public final class Ratio implements Metric<Double> {
     /**
      * Antecedent, the ratio numerator.
      */
