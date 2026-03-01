@@ -18,10 +18,11 @@
   <description>A bunch of non-cryptographic hash functions</description>
   <properties>
     <jmh.wi>3</jmh.wi>
-    <jmh.iterations>5</jmh.iterations>
+    <jmh.iterations>30</jmh.iterations>
     <jmh.forks>1</jmh.forks>
-    <jmh.wt>500ms</jmh.wt>
-    <jmh.mt>500ms</jmh.mt>
+    <jmh.wt>1s</jmh.wt>
+    <jmh.mt>1s</jmh.mt>
+    <jmh.format>csv</jmh.format>
   </properties>
   <dependencies>
     <dependency>
@@ -209,7 +210,7 @@
                     <argument>-r</argument>
                     <argument>${jmh.mt}</argument>
                     <argument>-rf</argument>
-                    <argument>csv</argument>
+                    <argument>${jmh.format}</argument>
                     <argument>-rff</argument>
                     <argument>${project.build.directory}/benchmark-results.csv</argument>
                   </arguments>

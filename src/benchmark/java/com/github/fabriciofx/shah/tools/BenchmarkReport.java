@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  *
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.UnnecessaryLocalRule")
+@SuppressWarnings({"PMD.UnnecessaryLocalRule", "PMD.UselessParentheses"})
 public final class BenchmarkReport {
     /**
      * Ctor.
@@ -63,14 +63,18 @@ public final class BenchmarkReport {
                 );
                 final int size = 128;
                 final String mibsec = String.format(
-                    "%.2f ± %.2f",
+                    "%.3f ± %.3f (%.2f%%)",
                     Double.parseDouble(parts[4]) / (1024 * 1024),
-                    Double.parseDouble(parts[5]) / (1024 * 1024)
+                    Double.parseDouble(parts[5]) / (1024 * 1024),
+                    ((Double.parseDouble(parts[5]) / (1024 * 1024))
+                        / (Double.parseDouble(parts[4]) / (1024 * 1024))) * 100
                 );
                 final String hashsec = String.format(
-                    "%.2f ± %.2f",
+                    "%.3f ± %.3f (%.2f%%)",
                     Double.parseDouble(parts[11]),
-                    Double.parseDouble(parts[12])
+                    Double.parseDouble(parts[12]),
+                    (Double.parseDouble(parts[12])
+                        / Double.parseDouble(parts[11])) * 100
                 );
                 final String line = String.format(
                     "| %s | %d | %s | %s |\n",
