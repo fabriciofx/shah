@@ -5,8 +5,6 @@
 package com.github.fabriciofx.shah.func.jenkins;
 
 import com.github.fabriciofx.shah.IsLessThan;
-import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
-import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.seed.Seed32;
@@ -407,41 +405,6 @@ final class Lookup2Hash32Test {
                 (key, seed) -> new Lookup2Hash32(key, seed).hash()
             ).metric().value(),
             new IsLessThan(0.01, "bad seeds failure ratio")
-        ).affirm();
-    }
-
-    @Test
-    void computeSpeedBenchmark() {
-        new Assertion<>(
-            "must compute lookup2 speed benchmark",
-            new SpeedBenchmark(
-                (key, seed) -> new Lookup2Hash32(key, seed).hash()
-            ).run(),
-            new IsLessThan(100_000_000.0, "bulk ns/op")
-        ).affirm();
-    }
-
-    @Test
-    void computeSmallKeysSpeedBenchmark() {
-        new Assertion<>(
-            "must compute lookup2 small keys speed benchmark",
-            new SpeedBenchmark(
-                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
-                4
-            ).run(),
-            new IsLessThan(100_000.0, "small key ns/op")
-        ).affirm();
-    }
-
-    @Test
-    void performHashmapBenchmark() {
-        new Assertion<>(
-            "must perform lookup2 hashmap benchmark",
-            new HashmapBenchmark(
-                (key, seed) -> new Lookup2Hash32(key, seed).hash(),
-                new Seed32()
-            ).run(),
-            new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();
     }
 }

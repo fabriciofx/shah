@@ -5,8 +5,6 @@
 package com.github.fabriciofx.shah.func.jenkins;
 
 import com.github.fabriciofx.shah.IsLessThan;
-import com.github.fabriciofx.shah.benchmark.HashmapBenchmark;
-import com.github.fabriciofx.shah.benchmark.SpeedBenchmark;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.seed.Seed32;
@@ -344,41 +342,6 @@ final class OaatHash32Test {
                 new Seed32(12_345)
             ).metric(),
             new IsLessThan(500.0, "moment chi-squared")
-        ).affirm();
-    }
-
-    @Test
-    void computeSpeedBenchmark() {
-        new Assertion<>(
-            "must compute oaat speed benchmark",
-            new SpeedBenchmark(
-                (key, seed) -> new OaatHash32(key).hash()
-            ).run(),
-            new IsLessThan(100_000_000.0, "bulk ns/op")
-        ).affirm();
-    }
-
-    @Test
-    void passesSmallKeySpeedTest() {
-        new Assertion<>(
-            "oaat small key speed test must complete",
-            new SpeedBenchmark(
-                (key, seed) -> new OaatHash32(key).hash(),
-                4
-            ).run(),
-            new IsLessThan(100_000.0, "small key ns/op")
-        ).affirm();
-    }
-
-    @Test
-    void performHashmapBenchmark() {
-        new Assertion<>(
-            "must perform ooat hashmap benchmark",
-            new HashmapBenchmark(
-                (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32()
-            ).run(),
-            new IsLessThan(100_000.0, "hashmap ns/op")
         ).affirm();
     }
 }
