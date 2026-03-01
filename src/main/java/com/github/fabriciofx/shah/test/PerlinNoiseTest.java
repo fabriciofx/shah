@@ -11,6 +11,7 @@ import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
+import com.github.fabriciofx.shah.key.Noised;
 import com.github.fabriciofx.shah.metric.Collisions;
 import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.function.BiFunction;
@@ -107,23 +108,12 @@ public final class PerlinNoiseTest implements Test<Collisions> {
         final int xmax = 1 << this.xbits;
         final int ymax = 1 << this.ybits;
         final Hashes hashes = new HashesOf();
-        for (int xcoord = 0; xcoord < xmax; ++xcoord) {
-            final byte[] bytes = new byte[this.size];
-            bytes[0] = (byte) xcoord;
-            if (this.size > 1) {
-                bytes[1] = (byte) (xcoord >>> 8);
-            }
-            if (this.size > 2) {
-                bytes[2] = (byte) (xcoord >>> 16);
-            }
-            if (this.size > 3) {
-                bytes[3] = (byte) (xcoord >>> 24);
-            }
-            for (long ycoord = 0; ycoord < ymax; ++ycoord) {
+        for (int noise = 0; noise < xmax; ++noise) {
+            for (long seed = 0L; seed < ymax; ++seed) {
                 hashes.add(
                     this.func.apply(
-                        new KeyOf(bytes),
-                        new Seed64(ycoord)
+                        new Noised(new KeyOf(this.size), noise),
+                        new Seed64(seed)
                     )
                 );
             }
