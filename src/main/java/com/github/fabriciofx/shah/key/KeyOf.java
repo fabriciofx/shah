@@ -6,7 +6,6 @@ package com.github.fabriciofx.shah.key;
 
 import com.github.fabriciofx.shah.Key;
 import java.nio.charset.StandardCharsets;
-import java.util.HexFormat;
 
 /**
  * KeyOf.
@@ -56,7 +55,20 @@ public final class KeyOf implements Key {
 
     @Override
     public String asString() {
-        return HexFormat.of().formatHex(this.bytes);
+        final StringBuilder out = new StringBuilder();
+        for (final byte bte : this.bytes) {
+            out.append(String.format("%02X ", bte));
+        }
+        out.append('(');
+        for (final byte bte : this.bytes) {
+            for (int bit = 7; bit >= 0; --bit) {
+                out.append(((bte & 0xFF) >>> bit) & 1);
+            }
+            out.append(' ');
+        }
+        out.setLength(out.length() - 1);
+        out.append(')');
+        return out.toString();
     }
 
     @Override
