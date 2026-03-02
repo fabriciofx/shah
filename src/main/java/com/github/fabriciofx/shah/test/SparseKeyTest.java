@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.scalar.LongAsBytes;
 import java.util.function.BiFunction;
 
 /**
@@ -52,7 +53,7 @@ public final class SparseKeyTest implements Test<Collisions> {
     /**
      * Total key length in bits.
      */
-    private final int bits;
+    private final int total;
 
     /**
      * Maximum number of bits set to 1.
@@ -63,77 +64,45 @@ public final class SparseKeyTest implements Test<Collisions> {
      * Ctor.
      * @param func The hash function under test
      * @param seed The hash function seed
-     * @param bits Total key length in bits
+     * @param total Total key length in bits
      * @param max Maximum number of bits set to 1
      */
     public SparseKeyTest(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
-        final int bits,
+        final int total,
         final int max
     ) {
         this.func = func;
         this.seed = seed;
-        this.bits = bits;
+        this.total = total;
         this.max = max;
     }
 
     @Override
     public Collisions metric() {
-        final int size = (this.bits + 7) / 8;
         final Hashes hashes = new HashesOf();
-        final byte[] bytes = new byte[size];
-        SparseKeyTest.generate(
-            this.func,
-            this.seed,
-            bytes,
-            this.bits,
-            this.max,
-            0,
-            0,
-            hashes
-        );
-        return new Collisions(hashes);
-    }
-
-    /**
-     * Recursively generate sparse keys with at most maxBits set.
-     * @param func Hash function
-     * @param seed Hash function seed
-     * @param bytes Key buffer
-     * @param total Total bits in bytes
-     * @param remaining Remaining bits that can be set
-     * @param start Next bit position to consider
-     * @param depth Current recursion depth
-     * @param hashes List to collect hash values
-     * @checkstyle ParameterNumberCheck (10 lines)
-     */
-    private static void generate(
-        final BiFunction<Key, Seed, Hash> func,
-        final Seed seed,
-        final byte[] bytes,
-        final int total,
-        final int remaining,
-        final int start,
-        final int depth,
-        final Hashes hashes
-    ) {
-        hashes.add(func.apply(new KeyOf(bytes), seed));
-        if (remaining > 0) {
-            for (int bit = start; bit < total; ++bit) {
-                bytes[bit >> 3] |= (byte) (1 << (bit & 7));
-                SparseKeyTest.generate(
-                    func,
-                    seed,
-                    bytes,
-                    total,
-                    remaining - 1,
-                    bit + 1,
-                    depth + 1,
-                    hashes
-                );
-                bytes[bit >> 3] &= (byte) ~(1 << (bit & 7));
+        final long mask;
+        if (this.total == 64) {
+            mask = -1L;
+        } else {
+            mask = (1L << this.total) - 1;
+        }
+        for (int bits = 0; bits <= this.max; ++bits) {
+            long combination = (1L << bits) - 1;
+            while ((combination & ~mask) == 0) {
+                final Key key = new KeyOf(new LongAsBytes(combination).value());
+                hashes.add(this.func.apply(key, this.seed));
+                final long smallest = combination & -combination;
+                final long ripple = combination + smallest;
+                if (ripple == 0) {
+                    break;
+                }
+                long ones = combination ^ ripple;
+                ones = (ones >>> 2) / smallest;
+                combination = ripple | ones;
             }
         }
+        return new Collisions(hashes);
     }
 }
