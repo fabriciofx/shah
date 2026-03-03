@@ -91,25 +91,24 @@ public final class WindowedKeyTest implements Test<Family> {
 
     @Override
     public Family metric() {
+        final Hash probe = this.func.apply(new KeyOf(this.size), this.seed);
         int window = this.width;
-        int keycount = 1 << window;
+        int keys = 1 << window;
         while (WindowedKeyTest.estimate(
-            keycount,
-            this.func.apply(new KeyOf(this.size), this.seed).bits()
+            keys,
+            probe.bits()
         ) < 0.5
             && window < WindowedKeyTest.MAX_WINDOW) {
-            keycount *= 2;
+            keys *= 2;
             window += 1;
         }
-        final int keybits = this.size * 8;
+        final int bits = this.size * Byte.SIZE;
         final Family family = new FamilyOf();
-        for (int start = 0; start <= keybits; ++start) {
+        for (int start = 0; start <= bits; ++start) {
             final Hashes hashes = new HashesOf();
-            for (int val = 0; val < keycount; ++val) {
+            for (int value = 0; value < keys; ++value) {
                 final byte[] bytes = new byte[this.size];
-                WindowedKeyTest.setAndRotate(
-                    bytes, val, window, start
-                );
+                WindowedKeyTest.setAndRotate(bytes, value, window, start);
                 hashes.add(this.func.apply(new KeyOf(bytes), this.seed));
             }
             family.add(hashes);
@@ -118,23 +117,23 @@ public final class WindowedKeyTest implements Test<Family> {
     }
 
     /**
-     * Set the low {@code width} bits of the byte array to {@code val},
+     * Set the low {@code width} bits of the byte array to {@code value},
      * then left-rotate the entire array by {@code rotate} bits.
      * Matches SMHasher's approach: {@code key = i; lrot(key, size, j)}.
      * @param bytes The byte buffer (zeroed)
-     * @param val Value to set in low bits
+     * @param value Value to set in low bits
      * @param width Width in bits
      * @param rotate Number of bits to rotate left
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     private static void setAndRotate(
         final byte[] bytes,
-        final int val,
+        final int value,
         final int width,
         final int rotate
     ) {
         for (int bit = 0; bit < width; ++bit) {
-            if (((val >> bit) & 1) == 1) {
+            if (((value >> bit) & 1) == 1) {
                 final int pos = (bit + rotate) % (bytes.length * 8);
                 bytes[pos >> 3] |= (byte) (1 << (pos & 7));
             }
@@ -144,12 +143,12 @@ public final class WindowedKeyTest implements Test<Family> {
     /**
      * Estimate expected collisions (birthday paradox, sparse regime).
      * Matches SMHasher's fwojcik estimator for sparse cases.
-     * @param balls Number of keys (balls)
+     * @param keys Number of keys
      * @param bits Hash width in bits
      * @return Expected number of collisions
      */
-    private static double estimate(final int balls, final int bits) {
-        return (double) balls * (balls - 1)
+    private static double estimate(final int keys, final int bits) {
+        return (double) keys * (keys - 1)
             / (2.0 * Math.pow(2.0, bits));
     }
 }
