@@ -39,12 +39,16 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle MagicNumberCheck (200 lines)
  * @checkstyle NestedForDepthCheck (200 lines)
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class WindowedKeyTest implements Test<Family> {
+    /**
+     * Threshold.
+     */
+    private static final double THRESHOLD = 0.5;
+
     /**
      * Maximum window width (2^25 keys cap).
      */
@@ -96,7 +100,7 @@ public final class WindowedKeyTest implements Test<Family> {
         int window = this.width;
         int keys = 1 << window;
         while (
-            new Expected(keys, probe.bits()).value() < 0.5
+            new Expected(keys, probe.bits()).value() < WindowedKeyTest.THRESHOLD
                 && window < WindowedKeyTest.MAX_WINDOW
         ) {
             keys *= 2;
