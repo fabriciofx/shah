@@ -9,6 +9,7 @@ import com.github.fabriciofx.shah.Metric;
 import com.github.fabriciofx.shah.Scalar;
 import com.github.fabriciofx.shah.hashes.Sorted;
 import com.github.fabriciofx.shah.scalar.Cached;
+import com.github.fabriciofx.shah.stat.Expected;
 
 /**
  * Collisions metric from SMHasher.
@@ -21,9 +22,6 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * sorts them lexicographically and counts adjacent duplicates.
  * The collision ratio is computed against the expected number from
  * the birthday paradox.</p>
- *
- * <p>Expected collisions formula (sparse regime):
- * {@code expected = n * (n - 1) / (2 * 2^bits)}.</p>
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
@@ -79,9 +77,7 @@ public final class Collisions implements Metric<Integer> {
      */
     public Ratio ratio() {
         final Ratio ratio;
-        final double expected = (double) this.hashes.count()
-            * (this.hashes.count() - 1)
-            / (2.0 * Math.pow(2.0, this.hashes.item(0).bits()));
+        final double expected = new Expected(this.hashes).value();
         if (expected < Collisions.EPSILON) {
             ratio = new Ratio(this.colls.value(), 1.0);
         } else {

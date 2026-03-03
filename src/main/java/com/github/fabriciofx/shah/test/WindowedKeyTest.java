@@ -14,6 +14,7 @@ import com.github.fabriciofx.shah.family.FamilyOf;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Rotated;
+import com.github.fabriciofx.shah.stat.Expected;
 import java.util.function.BiFunction;
 
 /**
@@ -28,8 +29,8 @@ import java.util.function.BiFunction;
  *
  * <p>The window width is automatically increased if necessary so that the
  * expected number of birthday-paradox collisions is at least 0.5, matching
- * SMHasher's dynamic sizing behavior. The maximum window width is capped at
- * 25 bits (2^25 keys).</p>
+ * SMHasher's dynamic sizing behavior. The maximum window width is capped at 25
+ * bits (2^25 keys).</p>
  *
  * <p>Returns the worst (maximum) collision ratio across all window starting
  * positions.</p>
@@ -71,6 +72,7 @@ public final class WindowedKeyTest implements Test<Family> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param size Key length in bytes
@@ -93,11 +95,10 @@ public final class WindowedKeyTest implements Test<Family> {
         final Hash probe = this.func.apply(new KeyOf(this.size), this.seed);
         int window = this.width;
         int keys = 1 << window;
-        while (WindowedKeyTest.estimate(
-            keys,
-            probe.bits()
-        ) < 0.5
-            && window < WindowedKeyTest.MAX_WINDOW) {
+        while (
+            new Expected(keys, probe.bits()).value() < 0.5
+                && window < WindowedKeyTest.MAX_WINDOW
+        ) {
             keys *= 2;
             window += 1;
         }
@@ -116,16 +117,5 @@ public final class WindowedKeyTest implements Test<Family> {
             family.add(hashes);
         }
         return family;
-    }
-
-    /**
-     * Estimate expected collisions (birthday paradox, sparse regime).
-     * Matches SMHasher's fwojcik estimator for sparse cases.
-     * @param keys Number of keys
-     * @param bits Hash width in bits
-     * @return Expected number of collisions
-     */
-    private static double estimate(final int keys, final int bits) {
-        return (double) keys * (keys - 1) / (2.0 * Math.pow(2.0, bits));
     }
 }

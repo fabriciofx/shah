@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.shah.stat;
 
+import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Scalar;
 
 /**
@@ -24,6 +25,14 @@ public final class Expected implements Scalar<Double> {
      * The size of the hash in bits.
      */
     private final int bits;
+
+    /**
+     * Ctor.
+     * @param hashes The hashes
+     */
+    public Expected(final Hashes hashes) {
+        this(hashes.count(), hashes.item(0).bits());
+    }
 
     /**
      * Ctor.
