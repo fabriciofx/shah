@@ -10,3 +10,5 @@ target/
 .recommenders
 sonar-project.properties
 *.class
+*.log
+session*.md
