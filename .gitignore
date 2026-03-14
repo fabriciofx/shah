@@ -12,3 +12,4 @@ sonar-project.properties
 *.class
 *.log
 session*.md
+dependency-reduced-pom.xml
