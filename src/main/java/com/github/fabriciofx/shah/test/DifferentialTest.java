@@ -35,7 +35,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DifferentialTest implements Test<Family> {
     /**
      * The hash under test.
@@ -69,7 +69,6 @@ public final class DifferentialTest implements Test<Family> {
      * @param size Key's size in bytes
      * @param initial Key's seed
      * @param count Number of keys
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DifferentialTest(
         final BiFunction<Key, Seed, Hash> func,

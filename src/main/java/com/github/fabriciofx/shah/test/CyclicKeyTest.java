@@ -35,11 +35,8 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle MagicNumberCheck (200 lines)
- * @checkstyle NestedForDepthCheck (200 lines)
- * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * Default number of keys.
@@ -94,7 +91,6 @@ public final class CyclicKeyTest implements Test<Collisions> {
      * @param length Cycle pattern length in bytes
      * @param count Number of keys to generate
      * @param repetitions Number of cycle repetitions
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CyclicKeyTest(
         final BiFunction<Key, Seed, Hash> func,

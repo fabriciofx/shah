@@ -17,12 +17,10 @@ import com.github.fabriciofx.shah.Metric;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle CyclomaticComplexityCheck (100 lines)
  * @checkstyle NestedForDepthCheck (100 lines)
  */
 @SuppressWarnings({
     "PMD.CognitiveComplexity",
-    "PMD.UnnecessaryLocalRule",
     "PMD.ArrayIsStoredDirectly",
     "PMD.MethodReturnsInternalArray"
 })

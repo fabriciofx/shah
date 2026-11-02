@@ -13,7 +13,6 @@ import java.util.Random;
  * Cycled.
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.UnnecessaryLocalRule")
 public final class Cycled implements Key {
     /**
      * Default random seed (matches SMHasher).

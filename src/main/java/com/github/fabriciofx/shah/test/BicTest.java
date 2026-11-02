@@ -32,7 +32,6 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle CyclomaticComplexityCheck (200 lines)
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
@@ -69,7 +68,6 @@ public final class BicTest implements Test<BicBias> {
      * @param size Key's size in bytes
      * @param initial Key's seed
      * @param repetitions Number of repetitions
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public BicTest(
         final BiFunction<Key, Seed, Hash> func,

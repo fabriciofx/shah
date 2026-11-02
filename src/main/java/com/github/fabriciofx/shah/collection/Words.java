@@ -20,7 +20,6 @@ import java.util.Set;
  * @since 0.0.1
  * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Words implements Collection<String> {
     /**
      * Default character set (alphanumeric).

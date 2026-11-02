@@ -16,10 +16,6 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * Flipped tests.
  * @since 0.0.1
  */
-@SuppressWarnings({
-    "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule"
-})
 final class FlippedTest {
     @Test
     void compareTwoFlippedKeys() {

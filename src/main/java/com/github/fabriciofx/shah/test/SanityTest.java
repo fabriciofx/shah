@@ -39,12 +39,8 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
- * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings({
-    "PMD.TestClassWithoutTestCases",
-    "PMD.UnnecessaryLocalRule"
-})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SanityTest implements Test<Ratio> {
     /**
      * Minimum key length in bytes.
@@ -113,7 +109,6 @@ public final class SanityTest implements Test<Ratio> {
      * @param max Maximum key length to test
      * @param initial Random seed for reproducibility
      * @param repetitions Number of repetitions
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public SanityTest(
         final BiFunction<Key, Seed, Hash> func,

@@ -17,10 +17,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * Matrix tests.
  * @since 0.0.1
  */
-@SuppressWarnings({
-    "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule"
-})
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 final class MatrixTest {
     @Test
     void twoMatricesBeEqualsUnderTheSameParameters() {

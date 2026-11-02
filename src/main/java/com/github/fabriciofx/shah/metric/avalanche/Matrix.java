@@ -25,8 +25,6 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * equal probability.<p>
  *
  * @since 0.0.1
- * @checkstyle NestedForDepthCheck (100 lines)
- * @checkstyle ParameterNumberCheck (100 lines)
  */
 public final class Matrix implements Metric<double[][]> {
     /**

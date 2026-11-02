@@ -17,7 +17,6 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * Jenkins Lookup2 Hash</a>
  * @since 0.0.1
  * @checkstyle FallThroughCheck (300 lines)
- * @checkstyle NcssCountCheck (300 lines)
  * @checkstyle CyclomaticComplexityCheck (300 lines)
  * @checkstyle JavaNCSSCheck (300 lines)
  * @checkstyle ExecutableStatementCountCheck (300 lines)

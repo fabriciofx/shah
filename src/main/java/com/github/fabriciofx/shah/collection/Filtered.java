@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * @param <E> Type of the values
  * @since 0.0.1
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Filtered<E extends Number> implements Collection<E> {
     /**
      * Filtered items.

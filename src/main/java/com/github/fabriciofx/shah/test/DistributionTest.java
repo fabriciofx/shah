@@ -32,7 +32,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DistributionTest implements Test<DistributionScore> {
     /**
      * The hash function under test.
@@ -66,7 +66,6 @@ public final class DistributionTest implements Test<DistributionScore> {
      * @param size Key's size
      * @param initial Key's seed
      * @param count Number of keys to hash
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DistributionTest(
         final BiFunction<Key, Seed, Hash> func,

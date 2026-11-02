@@ -33,12 +33,8 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ParameterNumberCheck (200 lines)
  */
-@SuppressWarnings({
-    "PMD.TestClassWithoutTestCases",
-    "PMD.UnnecessaryLocalRule"
-})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SparseKeyTest implements Test<Collisions> {
     /**
      * The hash under test.

@@ -69,7 +69,6 @@ public final class TextTest implements Test<Collisions> {
      * @param prefix Prefix bytes
      * @param suffix Suffix bytes
      * @param varying Number of varying positions
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public TextTest(
         final BiFunction<Key, Seed, Hash> func,

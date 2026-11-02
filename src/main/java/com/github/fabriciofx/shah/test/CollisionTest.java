@@ -29,7 +29,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class CollisionTest implements Test<Collisions> {
     /**
      * The hash under test.
@@ -63,7 +63,6 @@ public final class CollisionTest implements Test<Collisions> {
      * @param size Key size
      * @param initial Test seed
      * @param count Number of keys to hash
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public CollisionTest(
         final BiFunction<Key, Seed, Hash> func,

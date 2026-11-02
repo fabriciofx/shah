@@ -50,7 +50,6 @@ import org.llorllale.cactoos.matchers.IsText;
  *
  * @since 0.0.1
  */
-@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.TooManyMethods"})
 final class OaatHash32Test {
     @Test
     void evaluateAnEmptyString() {

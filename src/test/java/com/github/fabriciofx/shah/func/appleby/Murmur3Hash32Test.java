@@ -52,7 +52,6 @@ import org.llorllale.cactoos.matchers.IsText;
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
-@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.TooManyMethods"})
 final class Murmur3Hash32Test {
     @Test
     void evaluateAnEmptyString() {

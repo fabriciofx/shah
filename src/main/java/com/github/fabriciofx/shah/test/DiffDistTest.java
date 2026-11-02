@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DiffDistTest implements Test<Double> {
     /**
      * The hash function under test.
@@ -71,7 +71,6 @@ public final class DiffDistTest implements Test<Double> {
      * @param size Key's size in byte
      * @param initial Key's seed
      * @param count Number of keys
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public DiffDistTest(
         final BiFunction<Key, Seed, Hash> func,

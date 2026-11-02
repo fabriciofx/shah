@@ -36,7 +36,6 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle MagicNumberCheck (300 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class MomentChi2Test implements Test<Double> {
@@ -130,7 +129,6 @@ public final class MomentChi2Test implements Test<Double> {
      * @param size Key size in bytes
      * @param step Step between consecutive key values
      * @param count Number of keys to generate
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public MomentChi2Test(
         final BiFunction<Key, Seed, Hash> func,
@@ -212,7 +210,6 @@ public final class MomentChi2Test implements Test<Double> {
      * @param srefh Reference mean
      * @param srefl Reference variance term
      * @return Worst chi-squared value
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     private static double worstChi(
         final double[] moments,
@@ -242,7 +239,6 @@ public final class MomentChi2Test implements Test<Double> {
      * @param off Offset into accumulator (0 for raw, 4 for derivative)
      * @param value Hash value (up to 64 bits)
      * @param bits Number of hash bits
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     private static void addMoments(
         final double[] acc,
@@ -300,7 +296,6 @@ public final class MomentChi2Test implements Test<Double> {
      * @param refmean Reference mean
      * @param refvar Reference variance term
      * @return Chi-squared value
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     private static double chiSquared(
         final double observed,

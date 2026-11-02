@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
  */
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class AvalancheTest implements Test<Matrix> {
     /**
      * The hash function under test.
@@ -71,7 +71,6 @@ public final class AvalancheTest implements Test<Matrix> {
      * @param size Size in key
      * @param initial Initial value for key generation
      * @param repetitions Number of repetitions
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public AvalancheTest(
         final BiFunction<Key, Seed, Hash> func,

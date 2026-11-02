@@ -13,7 +13,6 @@ import com.github.fabriciofx.shah.Key;
  * entire array by rotate bits. Matches SMHasher's approach:
  * {@code key = i; lrot(key, size, j)}.</p>
  * @since 0.0.1
- * @checkstyle ParameterNumberCheck (200 lines)
  */
 public final class Rotated implements Key {
     /**

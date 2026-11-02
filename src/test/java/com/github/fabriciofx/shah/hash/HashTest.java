@@ -20,10 +20,6 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * Hash tests.
  * @since 0.0.1
  */
-@SuppressWarnings({
-    "PMD.UnitTestShouldIncludeAssert",
-    "PMD.UnnecessaryLocalRule"
-})
 final class HashTest {
     @Test
     void compareTwoDiff() {
