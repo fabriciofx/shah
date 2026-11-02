@@ -17,7 +17,6 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * Jenkins Lookup2 Hash</a>
  * @since 0.0.1
  * @checkstyle FallThroughCheck (300 lines)
- * @checkstyle UnnecessaryParenthesesCheck (300 lines)
  * @checkstyle NcssCountCheck (300 lines)
  * @checkstyle CyclomaticComplexityCheck (300 lines)
  * @checkstyle JavaNCSSCheck (300 lines)
@@ -79,31 +78,31 @@ public final class Lookup2Hash32 implements Func {
                 | ((bytes[idx + 11] & 0xff) << 24);
             first -= second;
             first -= third;
-            first ^= (third >>> 13);
+            first ^= third >>> 13;
             second -= third;
             second -= first;
-            second ^= (first << 8);
+            second ^= first << 8;
             third -= first;
             third -= second;
-            third ^= (second >>> 13);
+            third ^= second >>> 13;
             first -= second;
             first -= third;
-            first ^= (third >>> 12);
+            first ^= third >>> 12;
             second -= third;
             second -= first;
-            second ^= (first << 16);
+            second ^= first << 16;
             third -= first;
             third -= second;
-            third ^= (second >>> 5);
+            third ^= second >>> 5;
             first -= second;
             first -= third;
-            first ^= (third >>> 3);
+            first ^= third >>> 3;
             second -= third;
             second -= first;
-            second ^= (first << 10);
+            second ^= first << 10;
             third -= first;
             third -= second;
-            third ^= (second >>> 15);
+            third ^= second >>> 15;
             idx += 12;
             length -= 12;
         }
@@ -122,7 +121,7 @@ public final class Lookup2Hash32 implements Func {
             case 6:
                 second += (bytes[idx + 5] & 0xff) << 8;
             case 5:
-                second += (bytes[idx + 4] & 0xff);
+                second += bytes[idx + 4] & 0xff;
             case 4:
                 first += (bytes[idx + 3] & 0xff) << 24;
             case 3:
@@ -130,37 +129,37 @@ public final class Lookup2Hash32 implements Func {
             case 2:
                 first += (bytes[idx + 1] & 0xff) << 8;
             case 1:
-                first += (bytes[idx] & 0xff);
+                first += bytes[idx] & 0xff;
             default:
                 break;
         }
         first -= second;
         first -= third;
-        first ^= (third >>> 13);
+        first ^= third >>> 13;
         second -= third;
         second -= first;
-        second ^= (first << 8);
+        second ^= first << 8;
         third -= first;
         third -= second;
-        third ^= (second >>> 13);
+        third ^= second >>> 13;
         first -= second;
         first -= third;
-        first ^= (third >>> 12);
+        first ^= third >>> 12;
         second -= third;
         second -= first;
-        second ^= (first << 16);
+        second ^= first << 16;
         third -= first;
         third -= second;
-        third ^= (second >>> 5);
+        third ^= second >>> 5;
         first -= second;
         first -= third;
-        first ^= (third >>> 3);
+        first ^= third >>> 3;
         second -= third;
         second -= first;
-        second ^= (first << 10);
+        second ^= first << 10;
         third -= first;
         third -= second;
-        third ^= (second >>> 15);
+        third ^= second >>> 15;
         return new Hash32(third);
     }
 }

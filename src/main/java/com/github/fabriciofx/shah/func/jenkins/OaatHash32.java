@@ -17,7 +17,6 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * Jenkins One At A Time Hash</a>
  *
  * @since 0.0.1
- * @checkstyle UnnecessaryParenthesesCheck (100 lines)
  */
 public final class OaatHash32 implements Func {
     /**
@@ -37,13 +36,13 @@ public final class OaatHash32 implements Func {
     public Hash hash() {
         int hash = 0;
         for (final byte datum : this.key.asBytes()) {
-            hash += (datum & 0xff);
-            hash += (hash << 10);
-            hash ^= (hash >>> 6);
+            hash += datum & 0xff;
+            hash += hash << 10;
+            hash ^= hash >>> 6;
         }
-        hash += (hash << 3);
-        hash ^= (hash >>> 11);
-        hash += (hash << 15);
+        hash += hash << 3;
+        hash ^= hash >>> 11;
+        hash += hash << 15;
         return new Hash32(hash);
     }
 }

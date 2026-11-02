@@ -19,7 +19,6 @@ import org.llorllale.cactoos.matchers.IsTrue;
 /**
  * Hash tests.
  * @since 0.0.1
- * @checkstyle UnnecessaryParenthesesCheck (100 lines)
  */
 @SuppressWarnings({
     "PMD.UnitTestShouldIncludeAssert",
@@ -30,11 +29,11 @@ final class HashTest {
     void compareTwoDiff() {
         final Function<Long, Long> murmur = key -> {
             long hash = key;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             hash *= 0xff51afd7ed558ccdL;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             hash *= 0xc4ceb9fe1a85ec53L;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             return hash;
         };
         boolean failed = false;
@@ -79,11 +78,11 @@ final class HashTest {
     void compareTwoHashesBitToBit() {
         final Function<Long, Long> murmur = key -> {
             long hash = key;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             hash *= 0xff51afd7ed558ccdL;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             hash *= 0xc4ceb9fe1a85ec53L;
-            hash ^= (hash >>> 33);
+            hash ^= hash >>> 33;
             return hash;
         };
         boolean failed = false;

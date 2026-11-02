@@ -11,7 +11,6 @@ import java.nio.ByteOrder;
 /**
  * MurmurLike.
  * @since 0.0.1
- * @checkstyle UnnecessaryParenthesesCheck (100 lines)
  */
 public final class MurmurLike implements Func {
     /**
@@ -33,11 +32,11 @@ public final class MurmurLike implements Func {
             .wrap(this.key.asBytes())
             .order(ByteOrder.LITTLE_ENDIAN)
             .getLong();
-        hash ^= (hash >>> 33);
+        hash ^= hash >>> 33;
         hash *= 0xff51afd7ed558ccdL;
-        hash ^= (hash >>> 33);
+        hash ^= hash >>> 33;
         hash *= 0xc4ceb9fe1a85ec53L;
-        hash ^= (hash >>> 33);
+        hash ^= hash >>> 33;
         return new Hash64(hash);
     }
 }
