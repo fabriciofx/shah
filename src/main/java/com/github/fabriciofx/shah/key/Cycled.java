@@ -35,15 +35,8 @@ public final class Cycled implements Key {
                 final byte[] cycle = new byte[length];
                 random.nextBytes(cycle);
                 final int mixed = Cycled.finalMix(index ^ 0x746A94F1);
-                cycle[0] = (byte) mixed;
-                if (length > 1) {
-                    cycle[1] = (byte) (mixed >>> 8);
-                }
-                if (length > 2) {
-                    cycle[2] = (byte) (mixed >>> 16);
-                }
-                if (length > 3) {
-                    cycle[3] = (byte) (mixed >>> 24);
+                for (int pos = 0; pos < Math.min(length, 4); ++pos) {
+                    cycle[pos] = (byte) (mixed >>> pos * 8);
                 }
                 final byte[] bytes = key.asBytes();
                 for (int pos = 0; pos < bytes.length; ++pos) {
