@@ -162,7 +162,6 @@ final class OaatHash32Test {
             "oaat must pass sanity test",
             new SanityTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 32
             ).metric().value(),
             new IsLessThan(0.01, "sanity failure ratio")
@@ -175,7 +174,6 @@ final class OaatHash32Test {
             "oaat zeroes test (known weakness: all-zero keys collide)",
             new ZeroesTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 204_800
             ).metric().ratio().value(),
             new IsLessThan(100_000.0, "zeroes collision ratio")
@@ -202,7 +200,6 @@ final class OaatHash32Test {
             "oaat two-bytes test (known elevated collision rate)",
             new TwoBytesTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 4
             ).metric().ratio().value(),
             new IsLessThan(25.0, "two-bytes collision ratio")
@@ -215,7 +212,6 @@ final class OaatHash32Test {
             "oaat must pass sparse key test",
             new SparseKeyTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 32,
                 3
             ).metric().ratio().value(),
@@ -229,7 +225,6 @@ final class OaatHash32Test {
             "oaat must pass permutation test",
             new PermutationTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
                 4
             ).metric().ratio().value(),
@@ -243,7 +238,6 @@ final class OaatHash32Test {
             "oaat windowed key test (known weakness with auto-sized window)",
             new WindowedKeyTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 4,
                 12
             ).metric().ratios().worst().value(),
@@ -257,7 +251,6 @@ final class OaatHash32Test {
             "oaat must pass text test",
             new TextTest(
                 (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32(),
                 "Foo".getBytes(StandardCharsets.UTF_8),
                 "Bar".getBytes(StandardCharsets.UTF_8),
                 4
@@ -313,8 +306,7 @@ final class OaatHash32Test {
         new Assertion<>(
             "oaat PRNG test (known weakness: zero fixed point)",
             new PrngTest(
-                (key, seed) -> new OaatHash32(key).hash(),
-                new Seed32()
+                (key, seed) -> new OaatHash32(key).hash()
             ).metric().ratio().value(),
             new IsLessThan(100_000.0, "PRNG collision ratio")
         ).affirm();
