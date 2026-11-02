@@ -248,8 +248,8 @@ final class Lookup2Hash32Test {
             new PermutationTest(
                 (key, seed) -> new Lookup2Hash32(key, seed).hash(),
                 new Seed32(),
-                new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
-                4
+                new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
+                5
             ).metric().ratio().value(),
             new IsLessThan(10.0, "permutation collision ratio")
         ).affirm();
