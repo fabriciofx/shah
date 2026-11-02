@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
 import com.github.fabriciofx.shah.metric.Ratio;
+import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -73,6 +74,16 @@ public final class SanityTest implements Test<Ratio> {
      * Number of repetitions.
      */
     private final int repetitions;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param max Maximum key length to test
+     */
+    public SanityTest(final BiFunction<Key, Seed, Hash> func, final int max) {
+        this(func, new Seed32(0), max, SanityTest.DEFAULT_INITIAL, 10);
+    }
 
     /**
      * Ctor.

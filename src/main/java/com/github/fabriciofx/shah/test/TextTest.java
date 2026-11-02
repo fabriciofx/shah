@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -63,6 +64,23 @@ public final class TextTest implements Test<Collisions> {
      * Number of varying positions between prefix and suffix.
      */
     private final int varying;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param prefix Prefix bytes
+     * @param suffix Suffix bytes
+     * @param varying Number of varying positions
+     */
+    public TextTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final byte[] prefix,
+        final byte[] suffix,
+        final int varying
+    ) {
+        this(func, new Seed32(0), prefix, suffix, varying);
+    }
 
     /**
      * Ctor.

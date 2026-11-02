@@ -14,6 +14,7 @@ import com.github.fabriciofx.shah.family.FamilyOf;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Rotated;
+import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.stat.Expected;
 import java.util.function.BiFunction;
 
@@ -63,6 +64,21 @@ public final class WindowedKeyTest implements Test<Family> {
      * Initial window width in bits.
      */
     private final int width;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param size Key length in bytes
+     * @param width Window width in bits
+     */
+    public WindowedKeyTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final int size,
+        final int width
+    ) {
+        this(func, new Seed32(0), size, width);
+    }
 
     /**
      * Ctor.

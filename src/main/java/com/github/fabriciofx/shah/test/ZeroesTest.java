@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -53,6 +54,16 @@ public final class ZeroesTest implements Test<Collisions> {
      * Maximum key size to test.
      */
     private final int max;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param max Maximum key size to test
+     */
+    public ZeroesTest(final BiFunction<Key, Seed, Hash> func, final int max) {
+        this(func, new Seed32(0), max);
+    }
 
     /**
      * Ctor.

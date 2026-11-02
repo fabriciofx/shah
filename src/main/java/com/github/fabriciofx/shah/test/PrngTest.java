@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -57,6 +58,15 @@ public final class PrngTest implements Test<Collisions> {
      */
     public PrngTest(final BiFunction<Key, Seed, Hash> func, final Seed seed) {
         this(func, seed, 100_000);
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     */
+    public PrngTest(final BiFunction<Key, Seed, Hash> func) {
+        this(func, new Seed32(0), 100_000);
     }
 
     /**

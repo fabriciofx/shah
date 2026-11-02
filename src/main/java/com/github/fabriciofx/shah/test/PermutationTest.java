@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -55,6 +56,21 @@ public final class PermutationTest implements Test<Collisions> {
      * Number of positions in the key.
      */
     private final int positions;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param values Byte values to permute
+     * @param positions Number of positions in the key
+     */
+    public PermutationTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final byte[] values,
+        final int positions
+    ) {
+        this(func, new Seed32(0), values, positions);
+    }
 
     /**
      * Ctor.

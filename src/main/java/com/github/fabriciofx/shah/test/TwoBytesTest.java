@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Test;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -52,6 +53,19 @@ public final class TwoBytesTest implements Test<Collisions> {
      * Key's size.
      */
     private final int size;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param size Key length
+     */
+    public TwoBytesTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final int size
+    ) {
+        this(func, new Seed32(0), size);
+    }
 
     /**
      * Ctor.

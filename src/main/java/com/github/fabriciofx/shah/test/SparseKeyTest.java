@@ -13,6 +13,7 @@ import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
 import com.github.fabriciofx.shah.scalar.LongAsBytes;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
@@ -57,6 +58,21 @@ public final class SparseKeyTest implements Test<Collisions> {
      * Maximum number of bits set to 1.
      */
     private final int max;
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under test
+     * @param total Total key length in bits
+     * @param max Maximum number of bits set to 1
+     */
+    public SparseKeyTest(
+        final BiFunction<Key, Seed, Hash> func,
+        final int total,
+        final int max
+    ) {
+        this(func, new Seed32(0), total, max);
+    }
 
     /**
      * Ctor.
