@@ -125,13 +125,13 @@ public final class MomentChi2Test implements Test<Double> {
     private double[] accumulate(final int bits) {
         final double[] result = new double[8];
         final byte[] bytes = new byte[this.size];
-        MomentChi2Test.toLittleEndian(bytes, (long) -this.step);
+        MomentChi2Test.store(bytes, (long) -this.step);
         long prev = MomentChi2Test.hashToLong(
             this.func.apply(new KeyOf(bytes.clone()), this.seed),
             bits
         );
         for (int idx = 0; idx < this.count; ++idx) {
-            MomentChi2Test.toLittleEndian(bytes, (long) idx * this.step);
+            MomentChi2Test.store(bytes, (long) idx * this.step);
             final long hash = MomentChi2Test.hashToLong(
                 this.func.apply(new KeyOf(bytes.clone()), this.seed),
                 bits
@@ -208,7 +208,7 @@ public final class MomentChi2Test implements Test<Double> {
         return result;
     }
 
-    private static void toLittleEndian(final byte[] buf, final long value) {
+    private static void store(final byte[] buf, final long value) {
         final int length = Math.min(buf.length, 8);
         for (int idx = 0; idx < length; ++idx) {
             buf[idx] = (byte) (value >>> (idx * 8));
