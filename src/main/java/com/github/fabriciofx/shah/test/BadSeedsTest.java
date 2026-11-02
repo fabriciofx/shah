@@ -103,11 +103,6 @@ public final class BadSeedsTest implements Test<Ratio> {
         return new Ratio(failures, this.seeds.length);
     }
 
-    /**
-     * Test a single seed value.
-     * @param seed The seed to test
-     * @return True if the seed passes all checks
-     */
     private boolean testSeed(final Seed seed) {
         boolean passed = true;
         for (final int size : BadSeedsTest.SIZES) {
@@ -119,13 +114,6 @@ public final class BadSeedsTest implements Test<Ratio> {
         return passed;
     }
 
-    /**
-     * Test a single seed with a single key size.
-     * @param seed The seed to test
-     * @param size The key size
-     * @return True if the seed passes for this size (no zero hash for
-     *  zero-filled key and no collisions)
-     */
     private boolean testSize(final Seed seed, final int size) {
         final Hashes hashes = new HashesOf();
         boolean passed = true;

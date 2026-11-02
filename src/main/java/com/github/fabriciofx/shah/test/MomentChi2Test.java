@@ -119,12 +119,6 @@ public final class MomentChi2Test implements Test<Double> {
         );
     }
 
-    /**
-     * Accumulate popcount moments over all keys.
-     * Returns 8 values: mean/var for bits-1, bits-0, dbits-1, dbits-0.
-     * @param bits Number of hash bits to analyze
-     * @return Array of 8 accumulated moment values
-     */
     private double[] accumulate(final int bits) {
         final double[] result = new double[8];
         final byte[] bytes = new byte[this.size];
@@ -146,11 +140,6 @@ public final class MomentChi2Test implements Test<Double> {
         return result;
     }
 
-    /**
-     * Pick reference values based on hash width.
-     * @param bits Number of hash bits
-     * @return Array with {srefh, srefl}
-     */
     private static double[] refs(final int bits) {
         final double[] ref = new double[2];
         if (bits > 32) {
@@ -163,14 +152,6 @@ public final class MomentChi2Test implements Test<Double> {
         return ref;
     }
 
-    /**
-     * Compute worst chi-squared across all 4 moment pairs.
-     * @param moments The 8 accumulated moment values
-     * @param num Number of keys
-     * @param srefh Reference mean
-     * @param srefl Reference variance term
-     * @return Worst chi-squared value
-     */
     private static double worstChi(
         final double[] moments,
         final double num,
@@ -193,13 +174,6 @@ public final class MomentChi2Test implements Test<Double> {
         return worst;
     }
 
-    /**
-     * Add popcount-based 5th power moments to the accumulator.
-     * @param acc Accumulator array
-     * @param off Offset into accumulator (0 for raw, 4 for derivative)
-     * @param value Hash value (up to 64 bits)
-     * @param bits Number of hash bits
-     */
     private static void addMoments(
         final double[] acc,
         final int off,
@@ -215,12 +189,6 @@ public final class MomentChi2Test implements Test<Double> {
         acc[off + 3] += zpow * zpow;
     }
 
-    /**
-     * Extract up to 64 bits from a hash as a long value.
-     * @param hash The hash
-     * @param bits Number of bits to use
-     * @return Long value from the hash bytes
-     */
     private static long hashToLong(final Hash hash, final int bits) {
         final byte[] bytes = hash.asBytes();
         final int length = Math.min(
@@ -237,11 +205,6 @@ public final class MomentChi2Test implements Test<Double> {
         return result;
     }
 
-    /**
-     * Store a long value into a byte array in little-endian order.
-     * @param buf Target buffer
-     * @param value Value to store
-     */
     private static void toLittleEndian(final byte[] buf, final long value) {
         final int length = Math.min(buf.length, 8);
         for (int idx = 0; idx < length; ++idx) {
@@ -249,14 +212,6 @@ public final class MomentChi2Test implements Test<Double> {
         }
     }
 
-    /**
-     * Compute chi-squared statistic.
-     * @param observed Observed mean
-     * @param variance Observed variance
-     * @param refmean Reference mean
-     * @param refvar Reference variance term
-     * @return Chi-squared value
-     */
     private static double chiSquared(
         final double observed,
         final double variance,

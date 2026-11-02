@@ -103,11 +103,6 @@ public final class VerificationTest implements Test<Long> {
         );
     }
 
-    /**
-     * Convert the first 4 bytes to a little-endian integer.
-     * @param bytes The byte array
-     * @return Little-endian unsigned 32-bit integer as long
-     */
     private static long littleEndian(final byte[] bytes) {
         return Integer.toUnsignedLong(
             VerificationTest.loWord(bytes)
@@ -115,21 +110,11 @@ public final class VerificationTest implements Test<Long> {
         );
     }
 
-    /**
-     * Extract low 16 bits from first 2 bytes.
-     * @param bytes The byte array
-     * @return Low word as int
-     */
     private static int loWord(final byte[] bytes) {
         return (bytes[0] & VerificationTest.BYTE_MASK)
             | ((bytes[1] & VerificationTest.BYTE_MASK) << 8);
     }
 
-    /**
-     * Extract high 16 bits from bytes 2 and 3.
-     * @param bytes The byte array
-     * @return High word as int
-     */
     private static int hiWord(final byte[] bytes) {
         return ((bytes[2] & VerificationTest.BYTE_MASK) << 16)
             | ((bytes[3] & VerificationTest.BYTE_MASK) << 24);

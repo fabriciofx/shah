@@ -74,12 +74,6 @@ public final class DistributionScore implements Metric<Double> {
         return worst;
     }
 
-    /**
-     * Calculate the maximum window width for the given key count.
-     * The number of bins must not exceed nkeys / 5.
-     * @param nkeys Number of keys
-     * @return The maximum window width
-     */
     private static int maxWidth(final int nkeys) {
         int width = 0;
         while ((1 << (width + 1)) <= nkeys / 5) {
@@ -88,14 +82,6 @@ public final class DistributionScore implements Metric<Double> {
         return width;
     }
 
-    /**
-     * Calculate the distribution score for the given bins.
-     *
-     * @param bins The bin counts
-     * @param bincount Number of bins
-     * @param keycount Number of keys
-     * @return Score where 0.0 is perfect, 1.0 is worst
-     */
     private static double score(
         final int[] bins,
         final int bincount,

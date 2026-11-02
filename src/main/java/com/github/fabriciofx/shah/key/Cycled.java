@@ -71,11 +71,6 @@ public final class Cycled implements Key {
         return this.key.value().size();
     }
 
-    /**
-     * MurmurHash3 32-bit finalizer (f3mix from SMHasher).
-     * @param value Input value
-     * @return Mixed value
-     */
     private static int finalMix(final int value) {
         int mixed = value;
         mixed ^= mixed >>> 16;
