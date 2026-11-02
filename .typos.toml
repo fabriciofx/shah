@@ -12,3 +12,5 @@ extend-ignore-re = [
   "[0-9a-f]{8,}"
 ]
 
+[default.extend-words]
+permut = "permut"
