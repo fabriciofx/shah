@@ -40,6 +40,9 @@ behind Shah.
 - Hash outputs of any width (32, 64, 128 and 256 bits)
 - JMH benchmarks
 
+All hash functions tested by SMHasher, with their output width, seed and
+known problems, are listed in [ALGORITHMS.md](ALGORITHMS.md).
+
 ## How to use
 
 Shah is not published on Maven Central yet. Build and install it locally:
