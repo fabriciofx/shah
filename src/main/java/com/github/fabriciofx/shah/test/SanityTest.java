@@ -24,10 +24,10 @@ import java.util.function.BiFunction;
  * <p>For each repetition, generates a random key and verifies two
  * fundamental properties:</p>
  * <ol>
- *   <li><b>Bit sensitivity</b>: flipping any single input bit must
- *       produce a different hash value.</li>
- *   <li><b>Determinism</b>: flipping the bit back must restore the
- *       original hash value.</li>
+ * <li><b>Bit sensitivity</b>: flipping any single input bit must
+ * produce a different hash value.</li>
+ * <li><b>Determinism</b>: flipping the bit back must restore the
+ * original hash value.</li>
  * </ol>
  *
  * <p>Returns the proportion of failed checks (0.0 means all checks

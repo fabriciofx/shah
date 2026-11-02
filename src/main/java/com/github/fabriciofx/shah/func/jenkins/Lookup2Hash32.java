@@ -14,7 +14,7 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * Jenkins Lookup2 hash.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Jenkins_hash_function#Lookup2">
- * Jenkins Lookup2 Hash</a>
+ *  Jenkins Lookup2 Hash</a>
  * @since 0.0.1
  * @checkstyle FallThroughCheck (300 lines)
  * @checkstyle CyclomaticComplexityCheck (300 lines)

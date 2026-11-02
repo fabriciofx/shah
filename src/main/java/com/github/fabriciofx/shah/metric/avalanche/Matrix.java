@@ -14,15 +14,14 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * <p>An avalanche matrix is a statistical representation used to evaluate how
  * changes in input bits affect output bits in a function, typically a hash
  * function or cryptographic primitive.
- * More precisely, it is a matrix where each element Pij represents:
+ * More precisely, it is a matrix where each element Pij represents
+ * {@code P(output bit j flips | input bit i flipped)}.</p>
  *
- *              P(output bit j flips | input bit i flipped)
- *
- * In other words, it measures the probability that a specific output bit
+ * <p>In other words, it measures the probability that a specific output bit
  * changes when a specific input bit is toggled.
  * An ideal avalanche matrix has values close to 0.5 in every cell, indicating
  * that flipping any single input bit causes each output bit to change with
- * equal probability.<p>
+ * equal probability.</p>
  *
  * @since 0.0.1
  */
@@ -64,8 +63,7 @@ public final class Matrix implements Metric<double[][]> {
      * Computer the probability of elements of the matrix under a threshold
      * (normally 50%).
      *
-     * @param threshold The threshold value. If not specified, a 50% threshold
-     *  will be assumed.
+     * @param threshold The threshold value, usually 50%
      * @return The probability of elements under a threshold
      */
     public double probability(final double... threshold) {

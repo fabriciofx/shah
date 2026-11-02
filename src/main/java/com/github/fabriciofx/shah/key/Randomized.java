@@ -21,8 +21,8 @@ import java.util.Random;
 public final class Randomized implements Key {
 
     /**
-    * Bytes.
-    */
+     * Bytes.
+     */
     private final Scalar<byte[]> bytes;
 
     /**
@@ -35,11 +35,11 @@ public final class Randomized implements Key {
     }
 
     /**
-    * Ctor.
-    *
-    * @param key Key
-    * @param seed Seed for randomization
-    */
+     * Ctor.
+     *
+     * @param key Key
+     * @param seed Seed for randomization
+     */
     public Randomized(final Key key, final long seed) {
         this(key, new Random(seed));
     }

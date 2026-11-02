@@ -21,7 +21,7 @@ import java.util.function.BiFunction;
  * Avalanche test from SMHasher.
  *
  * <p>Generate flip-count bins and compute the worst avalanche bias. The worst
- * bias as a value between 0.0 and 1.0.<p>
+ * bias as a value between 0.0 and 1.0.</p>
  *
  * <p>For each input bit, flips it and measures how many output bits
  * change. A good hash function should flip approximately 50% of
@@ -69,7 +69,7 @@ public final class AvalancheTest implements Test<Matrix> {
      * Ctor.
      *
      * @param func The hash function under test
-     * @param seed Seed for the hash function.
+     * @param seed Seed for the hash function
      * @param size Size in key
      * @param initial Initial value for key generation
      * @param repetitions Number of repetitions

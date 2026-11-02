@@ -17,8 +17,8 @@ import java.util.stream.StreamSupport;
 /**
  * Sorted.
  *
- * <p>It represents a collection of hashes sorted by their value byte to byte.
- * </p>
+ * <p>It represents a collection of hashes sorted by their value byte to
+ * byte.</p>
  *
  * @since 0.0.1
  */

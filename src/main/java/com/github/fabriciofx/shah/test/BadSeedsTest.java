@@ -23,12 +23,12 @@ import java.util.function.BiFunction;
  * Bad seeds test from SMHasher.
  *
  * <p>Tests a list of seed values for broken behavior. For each seed, the hash
- * function is evaluated with multiple key lengths and fill values to detect:
- * </p>
+ * function is evaluated with multiple key lengths and fill values to
+ * detect:</p>
  * <ul>
- *   <li>Broken seeds: zero-filled key produces a zero hash</li>
- *   <li>Collision clusters: different fill values at the same key
- *       length produce colliding hashes</li>
+ * <li>Broken seeds: zero-filled key produces a zero hash</li>
+ * <li>Collision clusters: different fill values at the same key
+ * length produce colliding hashes</li>
  * </ul>
  *
  * <p>The key lengths tested are 1, 2, 4, 8, 12, 16, 32, 64, and 128 bytes.

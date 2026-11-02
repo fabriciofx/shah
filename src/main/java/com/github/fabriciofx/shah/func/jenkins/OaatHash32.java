@@ -13,8 +13,8 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * One At A Time Hash (OAAT).
  *
  * @see <a
- * href="https://en.wikipedia.org/wiki/Jenkins_hash_function#One_at_a_time">
- * Jenkins One At A Time Hash</a>
+ *  href="https://en.wikipedia.org/wiki/Jenkins_hash_function#One_at_a_time">
+ *  Jenkins One At A Time Hash</a>
  *
  * @since 0.0.1
  */

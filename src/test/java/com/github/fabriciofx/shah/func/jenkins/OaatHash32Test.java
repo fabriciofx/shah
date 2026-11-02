@@ -37,11 +37,11 @@ import org.llorllale.cactoos.matchers.IsText;
  * <p>Note: OAAT is a simple hash function with several known
  * SMHasher weaknesses:</p>
  * <ul>
- *   <li>Fails strict avalanche test (1% bias) for small keys</li>
- *   <li>Fails BIC test (5% bias)</li>
- *   <li>Maps all zero-byte keys to 0 regardless of length</li>
- *   <li>Shows higher collision rates in two-byte sparse keysets</li>
- *   <li>Poor differential behavior with single-bit flips</li>
+ * <li>Fails strict avalanche test (1% bias) for small keys</li>
+ * <li>Fails BIC test (5% bias)</li>
+ * <li>Maps all zero-byte keys to 0 regardless of length</li>
+ * <li>Shows higher collision rates in two-byte sparse keysets</li>
+ * <li>Poor differential behavior with single-bit flips</li>
  * </ul>
  *
  * <p>Thresholds are relaxed to reflect these known limitations
