@@ -31,7 +31,7 @@ public final class Lookup2Hash32 implements Func {
     /**
      * The golden ratio, an arbitrary value.
      */
-    private static final int GOLDEN_RATIO = 0x9e3779b9;
+    private static final int GOLDEN_RATIO = 0x9E3779B9;
 
     /**
      * The key to be hashed.
@@ -64,18 +64,18 @@ public final class Lookup2Hash32 implements Func {
         int third = this.seed.asInt();
         int idx = 0;
         while (length >= 12) {
-            first += (bytes[idx] & 0xff)
-                | ((bytes[idx + 1] & 0xff) << 8)
-                | ((bytes[idx + 2] & 0xff) << 16)
-                | ((bytes[idx + 3] & 0xff) << 24);
-            second += (bytes[idx + 4] & 0xff)
-                | ((bytes[idx + 5] & 0xff) << 8)
-                | ((bytes[idx + 6] & 0xff) << 16)
-                | ((bytes[idx + 7] & 0xff) << 24);
-            third += (bytes[idx + 8] & 0xff)
-                | ((bytes[idx + 9] & 0xff) << 8)
-                | ((bytes[idx + 10] & 0xff) << 16)
-                | ((bytes[idx + 11] & 0xff) << 24);
+            first += (bytes[idx] & 0xFF)
+                | ((bytes[idx + 1] & 0xFF) << 8)
+                | ((bytes[idx + 2] & 0xFF) << 16)
+                | ((bytes[idx + 3] & 0xFF) << 24);
+            second += (bytes[idx + 4] & 0xFF)
+                | ((bytes[idx + 5] & 0xFF) << 8)
+                | ((bytes[idx + 6] & 0xFF) << 16)
+                | ((bytes[idx + 7] & 0xFF) << 24);
+            third += (bytes[idx + 8] & 0xFF)
+                | ((bytes[idx + 9] & 0xFF) << 8)
+                | ((bytes[idx + 10] & 0xFF) << 16)
+                | ((bytes[idx + 11] & 0xFF) << 24);
             first -= second;
             first -= third;
             first ^= third >>> 13;
@@ -109,27 +109,27 @@ public final class Lookup2Hash32 implements Func {
         third += bytes.length;
         switch (length) {
             case 11:
-                third += (bytes[idx + 10] & 0xff) << 24;
+                third += (bytes[idx + 10] & 0xFF) << 24;
             case 10:
-                third += (bytes[idx + 9] & 0xff) << 16;
+                third += (bytes[idx + 9] & 0xFF) << 16;
             case 9:
-                third += (bytes[idx + 8] & 0xff) << 8;
+                third += (bytes[idx + 8] & 0xFF) << 8;
             case 8:
-                second += (bytes[idx + 7] & 0xff) << 24;
+                second += (bytes[idx + 7] & 0xFF) << 24;
             case 7:
-                second += (bytes[idx + 6] & 0xff) << 16;
+                second += (bytes[idx + 6] & 0xFF) << 16;
             case 6:
-                second += (bytes[idx + 5] & 0xff) << 8;
+                second += (bytes[idx + 5] & 0xFF) << 8;
             case 5:
-                second += bytes[idx + 4] & 0xff;
+                second += bytes[idx + 4] & 0xFF;
             case 4:
-                first += (bytes[idx + 3] & 0xff) << 24;
+                first += (bytes[idx + 3] & 0xFF) << 24;
             case 3:
-                first += (bytes[idx + 2] & 0xff) << 16;
+                first += (bytes[idx + 2] & 0xFF) << 16;
             case 2:
-                first += (bytes[idx + 1] & 0xff) << 8;
+                first += (bytes[idx + 1] & 0xFF) << 8;
             case 1:
-                first += bytes[idx] & 0xff;
+                first += bytes[idx] & 0xFF;
             default:
                 break;
         }

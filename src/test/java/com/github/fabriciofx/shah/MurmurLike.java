@@ -33,9 +33,9 @@ public final class MurmurLike implements Func {
             .order(ByteOrder.LITTLE_ENDIAN)
             .getLong();
         hash ^= hash >>> 33;
-        hash *= 0xff51afd7ed558ccdL;
+        hash *= 0xFF51AFD7ED558CCDL;
         hash ^= hash >>> 33;
-        hash *= 0xc4ceb9fe1a85ec53L;
+        hash *= 0xC4CEB9FE1A85EC53L;
         hash ^= hash >>> 33;
         return new Hash64(hash);
     }

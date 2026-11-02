@@ -128,7 +128,7 @@ public final class Hash128 implements Hash {
     @Override
     public int hashCode() {
         long code = this.value[0];
-        code ^= this.value[1] + 0x9e3779b97f4a7c15L + (code << 6)
+        code ^= this.value[1] + 0x9E3779B97F4A7C15L + (code << 6)
             + (code >>> 2);
         return Long.hashCode(code);
     }

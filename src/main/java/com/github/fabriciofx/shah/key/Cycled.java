@@ -23,17 +23,17 @@ public final class Cycled implements Key {
     /**
      * Mix constant from SMHasher f3mix.
      */
-    private static final int MIX_XOR = 0x746a94f1;
+    private static final int MIX_XOR = 0x746A94F1;
 
     /**
      * First mix multiplier.
      */
-    private static final int MIX_MUL1 = 0x85ebca6b;
+    private static final int MIX_MUL1 = 0x85EBCA6B;
 
     /**
      * Second mix multiplier.
      */
-    private static final int MIX_MUL2 = 0xc2b2ae35;
+    private static final int MIX_MUL2 = 0xC2B2AE35;
 
     /**
      * Cycled key.

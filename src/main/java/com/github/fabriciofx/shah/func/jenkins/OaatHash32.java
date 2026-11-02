@@ -36,7 +36,7 @@ public final class OaatHash32 implements Func {
     public Hash hash() {
         int hash = 0;
         for (final byte datum : this.key.asBytes()) {
-            hash += datum & 0xff;
+            hash += datum & 0xFF;
             hash += hash << 10;
             hash ^= hash >>> 6;
         }

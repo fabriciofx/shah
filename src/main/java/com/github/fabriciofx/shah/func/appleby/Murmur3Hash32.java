@@ -49,7 +49,7 @@ public final class Murmur3Hash32 implements Func {
             offset += 4;
             hash ^= scramble(data);
             hash = (hash << 13) | (hash >>> 19);
-            hash = hash * 5 + 0xe6546b64;
+            hash = hash * 5 + 0xE6546B64;
         }
         data = 0;
         for (int idx = length & 3; idx != 0; --idx) {
@@ -59,18 +59,18 @@ public final class Murmur3Hash32 implements Func {
         hash ^= scramble(data);
         hash ^= length;
         hash ^= hash >>> 16;
-        hash *= 0x85ebca6b;
+        hash *= 0x85EBCA6B;
         hash ^= hash >>> 13;
-        hash *= 0xc2b2ae35;
+        hash *= 0xC2B2AE35;
         hash ^= hash >>> 16;
         return new Hash32(hash);
     }
 
     private static int scramble(final int value) {
         int scrambled = value;
-        scrambled *= 0xcc9e2d51;
+        scrambled *= 0xCC9E2D51;
         scrambled = (scrambled << 15) | (scrambled >>> 17);
-        scrambled *= 0x1b873593;
+        scrambled *= 0x1B873593;
         return scrambled;
     }
 
