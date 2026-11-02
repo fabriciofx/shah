@@ -41,6 +41,7 @@ public final class DistributionScore implements Metric<Double> {
 
     /**
      * Ctor.
+     *
      * @param hashes Hash to analyze
      */
     public DistributionScore(final Hashes hashes) {

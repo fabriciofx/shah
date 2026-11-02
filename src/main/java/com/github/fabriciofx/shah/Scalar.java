@@ -6,6 +6,7 @@ package com.github.fabriciofx.shah;
 
 /**
  * Scalar.
+ *
  * @param <T> Type of the scalar value
  * @since 0.0.1
  */
@@ -14,6 +15,7 @@ public interface Scalar<T> {
 
     /**
      * Get the scalar value.
+     *
      * @return The scalar value
      */
     T value();

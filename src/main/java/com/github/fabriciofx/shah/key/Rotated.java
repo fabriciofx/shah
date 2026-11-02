@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Key;
  * <p>Set the low width bits of the byte array to value, then left-rotate the
  * entire array by rotate bits. Matches SMHasher's approach:
  * {@code key = i; lrot(key, size, j)}.</p>
+ *
  * @since 0.0.1
  */
 public final class Rotated implements Key {
@@ -38,6 +39,7 @@ public final class Rotated implements Key {
 
     /**
      * Ctor.
+     *
      * @param key Key to be rotated
      * @param value Value to set in low bits
      * @param width Width in bits

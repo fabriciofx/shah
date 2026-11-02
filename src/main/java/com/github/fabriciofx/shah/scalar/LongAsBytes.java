@@ -8,6 +8,7 @@ import com.github.fabriciofx.shah.Scalar;
 
 /**
  * LongAsBytes.
+ *
  * @since 0.0.1
  */
 public final class LongAsBytes implements Scalar<byte[]> {
@@ -24,6 +25,7 @@ public final class LongAsBytes implements Scalar<byte[]> {
 
     /**
      * Ctor.
+     *
      * @param input The value to be converted
      */
     public LongAsBytes(final long input) {
@@ -32,6 +34,7 @@ public final class LongAsBytes implements Scalar<byte[]> {
 
     /**
      * Ctor.
+     *
      * @param input The value to be converted
      * @param bits The amount of bits
      */

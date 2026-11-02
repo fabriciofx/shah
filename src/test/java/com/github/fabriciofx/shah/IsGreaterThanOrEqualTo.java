@@ -28,6 +28,7 @@ public final class IsGreaterThanOrEqualTo extends TypeSafeMatcher<Double> {
 
     /**
      * Ctor.
+     *
      * @param threshold The threshold value
      * @param label Description label for the metric
      */

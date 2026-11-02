@@ -40,6 +40,7 @@ public final class Collisions implements Metric<Integer> {
 
     /**
      * Ctor.
+     *
      * @param hashes The hashes
      */
     public Collisions(final Hashes hashes) {
@@ -67,6 +68,7 @@ public final class Collisions implements Metric<Integer> {
     /**
      * Compute the ratio between the number of collisions and the expected
      * number of collisions.
+     *
      * @return The ratio {@code actual / expected} is returned. SMHasher
      *  considers a ratio above 2.0 as a failure
      */

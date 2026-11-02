@@ -17,18 +17,21 @@ public interface Family {
 
     /**
      * Add hashes to the family.
+     *
      * @param hashes A hashes
      */
     void add(Hashes hashes);
 
     /**
      * Retrieve an amount of hashes the family has.
+     *
      * @return The amount of hashes the family has
      */
     int count();
 
     /**
      * Retrieve the ratios of all family.
+     *
      * @return The ratios of all family
      */
     Ratios ratios();

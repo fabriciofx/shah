@@ -58,6 +58,7 @@ public final class PerlinNoiseTest implements Test<Collisions> {
 
     /**
      * Ctor with defaults (10-bit X, 10-bit Y, 4-byte keys).
+     *
      * @param func The hash function under test, accepting (key, seed)
      */
     public PerlinNoiseTest(final BiFunction<Key, Seed, Hash> func) {
@@ -71,6 +72,7 @@ public final class PerlinNoiseTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test, accepting (key, seed)
      * @param size Input key length in bytes
      * @param xbits Number of bits for X coordinate

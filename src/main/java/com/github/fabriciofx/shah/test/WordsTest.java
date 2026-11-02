@@ -44,6 +44,7 @@ public final class WordsTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The key's seed
      * @param words The words

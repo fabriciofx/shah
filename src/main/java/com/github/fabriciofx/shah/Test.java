@@ -6,6 +6,7 @@ package com.github.fabriciofx.shah;
 
 /**
  * Test.
+ *
  * @param <T> Type of the test metric
  * @since 0.0.1
  */
@@ -14,6 +15,7 @@ public interface Test<T> {
 
     /**
      * Get the metric of the test.
+     *
      * @return The metric of the test
      */
     T metric();

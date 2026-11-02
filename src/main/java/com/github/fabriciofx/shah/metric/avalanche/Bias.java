@@ -54,6 +54,7 @@ public final class Bias implements Metric<double[][]> {
 
     /**
      * Compute the mean of the bias.
+     *
      * @return The mean
      */
     public double mean() {
@@ -65,6 +66,7 @@ public final class Bias implements Metric<double[][]> {
 
     /**
      * Compute the worst bias. The worst bias is a value between 0.0 and 1.0.
+     *
      * @return The worst bias
      */
     public double max() {
@@ -76,6 +78,7 @@ public final class Bias implements Metric<double[][]> {
 
     /**
      * Compute the root-mean-square (rms) of the bias.
+     *
      * @return The rms
      */
     public double rms() {
@@ -90,6 +93,7 @@ public final class Bias implements Metric<double[][]> {
 
     /**
      * Compute the worst bias in a row.
+     *
      * @param num The row number (0 based)
      * @return The worst bias in a row
      */
@@ -101,6 +105,7 @@ public final class Bias implements Metric<double[][]> {
 
     /**
      * Compute the worst bias in a column.
+     *
      * @param num The column number (0 based)
      * @return The worst bias in a column
      */

@@ -34,6 +34,7 @@ public final class FamilyOf implements Family {
 
     /**
      * Ctor.
+     *
      * @param members A list of hashes
      */
     public FamilyOf(final List<Hashes> members) {

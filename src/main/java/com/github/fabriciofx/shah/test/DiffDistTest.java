@@ -67,6 +67,7 @@ public final class DiffDistTest implements Test<Double> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param size Key's size in byte

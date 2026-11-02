@@ -26,6 +26,7 @@ public final class Hash128 implements Hash {
 
     /**
      * Ctor.
+     *
      * @param scalar A Scalar the returns a byte[]
      */
     public Hash128(final Scalar<byte[]> scalar) {

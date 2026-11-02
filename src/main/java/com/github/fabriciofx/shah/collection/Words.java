@@ -52,6 +52,7 @@ public final class Words implements Collection<String> {
 
     /**
      * Ctor.
+     *
      * @param count Number of words
      * @param min Minimum word length
      * @param max Maximum word length
@@ -62,6 +63,7 @@ public final class Words implements Collection<String> {
 
     /**
      * Ctor.
+     *
      * @param count Number of words
      * @param min Minimum word length
      * @param max Maximum word length
@@ -95,6 +97,7 @@ public final class Words implements Collection<String> {
 
     /**
      * Ctor.
+     *
      * @param items The set of words
      */
     public Words(final Scalar<Set<String>> items) {

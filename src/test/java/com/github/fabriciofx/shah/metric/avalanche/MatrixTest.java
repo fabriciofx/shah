@@ -15,6 +15,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
 
 /**
  * Matrix tests.
+ *
  * @since 0.0.1
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")

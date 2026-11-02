@@ -59,6 +59,7 @@ public final class CollisionTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed Key seed
      * @param size Key size

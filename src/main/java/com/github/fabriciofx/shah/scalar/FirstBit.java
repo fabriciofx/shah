@@ -25,6 +25,7 @@ public final class FirstBit implements Scalar<Integer> {
 
     /**
      * Ctor.
+     *
      * @param diff Byte difference (XOR) between two bytes
      * @param index Bit index (0-7)
      */
@@ -34,6 +35,7 @@ public final class FirstBit implements Scalar<Integer> {
 
     /**
      * Ctor.
+     *
      * @param value Byte value
      * @param index Bit index (0-7)
      */

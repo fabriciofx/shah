@@ -75,6 +75,7 @@ public final class SanityTest implements Test<Ratio> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param max Maximum key length to test
@@ -95,6 +96,7 @@ public final class SanityTest implements Test<Ratio> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param max Maximum key length to test

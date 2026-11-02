@@ -8,6 +8,7 @@ import com.github.fabriciofx.shah.Metric;
 
 /**
  * Ratio.
+ *
  * @since 0.0.1
  */
 public final class Ratio implements Metric<Double> {
@@ -24,6 +25,7 @@ public final class Ratio implements Metric<Double> {
 
     /**
      * Ctor.
+     *
      * @param antecedent The ratio numerator
      * @param consequent The ratio denominator
      */

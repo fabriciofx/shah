@@ -59,6 +59,7 @@ public final class SeedTest implements Test<Collisions> {
 
     /**
      * Ctor with SMHasher default text.
+     *
      * @param func The hash function under test, accepting (key, seed)
      * @param count Number of seeds to test
      */
@@ -71,6 +72,7 @@ public final class SeedTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test, accepting (key, seed)
      * @param count Number of seeds to test
      * @param key The fixed key to hash with varying seeds

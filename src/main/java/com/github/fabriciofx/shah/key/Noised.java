@@ -9,6 +9,7 @@ import java.util.HexFormat;
 
 /**
  * Noised.
+ *
  * @since 0.0.1
  */
 public final class Noised implements Key {
@@ -25,6 +26,7 @@ public final class Noised implements Key {
 
     /**
      * Ctor.
+     *
      * @param key The key
      * @param noise The noise
      */

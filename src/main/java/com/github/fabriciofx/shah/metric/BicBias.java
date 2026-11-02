@@ -38,6 +38,7 @@ public final class BicBias implements Metric<int[][][][]> {
 
     /**
      * Ctor.
+     *
      * @param bins Contingency tables bins[outBit1][outBit2][outcome]
      * @param repetitions Number of repetitions used to fill the bins
      */
@@ -55,6 +56,7 @@ public final class BicBias implements Metric<int[][][][]> {
      * Compute the worst BIC bias.
      *
      * <p>The worst bias is a value between 0.0 and 1.0.</p>
+     *
      * @return The worst bias
      */
     public double max() {

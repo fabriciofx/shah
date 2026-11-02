@@ -62,6 +62,7 @@ public final class DistributionTest implements Test<DistributionScore> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param size Key's size

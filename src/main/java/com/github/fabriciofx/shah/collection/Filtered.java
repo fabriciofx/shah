@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * Filtered collection of values.
+ *
  * @param <E> Type of the values
  * @since 0.0.1
  */
@@ -25,6 +26,7 @@ public final class Filtered<E extends Number> implements Collection<E> {
 
     /**
      * Ctor.
+     *
      * @param items Items to be filtered
      * @param criterion Filter criterion
      */
@@ -36,6 +38,7 @@ public final class Filtered<E extends Number> implements Collection<E> {
 
     /**
      * Ctor.
+     *
      * @param items Filtered items
      */
     public Filtered(final Scalar<List<E>> items) {

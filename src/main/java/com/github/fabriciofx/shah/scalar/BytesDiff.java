@@ -28,6 +28,7 @@ public final class BytesDiff implements Scalar<byte[]> {
 
     /**
      * Ctor.
+     *
      * @param first First byte array
      * @param second Second byte array
      */

@@ -11,6 +11,7 @@ import java.util.Random;
 
 /**
  * Cycled.
+ *
  * @since 0.0.1
  */
 public final class Cycled implements Key {
@@ -22,6 +23,7 @@ public final class Cycled implements Key {
 
     /**
      * Ctor.
+     *
      * @param key Key to be cycled
      * @param length The length of cycle
      * @param index The index

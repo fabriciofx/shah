@@ -57,6 +57,7 @@ public final class VerificationTest implements Test<Long> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      */
     public VerificationTest(final BiFunction<Key, Seed, Hash> func) {
@@ -65,6 +66,7 @@ public final class VerificationTest implements Test<Long> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      */

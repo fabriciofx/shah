@@ -74,6 +74,7 @@ public final class AppendedZeroesTest implements Test<Ratio> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      */
@@ -93,6 +94,7 @@ public final class AppendedZeroesTest implements Test<Ratio> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param size The key's size

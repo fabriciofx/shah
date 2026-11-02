@@ -31,6 +31,7 @@ public final class Sorted implements Hashes {
 
     /**
      * Ctor.
+     *
      * @param hashes Hashes to be sorted
      */
     public Sorted(final Hashes hashes) {

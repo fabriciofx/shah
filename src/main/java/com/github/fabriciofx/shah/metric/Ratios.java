@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Ratios.
+ *
  * @since 0.0.1
  */
 public final class Ratios implements Metric<List<Ratio>> {
@@ -29,6 +30,7 @@ public final class Ratios implements Metric<List<Ratio>> {
 
     /**
      * Ctor.
+     *
      * @param items A list of ratio
      */
     public Ratios(final List<Ratio> items) {
@@ -37,6 +39,7 @@ public final class Ratios implements Metric<List<Ratio>> {
 
     /**
      * Add a ratio to ratios.
+     *
      * @param ratio A ratio
      */
     public void add(final Ratio ratio) {
@@ -50,6 +53,7 @@ public final class Ratios implements Metric<List<Ratio>> {
 
     /**
      * Compute the worst ratio.
+     *
      * @return The worst ratio
      */
     public Ratio worst() {

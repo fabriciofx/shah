@@ -64,6 +64,7 @@ public final class BicTest implements Test<BicBias> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed Seed for the hash function
      * @param size Key's size in bytes

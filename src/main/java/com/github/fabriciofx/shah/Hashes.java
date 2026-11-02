@@ -15,18 +15,21 @@ public interface Hashes extends Iterable<Hash> {
 
     /**
      * Add a hash to the collection.
+     *
      * @param hash The hash to add
      */
     void add(Hash hash);
 
     /**
      * Get the number of hashes in the collection.
+     *
      * @return The number of hashes
      */
     int count();
 
     /**
      * Get the hash at the specified index.
+     *
      * @param index The index of the hash to retrieve
      * @return The hash at the specified index
      */

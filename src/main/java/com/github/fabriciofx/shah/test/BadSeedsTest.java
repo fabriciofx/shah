@@ -74,6 +74,7 @@ public final class BadSeedsTest implements Test<Ratio> {
 
     /**
      * Ctor with default seed 0.
+     *
      * @param func The hash function under test, accepting (key, seed)
      */
     public BadSeedsTest(final BiFunction<Key, Seed, Hash> func) {
@@ -82,6 +83,7 @@ public final class BadSeedsTest implements Test<Ratio> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test, accepting (key, seed)
      * @param seeds Known seed values to test
      */

@@ -67,6 +67,7 @@ public final class MomentChi2Test implements Test<Double> {
 
     /**
      * Ctor with defaults.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      */
@@ -85,6 +86,7 @@ public final class MomentChi2Test implements Test<Double> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param size Key size in bytes

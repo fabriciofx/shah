@@ -30,6 +30,7 @@ public final class BitDiff implements Scalar<Integer> {
 
     /**
      * Ctor.
+     *
      * @param first First integer
      * @param second Second integer
      */

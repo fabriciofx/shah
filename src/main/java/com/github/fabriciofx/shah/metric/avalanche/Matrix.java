@@ -35,6 +35,7 @@ public final class Matrix implements Metric<double[][]> {
 
     /**
      * Ctor.
+     *
      * @param repetitions Number of repetitions
      * @param flips Flips matrix
      */
@@ -62,6 +63,7 @@ public final class Matrix implements Metric<double[][]> {
     /**
      * Computer the probability of elements of the matrix under a threshold
      * (normally 50%).
+     *
      * @param threshold The threshold value. If not specified, a 50% threshold
      *  will be assumed.
      * @return The probability of elements under a threshold
@@ -86,6 +88,7 @@ public final class Matrix implements Metric<double[][]> {
 
     /**
      * Get the bias of the matrix.
+     *
      * @return The bias
      */
     public Bias bias() {

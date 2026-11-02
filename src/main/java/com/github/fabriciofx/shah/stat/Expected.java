@@ -13,6 +13,7 @@ import com.github.fabriciofx.shah.Scalar;
  * <p>Compute the expected value according birthday paradox. The formula is
  * {@code expected = count * (count - 1) / (2 * 2^bits)} where n is the number
  * of hashes and bits is the size of hash in bits.</p>
+ *
  * @since 0.0.1
  */
 public final class Expected implements Scalar<Double> {
@@ -29,6 +30,7 @@ public final class Expected implements Scalar<Double> {
 
     /**
      * Ctor.
+     *
      * @param hashes The hashes
      */
     public Expected(final Hashes hashes) {
@@ -37,6 +39,7 @@ public final class Expected implements Scalar<Double> {
 
     /**
      * Ctor.
+     *
      * @param count The amount of hashes
      * @param bits The size of the hash in bits
      */

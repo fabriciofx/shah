@@ -33,6 +33,7 @@ public final class HashesOf implements Hashes {
 
     /**
      * Ctor.
+     *
      * @param items Items
      */
     public HashesOf(final List<Hash> items) {

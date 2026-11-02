@@ -26,6 +26,7 @@ public final class Hash64 implements Hash {
 
     /**
      * Ctor.
+     *
      * @param scalar A Scalar the returns a byte[]
      */
     public Hash64(final Scalar<byte[]> scalar) {

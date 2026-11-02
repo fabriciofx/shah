@@ -50,6 +50,7 @@ public final class PrngTest implements Test<Collisions> {
 
     /**
      * Ctor with default count.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      */
@@ -59,6 +60,7 @@ public final class PrngTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param count Number of PRNG iterations

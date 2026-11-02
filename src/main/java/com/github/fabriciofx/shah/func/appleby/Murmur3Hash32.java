@@ -30,6 +30,7 @@ public final class Murmur3Hash32 implements Func {
 
     /**
      * Ctor.
+     *
      * @param key The key to be hashed
      * @param seed The seed
      */

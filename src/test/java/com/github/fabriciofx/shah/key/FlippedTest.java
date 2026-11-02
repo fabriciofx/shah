@@ -14,6 +14,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
 
 /**
  * Flipped tests.
+ *
  * @since 0.0.1
  */
 final class FlippedTest {

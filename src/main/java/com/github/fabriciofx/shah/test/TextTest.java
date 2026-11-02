@@ -65,6 +65,7 @@ public final class TextTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param prefix Prefix bytes

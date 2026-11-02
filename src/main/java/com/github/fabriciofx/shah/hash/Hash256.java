@@ -26,6 +26,7 @@ public final class Hash256 implements Hash {
 
     /**
      * Ctor.
+     *
      * @param scalar A Scalar the returns a byte[]
      */
     public Hash256(final Scalar<byte[]> scalar) {

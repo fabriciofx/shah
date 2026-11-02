@@ -66,6 +66,7 @@ public final class CyclicKeyTest implements Test<Collisions> {
 
     /**
      * Ctor with default key count.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param length Cycle pattern length in bytes
@@ -82,6 +83,7 @@ public final class CyclicKeyTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param length Cycle pattern length in bytes

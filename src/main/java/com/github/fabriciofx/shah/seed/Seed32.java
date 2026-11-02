@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Seed32.
+ *
  * @since 0.0.1
  */
 public final class Seed32 implements Seed {
@@ -28,6 +29,7 @@ public final class Seed32 implements Seed {
 
     /**
      * Ctor.
+     *
      * @param value The seed value
      */
     public Seed32(final int value) {

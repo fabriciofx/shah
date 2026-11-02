@@ -55,6 +55,7 @@ public final class ZeroesTest implements Test<Collisions> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed The hash function seed
      * @param max Maximum key size to test

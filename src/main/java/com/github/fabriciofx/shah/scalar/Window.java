@@ -12,6 +12,7 @@ import com.github.fabriciofx.shah.Scalar;
  *
  * <p>Extract bits from a byte array at a circular bit offset. Reads up to 16
  * bits starting at the given bit position, wrapping around if necessary.</p>
+ *
  * @since 0.0.1
  */
 public final class Window implements Scalar<Integer> {
@@ -28,6 +29,7 @@ public final class Window implements Scalar<Integer> {
 
     /**
      * Ctor.
+     *
      * @param hash A hash
      * @param start A bit start position
      */

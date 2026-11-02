@@ -16,6 +16,7 @@ public interface Func {
 
     /**
      * Apply the hash function to the given key.
+     *
      * @return The hash value
      */
     Hash hash();

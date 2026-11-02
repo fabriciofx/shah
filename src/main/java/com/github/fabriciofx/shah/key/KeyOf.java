@@ -27,6 +27,7 @@ public final class KeyOf implements Key {
 
     /**
      * Ctor.
+     *
      * @param string The string
      */
     public KeyOf(final String string) {
@@ -35,6 +36,7 @@ public final class KeyOf implements Key {
 
     /**
      * Ctor.
+     *
      * @param size The size in bytes
      */
     public KeyOf(final int size) {
@@ -43,6 +45,7 @@ public final class KeyOf implements Key {
 
     /**
      * Ctor.
+     *
      * @param bytes The bytes
      */
     public KeyOf(final byte... bytes) {

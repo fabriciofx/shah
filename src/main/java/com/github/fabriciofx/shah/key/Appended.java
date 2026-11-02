@@ -24,6 +24,7 @@ public final class Appended implements Key {
 
     /**
      * Ctor.
+     *
      * @param key The key
      * @param bytes The bytes do be appended
      */

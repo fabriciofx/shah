@@ -10,6 +10,7 @@ import java.nio.ByteOrder;
 
 /**
  * MurmurLike.
+ *
  * @since 0.0.1
  */
 public final class MurmurLike implements Func {
@@ -21,6 +22,7 @@ public final class MurmurLike implements Func {
 
     /**
      * Ctor.
+     *
      * @param key The key
      */
     public MurmurLike(final Key key) {

@@ -67,6 +67,7 @@ public final class AvalancheTest implements Test<Matrix> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed Seed for the hash function.
      * @param size Size in key

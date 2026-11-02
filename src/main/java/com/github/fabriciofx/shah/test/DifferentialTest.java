@@ -65,6 +65,7 @@ public final class DifferentialTest implements Test<Family> {
 
     /**
      * Ctor.
+     *
      * @param func The hash function under test
      * @param seed Hash function seed
      * @param size Key's size in bytes

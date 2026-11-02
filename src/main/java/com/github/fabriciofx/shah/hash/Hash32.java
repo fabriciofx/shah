@@ -26,6 +26,7 @@ public final class Hash32 implements Hash {
 
     /**
      * Ctor.
+     *
      * @param scalar A Scalar the returns a byte[]
      */
     public Hash32(final Scalar<byte[]> scalar) {

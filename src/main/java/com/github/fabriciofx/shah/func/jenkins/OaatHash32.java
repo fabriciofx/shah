@@ -27,6 +27,7 @@ public final class OaatHash32 implements Func {
 
     /**
      * Ctor.
+     *
      * @param key Key to be hashed
      */
     public OaatHash32(final Key key) {
