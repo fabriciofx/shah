@@ -7,6 +7,8 @@ package com.github.fabriciofx.shah.key;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Scalar;
 import com.github.fabriciofx.shah.scalar.Cached;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.security.SecureRandom;
 import java.util.HexFormat;
 import java.util.Random;
@@ -41,7 +43,15 @@ public final class Randomized implements Key {
      * @param seed Seed for randomization
      */
     public Randomized(final Key key, final long seed) {
-        this(key, new Random(seed));
+        this(
+            key,
+            new SecureRandom(
+                ByteBuffer.allocate(Long.BYTES)
+                    .order(ByteOrder.LITTLE_ENDIAN)
+                    .putLong(seed)
+                    .array()
+            )
+        );
     }
 
     /**
