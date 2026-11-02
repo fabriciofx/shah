@@ -17,6 +17,13 @@ import com.github.fabriciofx.shah.hash.Hash128;
  */
 public final class DoNothing128 implements Func {
 
+    /**
+     * Ctor.
+     */
+    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
+    public DoNothing128() {
+    }
+
     @Override
     public Hash hash() {
         return new Hash128(0L, 0L);

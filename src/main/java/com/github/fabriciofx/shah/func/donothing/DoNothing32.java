@@ -17,6 +17,13 @@ import com.github.fabriciofx.shah.hash.Hash32;
  */
 public final class DoNothing32 implements Func {
 
+    /**
+     * Ctor.
+     */
+    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
+    public DoNothing32() {
+    }
+
     @Override
     public Hash hash() {
         return new Hash32(0);
