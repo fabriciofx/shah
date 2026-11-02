@@ -40,46 +40,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class MomentChi2Test implements Test<Double> {
     /**
-     * Reference mean for 32-bit hashes.
-     */
-    private static final double SREFH_32 = 1_391_290.0;
-
-    /**
-     * Reference variance term for 32-bit hashes (step=2).
-     */
-    private static final double SREFL_32 = 686.666_666_7;
-
-    /**
-     * Reference mean for 64-bit hashes.
-     */
-    private static final double SREFH_64 = 38_918_200.0;
-
-    /**
-     * Reference variance term for 64-bit hashes (step=2).
-     */
-    private static final double SREFL_64 = 273_633.333_333;
-
-    /**
-     * Default number of keys.
-     */
-    private static final int DEFAULT_COUNT = 1_000_000;
-
-    /**
-     * Default step between consecutive keys.
-     */
-    private static final int DEFAULT_STEP = 2;
-
-    /**
-     * Default key size in bytes.
-     */
-    private static final int DEFAULT_SIZE = 4;
-
-    /**
-     * Number of bytes to extract for popcount (max 8).
-     */
-    private static final int POPCOUNT_MAX = 8;
-
-    /**
      * The hash function under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -116,9 +76,9 @@ public final class MomentChi2Test implements Test<Double> {
         this(
             func,
             seed,
-            MomentChi2Test.DEFAULT_SIZE,
-            MomentChi2Test.DEFAULT_STEP,
-            MomentChi2Test.DEFAULT_COUNT
+            4,
+            2,
+            1_000_000
         );
     }
 
@@ -194,11 +154,11 @@ public final class MomentChi2Test implements Test<Double> {
     private static double[] refs(final int bits) {
         final double[] ref = new double[2];
         if (bits > 32) {
-            ref[0] = MomentChi2Test.SREFH_64;
-            ref[1] = MomentChi2Test.SREFL_64;
+            ref[0] = 38_918_200.0;
+            ref[1] = 273_633.333_333;
         } else {
-            ref[0] = MomentChi2Test.SREFH_32;
-            ref[1] = MomentChi2Test.SREFL_32;
+            ref[0] = 1_391_290.0;
+            ref[1] = 686.666_666_7;
         }
         return ref;
     }
@@ -265,7 +225,7 @@ public final class MomentChi2Test implements Test<Double> {
         final byte[] bytes = hash.asBytes();
         final int length = Math.min(
             bytes.length,
-            MomentChi2Test.POPCOUNT_MAX
+            8
         );
         long result = 0L;
         for (int idx = 0; idx < length; ++idx) {

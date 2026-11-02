@@ -42,12 +42,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SeedTest implements Test<Collisions> {
     /**
-     * Default key text from SMHasher.
-     */
-    private static final String DEFAULT_TEXT =
-        "The quick brown fox jumps over the lazy dog";
-
-    /**
      * The hash under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -71,7 +65,7 @@ public final class SeedTest implements Test<Collisions> {
         final BiFunction<Key, Seed, Hash> func,
         final int count
     ) {
-        this(func, count, new KeyOf(SeedTest.DEFAULT_TEXT));
+        this(func, count, new KeyOf("The quick brown fox jumps over the lazy dog"));
     }
 
     /**

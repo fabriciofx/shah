@@ -43,16 +43,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class WindowedKeyTest implements Test<Family> {
     /**
-     * Threshold.
-     */
-    private static final double THRESHOLD = 0.5;
-
-    /**
-     * Maximum window width (2^25 keys cap).
-     */
-    private static final int MAX_WINDOW = 25;
-
-    /**
      * The hash under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -98,8 +88,8 @@ public final class WindowedKeyTest implements Test<Family> {
         int window = this.width;
         int keys = 1 << window;
         while (
-            new Expected(keys, probe.bits()).value() < WindowedKeyTest.THRESHOLD
-                && window < WindowedKeyTest.MAX_WINDOW
+            new Expected(keys, probe.bits()).value() < 0.5
+                && window < 25
         ) {
             keys *= 2;
             window += 1;

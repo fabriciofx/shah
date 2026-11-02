@@ -39,11 +39,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class CyclicKeyTest implements Test<Collisions> {
     /**
-     * Default number of keys.
-     */
-    private static final int DEFAULT_COUNT = 100_000;
-
-    /**
      * The hash function under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -81,7 +76,7 @@ public final class CyclicKeyTest implements Test<Collisions> {
         final int length,
         final int repetitions
     ) {
-        this(func, seed, length, CyclicKeyTest.DEFAULT_COUNT, repetitions);
+        this(func, seed, length, 100_000, repetitions);
     }
 
     /**

@@ -28,21 +28,6 @@ public final class Words implements Collection<String> {
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     /**
-     * Default word count.
-     */
-    private static final int DEFAULT_COUNT = 100_000;
-
-    /**
-     * Default minimum word length.
-     */
-    private static final int DEFAULT_MIN_LEN = 2;
-
-    /**
-     * Default maximum word length.
-     */
-    private static final int DEFAULT_MAX_LEN = 20;
-
-    /**
      * Default random seed.
      */
     private static final long DEFAULT_SEED = 82_762L;
@@ -57,9 +42,9 @@ public final class Words implements Collection<String> {
      */
     public Words() {
         this(
-            Words.DEFAULT_COUNT,
-            Words.DEFAULT_MIN_LEN,
-            Words.DEFAULT_MAX_LEN,
+            100_000,
+            2,
+            20,
             new Random(Words.DEFAULT_SEED)
         );
     }

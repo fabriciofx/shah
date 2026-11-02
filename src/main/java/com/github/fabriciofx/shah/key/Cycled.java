@@ -15,26 +15,6 @@ import java.util.Random;
  */
 public final class Cycled implements Key {
     /**
-     * Default random seed (matches SMHasher).
-     */
-    private static final long DEFAULT_SEED = 483_723L;
-
-    /**
-     * Mix constant from SMHasher f3mix.
-     */
-    private static final int MIX_XOR = 0x746A94F1;
-
-    /**
-     * First mix multiplier.
-     */
-    private static final int MIX_MUL1 = 0x85EBCA6B;
-
-    /**
-     * Second mix multiplier.
-     */
-    private static final int MIX_MUL2 = 0xC2B2AE35;
-
-    /**
      * Cycled key.
      */
     private final Scalar<Key> key;
@@ -48,10 +28,10 @@ public final class Cycled implements Key {
     public Cycled(final Key key, final int length, final int index) {
         this.key = new Cached<>(
             () -> {
-                final Random random = new Random(Cycled.DEFAULT_SEED);
+                final Random random = new Random(483_723L);
                 final byte[] cycle = new byte[length];
                 random.nextBytes(cycle);
-                final int mixed = Cycled.finalMix(index ^ Cycled.MIX_XOR);
+                final int mixed = Cycled.finalMix(index ^ 0x746A94F1);
                 cycle[0] = (byte) mixed;
                 if (length > 1) {
                     cycle[1] = (byte) (mixed >>> 8);
@@ -99,9 +79,9 @@ public final class Cycled implements Key {
     private static int finalMix(final int value) {
         int mixed = value;
         mixed ^= mixed >>> 16;
-        mixed *= Cycled.MIX_MUL1;
+        mixed *= 0x85EBCA6B;
         mixed ^= mixed >>> 13;
-        mixed *= Cycled.MIX_MUL2;
+        mixed *= 0xC2B2AE35;
         mixed ^= mixed >>> 16;
         return mixed;
     }

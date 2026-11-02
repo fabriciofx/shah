@@ -34,11 +34,6 @@ import com.github.fabriciofx.shah.scalar.Window;
  */
 public final class DistributionScore implements Metric<Double> {
     /**
-     * Small value to check error.
-     */
-    private static final double EPSILON = 1e-10;
-
-    /**
      * Hashes to analyze.
      */
     private final Hashes hashes;
@@ -115,7 +110,7 @@ public final class DistributionScore implements Metric<Double> {
         }
         final double rms = Math.sqrt(sumsq / nbins);
         final double denominator = nbins * rms * rms - nkeys;
-        if (Math.abs(denominator) < DistributionScore.EPSILON) {
+        if (Math.abs(denominator) < 1e-10) {
             score = 0.0;
         } else {
             final double factor = (nkeys * nkeys - 1.0) / denominator;

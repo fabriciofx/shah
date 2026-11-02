@@ -28,12 +28,6 @@ import com.github.fabriciofx.shah.stat.Expected;
  */
 public final class Collisions implements Metric<Integer> {
     /**
-     * Threshold for expected collisions to avoid division by small
-     * numbers.
-     */
-    private static final double EPSILON = 0.001;
-
-    /**
      * The hashes.
      */
     private final Hashes hashes;
@@ -78,7 +72,7 @@ public final class Collisions implements Metric<Integer> {
     public Ratio ratio() {
         final Ratio ratio;
         final double expected = new Expected(this.hashes).value();
-        if (expected < Collisions.EPSILON) {
+        if (expected < 0.001) {
             ratio = new Ratio(this.colls.value(), 1.0);
         } else {
             ratio = new Ratio(this.colls.value(), expected);

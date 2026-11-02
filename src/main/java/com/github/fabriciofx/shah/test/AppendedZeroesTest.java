@@ -37,21 +37,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class AppendedZeroesTest implements Test<Ratio> {
     /**
-     * Minimum key size.
-     */
-    private static final int MIN_SIZE = 32;
-
-    /**
-     * Number of zero bytes to append (0..MAX_ZEROES-1).
-     */
-    private static final int MAX_ZEROES = 32;
-
-    /**
-     * Default number of repetitions.
-     */
-    private static final int DEFAULT_REPS = 100;
-
-    /**
      * Default key seed.
      */
     private static final Seed DEFAULT_INITIAL = new Seed64(173_994L);
@@ -98,10 +83,10 @@ public final class AppendedZeroesTest implements Test<Ratio> {
         this(
             func,
             seed,
-            AppendedZeroesTest.MIN_SIZE,
+            32,
             AppendedZeroesTest.DEFAULT_INITIAL,
-            AppendedZeroesTest.MAX_ZEROES,
-            AppendedZeroesTest.DEFAULT_REPS
+            32,
+            100
         );
     }
 

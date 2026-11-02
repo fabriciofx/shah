@@ -28,11 +28,6 @@ import com.github.fabriciofx.shah.scalar.Cached;
  */
 public final class Matrix implements Metric<double[][]> {
     /**
-     * Threshold of 50%.
-     */
-    private static final double DEFAULT_THRESHOLD = 0.50;
-
-    /**
      * Probabilities matrix.
      */
     private final Scalar<double[][]> probs;
@@ -73,7 +68,7 @@ public final class Matrix implements Metric<double[][]> {
     public double probability(final double... threshold) {
         final double limit;
         if (threshold.length == 0) {
-            limit = Matrix.DEFAULT_THRESHOLD;
+            limit = 0.50;
         } else {
             limit = threshold[0];
         }

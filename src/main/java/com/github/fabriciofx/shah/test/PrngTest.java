@@ -33,11 +33,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class PrngTest implements Test<Collisions> {
     /**
-     * Default count.
-     */
-    private static final int DEFAULT_COUNT = 100_000;
-
-    /**
      * The hash under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -58,7 +53,7 @@ public final class PrngTest implements Test<Collisions> {
      * @param seed The hash function seed
      */
     public PrngTest(final BiFunction<Key, Seed, Hash> func, final Seed seed) {
-        this(func, seed, PrngTest.DEFAULT_COUNT);
+        this(func, seed, 100_000);
     }
 
     /**

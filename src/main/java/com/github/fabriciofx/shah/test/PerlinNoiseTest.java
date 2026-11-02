@@ -36,21 +36,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class PerlinNoiseTest implements Test<Collisions> {
     /**
-     * Default X bits.
-     */
-    private static final int DEFAULT_XBITS = 10;
-
-    /**
-     * Default Y bits.
-     */
-    private static final int DEFAULT_YBITS = 10;
-
-    /**
-     * Default key size.
-     */
-    private static final int DEFAULT_SIZE = 4;
-
-    /**
      * The hash under test.
      */
     private final BiFunction<Key, Seed, Hash> func;
@@ -77,9 +62,9 @@ public final class PerlinNoiseTest implements Test<Collisions> {
     public PerlinNoiseTest(final BiFunction<Key, Seed, Hash> func) {
         this(
             func,
-            PerlinNoiseTest.DEFAULT_SIZE,
-            PerlinNoiseTest.DEFAULT_XBITS,
-            PerlinNoiseTest.DEFAULT_YBITS
+            4,
+            10,
+            10
         );
     }
 

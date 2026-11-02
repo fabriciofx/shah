@@ -43,16 +43,6 @@ import java.util.function.BiFunction;
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SanityTest implements Test<Ratio> {
     /**
-     * Minimum key length in bytes.
-     */
-    private static final int MIN_SIZE = 4;
-
-    /**
-     * Default number of repetitions.
-     */
-    private static final int DEFAULT_REPS = 10;
-
-    /**
      * Default key's seed.
      */
     private static final Seed DEFAULT_INITIAL = new Seed64(883_741L);
@@ -98,7 +88,7 @@ public final class SanityTest implements Test<Ratio> {
             seed,
             max,
             SanityTest.DEFAULT_INITIAL,
-            SanityTest.DEFAULT_REPS
+            10
         );
     }
 
@@ -130,7 +120,7 @@ public final class SanityTest implements Test<Ratio> {
         int checks = 0;
         int failures = 0;
         for (int rep = 0; rep < this.repetitions; ++rep) {
-            for (int len = SanityTest.MIN_SIZE; len <= this.max; ++len) {
+            for (int len = 4; len <= this.max; ++len) {
                 final Key key = new Randomized(new KeyOf(len), random);
                 final Hash original = this.func.apply(key, this.seed);
                 for (int bit = 0; bit < key.bits(); ++bit) {
