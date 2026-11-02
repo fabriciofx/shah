@@ -63,11 +63,12 @@ public final class SeedTest implements Test<Collisions> {
      * @param func The hash function under test, accepting (key, seed)
      * @param count Number of seeds to test
      */
-    public SeedTest(
-        final BiFunction<Key, Seed, Hash> func,
-        final int count
-    ) {
-        this(func, count, new KeyOf("The quick brown fox jumps over the lazy dog"));
+    public SeedTest(final BiFunction<Key, Seed, Hash> func, final int count) {
+        this(
+            func,
+            count,
+            new KeyOf("The quick brown fox jumps over the lazy dog")
+        );
     }
 
     /**
