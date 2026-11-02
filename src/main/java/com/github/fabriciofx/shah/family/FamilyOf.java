@@ -19,6 +19,7 @@ import java.util.List;
  * @since 0.0.1
  */
 public final class FamilyOf implements Family {
+
     /**
      * List of hashes.
      */

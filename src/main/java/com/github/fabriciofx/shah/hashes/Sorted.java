@@ -23,6 +23,7 @@ import java.util.stream.StreamSupport;
  * @since 0.0.1
  */
 public final class Sorted implements Hashes {
+
     /**
      * Sorted items.
      */

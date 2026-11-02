@@ -25,6 +25,7 @@ import com.github.fabriciofx.shah.Metric;
     "PMD.MethodReturnsInternalArray"
 })
 public final class BicBias implements Metric<int[][][][]> {
+
     /**
      * Contingency tables: bins[outputBit1][outputBit2][outcome].
      */

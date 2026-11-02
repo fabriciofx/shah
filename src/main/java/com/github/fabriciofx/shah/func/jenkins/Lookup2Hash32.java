@@ -27,6 +27,7 @@ import com.github.fabriciofx.shah.hash.Hash32;
     "PMD.NcssCount"
 })
 public final class Lookup2Hash32 implements Func {
+
     /**
      * The golden ratio, an arbitrary value.
      */

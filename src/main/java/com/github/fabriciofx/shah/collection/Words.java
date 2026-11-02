@@ -21,6 +21,7 @@ import java.util.Set;
  * @checkstyle ParameterNumberCheck (200 lines)
  */
 public final class Words implements Collection<String> {
+
     /**
      * Default character set (alphanumeric).
      */

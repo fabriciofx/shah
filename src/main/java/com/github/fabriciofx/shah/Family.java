@@ -14,6 +14,7 @@ import com.github.fabriciofx.shah.metric.Ratios;
  * @since 0.0.1
  */
 public interface Family {
+
     /**
      * Add hashes to the family.
      * @param hashes A hashes

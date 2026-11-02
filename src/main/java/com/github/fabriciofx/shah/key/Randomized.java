@@ -19,6 +19,7 @@ import java.util.Random;
  * @since 0.0.1
  */
 public final class Randomized implements Key {
+
     /**
     * Bytes.
     */

@@ -11,6 +11,7 @@ package com.github.fabriciofx.shah;
  */
 @FunctionalInterface
 public interface Scalar<T> {
+
     /**
      * Get the scalar value.
      * @return The scalar value

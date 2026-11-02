@@ -35,6 +35,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class PerlinNoiseTest implements Test<Collisions> {
+
     /**
      * The hash under test.
      */

@@ -17,6 +17,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * @since 0.0.1
  */
 final class FlippedTest {
+
     @Test
     void compareTwoFlippedKeys() {
         boolean failed = false;

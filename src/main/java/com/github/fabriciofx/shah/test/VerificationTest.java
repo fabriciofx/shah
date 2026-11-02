@@ -34,6 +34,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class VerificationTest implements Test<Long> {
+
     /**
      * Number of keys to hash (0 through 255).
      */

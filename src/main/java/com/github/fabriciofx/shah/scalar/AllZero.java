@@ -15,6 +15,7 @@ import com.github.fabriciofx.shah.Scalar;
  * @since 0.0.1
  */
 public final class AllZero implements Scalar<Boolean> {
+
     /**
      * Hash to be checked.
      */

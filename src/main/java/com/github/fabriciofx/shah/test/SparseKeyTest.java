@@ -36,6 +36,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SparseKeyTest implements Test<Collisions> {
+
     /**
      * The hash under test.
      */

@@ -19,6 +19,7 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * @since 0.0.1
  */
 public final class OaatHash32 implements Func {
+
     /**
      * The key to be hashed.
      */

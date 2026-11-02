@@ -36,6 +36,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class AppendedZeroesTest implements Test<Ratio> {
+
     /**
      * Default key seed.
      */

@@ -53,6 +53,7 @@ import org.llorllale.cactoos.matchers.IsText;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 final class Murmur3Hash32Test {
+
     @Test
     void evaluateAnEmptyString() {
         new Assertion<>(

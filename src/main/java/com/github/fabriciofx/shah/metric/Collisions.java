@@ -27,6 +27,7 @@ import com.github.fabriciofx.shah.stat.Expected;
  * @since 0.0.1
  */
 public final class Collisions implements Metric<Integer> {
+
     /**
      * The hashes.
      */

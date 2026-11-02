@@ -51,6 +51,7 @@ import org.llorllale.cactoos.matchers.IsText;
  * @since 0.0.1
  */
 final class OaatHash32Test {
+
     @Test
     void evaluateAnEmptyString() {
         new Assertion<>(

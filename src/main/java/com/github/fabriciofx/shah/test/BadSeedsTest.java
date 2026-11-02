@@ -47,6 +47,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class BadSeedsTest implements Test<Ratio> {
+
     /**
      * Key lengths to test, matching SMHasher's TestSecret.
      */

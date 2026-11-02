@@ -11,6 +11,7 @@ import java.util.Random;
  * @since 0.0.1
  */
 public interface Seed {
+
     /**
      * Retrieve the seed as an array of bytes.
      * @return The array of bytes that represents the seed

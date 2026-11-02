@@ -11,6 +11,7 @@ package com.github.fabriciofx.shah;
  */
 @FunctionalInterface
 public interface Test<T> {
+
     /**
      * Get the metric of the test.
      * @return The metric of the test

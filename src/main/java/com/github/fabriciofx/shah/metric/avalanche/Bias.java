@@ -21,6 +21,7 @@ import java.util.Arrays;
  * @since 0.0.1
  */
 public final class Bias implements Metric<double[][]> {
+
     /**
      * Bias matrix.
      */

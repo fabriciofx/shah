@@ -27,6 +27,7 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * @since 0.0.1
  */
 public final class Matrix implements Metric<double[][]> {
+
     /**
      * Probabilities matrix.
      */

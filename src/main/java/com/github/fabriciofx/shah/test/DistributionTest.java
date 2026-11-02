@@ -34,6 +34,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DistributionTest implements Test<DistributionScore> {
+
     /**
      * The hash function under test.
      */

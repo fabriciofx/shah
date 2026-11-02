@@ -39,6 +39,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DiffDistTest implements Test<Double> {
+
     /**
      * The hash function under test.
      */

@@ -32,6 +32,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class PrngTest implements Test<Collisions> {
+
     /**
      * The hash under test.
      */

@@ -17,6 +17,7 @@ import com.github.fabriciofx.shah.hash.Hash32;
  * @checkstyle BooleanExpressionComplexityCheck (100 lines)
  */
 public final class Murmur3Hash32 implements Func {
+
     /**
      * The key to be hashed.
      */

@@ -15,6 +15,7 @@ import com.github.fabriciofx.shah.Scalar;
  */
 @SuppressWarnings("PMD.ArrayIsStoredDirectly")
 public final class BytesDiff implements Scalar<byte[]> {
+
     /**
      * First byte array.
      */

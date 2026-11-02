@@ -39,6 +39,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class AvalancheTest implements Test<Matrix> {
+
     /**
      * The hash function under test.
      */

@@ -42,6 +42,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class WindowedKeyTest implements Test<Family> {
+
     /**
      * The hash under test.
      */

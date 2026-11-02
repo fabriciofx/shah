@@ -37,6 +37,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DifferentialTest implements Test<Family> {
+
     /**
      * The hash under test.
      */

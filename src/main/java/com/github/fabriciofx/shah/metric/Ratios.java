@@ -14,6 +14,7 @@ import java.util.List;
  * @since 0.0.1
  */
 public final class Ratios implements Metric<List<Ratio>> {
+
     /**
      * List of Ratio.
      */

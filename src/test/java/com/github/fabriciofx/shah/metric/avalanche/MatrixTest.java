@@ -19,6 +19,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")
 final class MatrixTest {
+
     @Test
     void twoMatricesBeEqualsUnderTheSameParameters() {
         final Matrix first = new AvalancheTest(

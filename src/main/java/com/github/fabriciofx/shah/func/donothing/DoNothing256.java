@@ -16,6 +16,7 @@ import com.github.fabriciofx.shah.hash.Hash256;
  * @since 0.0.1
  */
 public final class DoNothing256 implements Func {
+
     @Override
     public Hash hash() {
         return new Hash256(0L, 0L, 0L, 0L);

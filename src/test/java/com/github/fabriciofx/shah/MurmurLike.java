@@ -13,6 +13,7 @@ import java.nio.ByteOrder;
  * @since 0.0.1
  */
 public final class MurmurLike implements Func {
+
     /**
      * Key.
      */

@@ -41,6 +41,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SeedTest implements Test<Collisions> {
+
     /**
      * The hash under test.
      */

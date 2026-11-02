@@ -48,6 +48,7 @@ import org.llorllale.cactoos.matchers.IsText;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 final class Lookup2Hash32Test {
+
     @Test
     void evaluateAnEmptyString() {
         new Assertion<>(

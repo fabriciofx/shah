@@ -12,6 +12,7 @@ package com.github.fabriciofx.shah;
  * @since 0.0.1
  */
 public interface Hashes extends Iterable<Hash> {
+
     /**
      * Add a hash to the collection.
      * @param hash The hash to add

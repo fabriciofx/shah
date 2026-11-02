@@ -18,6 +18,7 @@ import java.util.List;
  * @since 0.0.1
  */
 public final class HashesOf implements Hashes {
+
     /**
      * Items.
      */

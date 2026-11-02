@@ -18,6 +18,7 @@ import java.util.HexFormat;
  * @checkstyle BooleanExpressionComplexityCheck (200 lines)
  */
 public final class Hash256 implements Hash {
+
     /**
      * The hash.
      */

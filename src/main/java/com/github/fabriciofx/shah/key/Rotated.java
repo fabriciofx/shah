@@ -15,6 +15,7 @@ import com.github.fabriciofx.shah.Key;
  * @since 0.0.1
  */
 public final class Rotated implements Key {
+
     /**
      * Key to be rotated.
      */

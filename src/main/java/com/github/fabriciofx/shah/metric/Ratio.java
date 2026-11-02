@@ -11,6 +11,7 @@ import com.github.fabriciofx.shah.Metric;
  * @since 0.0.1
  */
 public final class Ratio implements Metric<Double> {
+
     /**
      * Antecedent, the ratio numerator.
      */

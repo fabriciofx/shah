@@ -21,6 +21,7 @@ import org.llorllale.cactoos.matchers.IsTrue;
  * @since 0.0.1
  */
 final class HashTest {
+
     @Test
     void compareTwoDiff() {
         final Function<Long, Long> murmur = key -> {

@@ -15,6 +15,7 @@ import org.hamcrest.TypeSafeMatcher;
  * @checkstyle ProtectedMethodInFinalClassCheck (200 lines)
  */
 public final class IsGreaterThanOrEqualTo extends TypeSafeMatcher<Double> {
+
     /**
      * The threshold value.
      */

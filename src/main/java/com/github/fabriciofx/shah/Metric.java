@@ -16,6 +16,7 @@ package com.github.fabriciofx.shah;
  */
 @FunctionalInterface
 public interface Metric<T> {
+
     /**
      * Compute the metric value.
      * @return The metric value

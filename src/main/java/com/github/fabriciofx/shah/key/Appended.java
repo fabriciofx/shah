@@ -16,6 +16,7 @@ import com.github.fabriciofx.shah.scalar.Cached;
  * @since 0.0.1
  */
 public final class Appended implements Key {
+
     /**
      * Expanded key.
      */

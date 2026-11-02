@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * @since 0.0.1
  */
 public final class Filtered<E extends Number> implements Collection<E> {
+
     /**
      * Filtered items.
      */

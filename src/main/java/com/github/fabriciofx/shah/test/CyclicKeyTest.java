@@ -38,6 +38,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class CyclicKeyTest implements Test<Collisions> {
+
     /**
      * The hash function under test.
      */

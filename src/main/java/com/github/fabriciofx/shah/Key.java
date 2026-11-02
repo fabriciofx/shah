@@ -12,6 +12,7 @@ package com.github.fabriciofx.shah;
  * @since 0.0.1
  */
 public interface Key {
+
     /**
      * Get the key as a byte array.
      * @return The byte array representation of the key

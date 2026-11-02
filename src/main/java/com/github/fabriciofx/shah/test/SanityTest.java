@@ -42,6 +42,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SanityTest implements Test<Ratio> {
+
     /**
      * Default key's seed.
      */

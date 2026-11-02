@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
     "PMD.MethodReturnsInternalArray"
 })
 public final class KeyOf implements Key {
+
     /**
      * Bytes.
      */

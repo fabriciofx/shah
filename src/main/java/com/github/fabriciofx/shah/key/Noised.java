@@ -12,6 +12,7 @@ import java.util.HexFormat;
  * @since 0.0.1
  */
 public final class Noised implements Key {
+
     /**
      * Key.
      */

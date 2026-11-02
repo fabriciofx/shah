@@ -36,6 +36,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class BicTest implements Test<BicBias> {
+
     /**
      * The hash function under test.
      */

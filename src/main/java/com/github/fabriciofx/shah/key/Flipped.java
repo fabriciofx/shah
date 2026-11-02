@@ -17,6 +17,7 @@ import java.util.HexFormat;
  * @since 0.0.1
  */
 public final class Flipped implements Key {
+
     /**
      * Bytes.
      */

@@ -31,6 +31,7 @@ import java.util.function.BiFunction;
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class CollisionTest implements Test<Collisions> {
+
     /**
      * The hash under test.
      */

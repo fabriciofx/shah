@@ -33,6 +33,7 @@ import com.github.fabriciofx.shah.scalar.Window;
  * @checkstyle NestedForDepthCheck (200 lines)
  */
 public final class DistributionScore implements Metric<Double> {
+
     /**
      * Hashes to analyze.
      */

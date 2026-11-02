@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @since 0.0.1
  */
 public final class Seed32 implements Seed {
+
     /**
      * The seed value.
      */
