@@ -8,7 +8,7 @@ import com.github.fabriciofx.shah.Family;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.metric.Collisions;
 import com.github.fabriciofx.shah.metric.Ratios;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +29,7 @@ public final class FamilyOf implements Family {
      * Ctor.
      */
     public FamilyOf() {
-        this(new LinkedList<>());
+        this(new ArrayList<>(0));
     }
 
     /**

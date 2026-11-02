@@ -5,8 +5,8 @@
 package com.github.fabriciofx.shah.metric;
 
 import com.github.fabriciofx.shah.Metric;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public final class Ratios implements Metric<List<Ratio>> {
      * Ctor.
      */
     public Ratios() {
-        this(new LinkedList<>());
+        this(new ArrayList<>(0));
     }
 
     /**

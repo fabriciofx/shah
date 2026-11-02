@@ -6,8 +6,8 @@ package com.github.fabriciofx.shah.hashes;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,7 +28,7 @@ public final class HashesOf implements Hashes {
      * Ctor.
      */
     public HashesOf() {
-        this(new LinkedList<>());
+        this(new ArrayList<>(0));
     }
 
     /**
