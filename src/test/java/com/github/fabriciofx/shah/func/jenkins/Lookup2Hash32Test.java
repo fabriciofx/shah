@@ -4,6 +4,7 @@
  */
 package com.github.fabriciofx.shah.func.jenkins;
 
+import com.github.fabriciofx.shah.IsGreaterThanOrEqualTo;
 import com.github.fabriciofx.shah.IsLessThan;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -31,6 +32,7 @@ import com.github.fabriciofx.shah.test.WindowedKeyTest;
 import com.github.fabriciofx.shah.test.WordsTest;
 import com.github.fabriciofx.shah.test.ZeroesTest;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.IntStream;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -43,6 +45,15 @@ import org.llorllale.cactoos.matchers.IsText;
  * strict avalanche test (bias threshold 1%) for small key sizes and
  * the BIC test (bias threshold 5%). The thresholds here are relaxed
  * to reflect the known limitations of this func.</p>
+ *
+ * <p>Lookup2 also fails SMHasher's permutation criterion (collision
+ * ratio below 2.0) for about half of the seeds. For keys up to eight
+ * bytes, bytes 0 and 4 land in the low bits of two registers whose
+ * final mix starts by subtracting one from the other. Keys that
+ * differ only by the same increment in both bytes cancel that
+ * difference at once and collide far more often than expected. The
+ * seed decides how many of those pairs collide, so the permutation
+ * test uses the relaxed threshold of 10.0.</p>
  *
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
@@ -252,6 +263,24 @@ final class Lookup2Hash32Test {
                 5
             ).metric().ratio().value(),
             new IsLessThan(10.0, "permutation collision ratio")
+        ).affirm();
+    }
+
+    @Test
+    void exceedsSmhasherPermutationRatioForSomeSeed() {
+        new Assertion<>(
+            "lookup2 must exceed smhasher permutation ratio for some seed",
+            IntStream.range(0, 24).mapToDouble(
+                idx -> new PermutationTest(
+                    (key, seed) -> new Lookup2Hash32(key, seed).hash(),
+                    new Seed32(),
+                    new byte[]{
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                    },
+                    5
+                ).metric().ratio().value()
+            ).max().orElseThrow(),
+            new IsGreaterThanOrEqualTo(2.0, "permutation collision ratio")
         ).affirm();
     }
 
