@@ -29,6 +29,7 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
+ * @checkstyle ProhibitFieldsInTestClassesCheck (100 lines)
  */
 @SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.UnnecessaryLocalRule"})
 public final class PrngTest implements Test<Collisions> {

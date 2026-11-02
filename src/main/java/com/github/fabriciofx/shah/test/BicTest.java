@@ -33,6 +33,7 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
+ * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class BicTest implements Test<BicBias> {

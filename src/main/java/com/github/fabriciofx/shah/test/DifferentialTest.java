@@ -34,6 +34,7 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
+ * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class DifferentialTest implements Test<Family> {
