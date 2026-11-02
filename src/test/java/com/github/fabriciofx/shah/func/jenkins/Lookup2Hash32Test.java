@@ -55,6 +55,14 @@ import org.llorllale.cactoos.matchers.IsText;
  * seed decides how many of those pairs collide, so the permutation
  * test uses the relaxed threshold of 10.0.</p>
  *
+ * <p>The zeroes test hashes all-zero keys from 0 to 204800 bytes with
+ * a random seed, which gives only about 4.9 expected collisions. With
+ * so few collisions, SMHasher's threshold of 2.0 means just 10 of them,
+ * and even an ideal hash reaches that for about 2.8% of the seeds.
+ * Lookup2 behaves like an ideal hash here, so the zeroes test uses
+ * the threshold of 4.0, which an ideal hash exceeds for about one seed
+ * in four million.</p>
+ *
  * @since 0.0.1
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
@@ -207,7 +215,7 @@ final class Lookup2Hash32Test {
                 new Seed32(),
                 204_800
             ).metric().ratio().value(),
-            new IsLessThan(2.0, "zeroes collision ratio")
+            new IsLessThan(4.0, "zeroes collision ratio")
         ).affirm();
     }
 
