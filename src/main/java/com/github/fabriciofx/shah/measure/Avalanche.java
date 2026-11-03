@@ -2,12 +2,12 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Avalanche test from SMHasher.
+ * Avalanche measure from SMHasher.
  *
  * <p>Generate flip-count bins and compute the worst avalanche bias. The worst
  * bias as a value between 0.0 and 1.0.</p>
@@ -36,13 +36,11 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class AvalancheTest implements Test<Matrix> {
+public final class Avalanche implements Measure<Matrix> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -69,13 +67,13 @@ public final class AvalancheTest implements Test<Matrix> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed Seed for the hash function
      * @param size Size in key
      * @param initial Initial value for key generation
      * @param repetitions Number of repetitions
      */
-    public AvalancheTest(
+    public Avalanche(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,

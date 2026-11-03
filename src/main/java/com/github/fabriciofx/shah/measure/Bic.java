@@ -2,12 +2,12 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Bit Independence Criterion (BIC) test from SMHasher.
+ * Bit Independence Criterion (BIC) measure from SMHasher.
  *
  * <p>Generate contingency tables and create a BIC bias.</p>
  *
@@ -33,13 +33,11 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class BicTest implements Test<BicBias> {
+public final class Bic implements Measure<BicBias> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -66,13 +64,13 @@ public final class BicTest implements Test<BicBias> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed Seed for the hash function
      * @param size Key's size in bytes
      * @param initial Key's seed
      * @param repetitions Number of repetitions
      */
-    public BicTest(
+    public Bic(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,

@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
@@ -16,7 +16,7 @@ import com.github.fabriciofx.shah.seed.Seed64;
 import java.util.function.BiFunction;
 
 /**
- * Seed test from SMHasher.
+ * Seed measure from SMHasher.
  *
  * <p>Compute the collision ratio across different seeds.</p>
  *
@@ -29,7 +29,7 @@ import java.util.function.BiFunction;
  * "The quick brown fox jumps over the lazy dog" as the key,
  * iterating seeds from 0 to {@code count - 1}.</p>
  *
- * <p>This test uses a BiFunction that accepts both the key and
+ * <p>This measure uses a BiFunction that accepts both the key and
  * the seed, since it needs to vary the seed independently of the
  * key.</p>
  *
@@ -38,18 +38,16 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class SeedTest implements Test<Collisions> {
+public final class SeedsCollisions implements Measure<Collisions> {
 
     /**
-     * The hash under test.
+     * The hash under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
     /**
-     * Number of seeds to test.
+     * Number of seeds to measure.
      */
     private final int count;
 
@@ -61,10 +59,10 @@ public final class SeedTest implements Test<Collisions> {
     /**
      * Ctor with SMHasher default text.
      *
-     * @param func The hash function under test, accepting (key, seed)
-     * @param count Number of seeds to test
+     * @param func The hash function under measure, accepting (key, seed)
+     * @param count Number of seeds to measure
      */
-    public SeedTest(final BiFunction<Key, Seed, Hash> func, final int count) {
+    public SeedsCollisions(final BiFunction<Key, Seed, Hash> func, final int count) {
         this(
             func,
             count,
@@ -75,11 +73,11 @@ public final class SeedTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test, accepting (key, seed)
-     * @param count Number of seeds to test
+     * @param func The hash function under measure, accepting (key, seed)
+     * @param count Number of seeds to measure
      * @param key The fixed key to hash with varying seeds
      */
-    public SeedTest(
+    public SeedsCollisions(
         final BiFunction<Key, Seed, Hash> func,
         final int count,
         final Key key

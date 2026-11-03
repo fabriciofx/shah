@@ -7,7 +7,7 @@ package com.github.fabriciofx.shah.metric.avalanche;
 import com.github.fabriciofx.shah.IsGreaterThanOrEqualTo;
 import com.github.fabriciofx.shah.func.appleby.Murmur3Hash32;
 import com.github.fabriciofx.shah.seed.Seed32;
-import com.github.fabriciofx.shah.test.AvalancheTest;
+import com.github.fabriciofx.shah.measure.Avalanche;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
@@ -23,14 +23,14 @@ final class MatrixTest {
 
     @Test
     void twoMatricesBeEqualsUnderTheSameParameters() {
-        final Matrix first = new AvalancheTest(
+        final Matrix first = new Avalanche(
             (key, seed) -> new Murmur3Hash32(key, seed).hash(),
             new Seed32(12_345),
             8,
             new Seed32(54_321),
             100_000
         ).metric();
-        final Matrix second = new AvalancheTest(
+        final Matrix second = new Avalanche(
             (key, seed) -> new Murmur3Hash32(key, seed).hash(),
             new Seed32(12_345),
             8,
@@ -46,7 +46,7 @@ final class MatrixTest {
 
     @Test
     void computeProbabilityOfFiftyPercent() {
-        final Matrix matrix = new AvalancheTest(
+        final Matrix matrix = new Avalanche(
             (key, seed) -> new Murmur3Hash32(key, seed).hash(),
             new Seed32(12_345),
             8,

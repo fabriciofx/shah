@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -16,20 +16,18 @@ import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.BiFunction;
 
 /**
- * Words test from SMHasher.
+ * Words measure from SMHasher.
  *
  * <p>Measures the collisions ratio of random words hashes. Returns the
  * collisions metric among all generated hashes.</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (100 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class WordsTest implements Test<Collisions> {
+public final class WordsCollisions implements Measure<Collisions> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -46,11 +44,11 @@ public final class WordsTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The key's seed
      * @param words The words
      */
-    public WordsTest(
+    public WordsCollisions(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final Words words

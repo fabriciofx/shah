@@ -8,28 +8,28 @@ import com.github.fabriciofx.shah.IsLessThan;
 import com.github.fabriciofx.shah.collection.Words;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.seed.Seed32;
-import com.github.fabriciofx.shah.test.AppendedZeroesTest;
-import com.github.fabriciofx.shah.test.AvalancheTest;
-import com.github.fabriciofx.shah.test.BadSeedsTest;
-import com.github.fabriciofx.shah.test.BicTest;
-import com.github.fabriciofx.shah.test.CollisionTest;
-import com.github.fabriciofx.shah.test.CyclicKeyTest;
-import com.github.fabriciofx.shah.test.DiffDistTest;
-import com.github.fabriciofx.shah.test.DifferentialTest;
-import com.github.fabriciofx.shah.test.DistributionTest;
-import com.github.fabriciofx.shah.test.MomentChi2Test;
-import com.github.fabriciofx.shah.test.PerlinNoiseTest;
-import com.github.fabriciofx.shah.test.PermutationTest;
-import com.github.fabriciofx.shah.test.PrngTest;
-import com.github.fabriciofx.shah.test.SanityTest;
-import com.github.fabriciofx.shah.test.SeedTest;
-import com.github.fabriciofx.shah.test.SparseKeyTest;
-import com.github.fabriciofx.shah.test.TextTest;
-import com.github.fabriciofx.shah.test.TwoBytesTest;
-import com.github.fabriciofx.shah.test.VerificationTest;
-import com.github.fabriciofx.shah.test.WindowedKeyTest;
-import com.github.fabriciofx.shah.test.WordsTest;
-import com.github.fabriciofx.shah.test.ZeroesTest;
+import com.github.fabriciofx.shah.measure.AppendedZeroes;
+import com.github.fabriciofx.shah.measure.Avalanche;
+import com.github.fabriciofx.shah.measure.BadSeeds;
+import com.github.fabriciofx.shah.measure.Bic;
+import com.github.fabriciofx.shah.measure.Collision;
+import com.github.fabriciofx.shah.measure.CyclicKey;
+import com.github.fabriciofx.shah.measure.DiffDistribution;
+import com.github.fabriciofx.shah.measure.Differential;
+import com.github.fabriciofx.shah.measure.Distribution;
+import com.github.fabriciofx.shah.measure.MomentChiSquared;
+import com.github.fabriciofx.shah.measure.PerlinNoise;
+import com.github.fabriciofx.shah.measure.PermutationKey;
+import com.github.fabriciofx.shah.measure.Prng;
+import com.github.fabriciofx.shah.measure.Sanity;
+import com.github.fabriciofx.shah.measure.SeedsCollisions;
+import com.github.fabriciofx.shah.measure.SparseKey;
+import com.github.fabriciofx.shah.measure.TextKey;
+import com.github.fabriciofx.shah.measure.TwoBytes;
+import com.github.fabriciofx.shah.measure.Verification;
+import com.github.fabriciofx.shah.measure.WindowedKey;
+import com.github.fabriciofx.shah.measure.WordsCollisions;
+import com.github.fabriciofx.shah.measure.ZeroesKey;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ import org.llorllale.cactoos.matchers.IsText;
 /**
  * Tests for {@link Murmur3Hash32}.
  *
- * <p>These tests adapt the SMHasher test suite to measure the
+ * <p>These measures adapt the SMHasher test suite to measure the
  * distribution quality of the MurmurHash3 32-bit implementation.
  * MurmurHash3 is expected to pass all SMHasher tests with strict
  * thresholds.</p>
@@ -143,8 +143,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesAvalancheWithFourBytesKeys() {
         new Assertion<>(
-            "murmur3 must pass avalanche test with 4-byte keys",
-            new AvalancheTest(
+            "murmur3 must pass avalanche measure with 4-byte keys",
+            new Avalanche(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 4,
@@ -158,8 +158,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesAvalancheWithEightByteKeys() {
         new Assertion<>(
-            "murmur3 must pass avalanche test with 8-byte keys",
-            new AvalancheTest(
+            "murmur3 must pass avalanche measure with 8-byte keys",
+            new Avalanche(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 8,
@@ -173,8 +173,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesAvalancheWithSixteenBytesKeys() {
         new Assertion<>(
-            "murmur3 must pass avalanche test with 16-byte keys",
-            new AvalancheTest(
+            "murmur3 must pass avalanche measure with 16-byte keys",
+            new Avalanche(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 16,
@@ -188,8 +188,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesCollisionTest() {
         new Assertion<>(
-            "murmur3 must pass collision test",
-            new CollisionTest(
+            "murmur3 must pass collision measure",
+            new Collision(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(67_890),
                 16,
@@ -203,8 +203,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesDistributionTest() {
         new Assertion<>(
-            "murmur3 must pass distribution test",
-            new DistributionTest(
+            "murmur3 must pass distribution measure",
+            new Distribution(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 16,
@@ -218,8 +218,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesBicWithFourBytesKeys() {
         new Assertion<>(
-            "murmur3 must pass BIC test with 4-byte keys",
-            new BicTest(
+            "murmur3 must pass BIC measure with 4-byte keys",
+            new Bic(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(11_111),
                 4,
@@ -233,8 +233,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesSanityTest() {
         new Assertion<>(
-            "murmur3 must pass sanity test",
-            new SanityTest(
+            "murmur3 must pass sanity measure",
+            new Sanity(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(0),
                 32
@@ -246,8 +246,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesZeroesTest() {
         new Assertion<>(
-            "murmur3 must pass zeroes test",
-            new ZeroesTest(
+            "murmur3 must pass zeroes measure",
+            new ZeroesKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(0),
                 204_800
@@ -259,8 +259,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesCyclicKeyTest() {
         new Assertion<>(
-            "murmur3 must pass cyclic key test",
-            new CyclicKeyTest(
+            "murmur3 must pass cyclic key measure",
+            new CyclicKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 4,
@@ -273,8 +273,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesTwoBytesTest() {
         new Assertion<>(
-            "murmur3 must pass two-bytes test",
-            new TwoBytesTest(
+            "murmur3 must pass two-bytes measure",
+            new TwoBytes(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(),
                 4
@@ -286,8 +286,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesSparseKeyTest() {
         new Assertion<>(
-            "murmur3 must pass sparse key test",
-            new SparseKeyTest(
+            "murmur3 must pass sparse key measure",
+            new SparseKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(),
                 32,
@@ -300,8 +300,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesPermutationTest() {
         new Assertion<>(
-            "murmur3 must pass permutation test",
-            new PermutationTest(
+            "murmur3 must pass permutation measure",
+            new PermutationKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(),
                 new byte[]{0, 1, 2, 3, 4, 5, 6, 7},
@@ -314,8 +314,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesWindowedKeyTest() {
         new Assertion<>(
-            "murmur3 must pass windowed key test",
-            new WindowedKeyTest(
+            "murmur3 must pass windowed key measure",
+            new WindowedKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(),
                 4,
@@ -328,8 +328,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesTextTest() {
         new Assertion<>(
-            "murmur3 must pass text test",
-            new TextTest(
+            "murmur3 must pass text measure",
+            new TextKey(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(),
                 "Foo".getBytes(StandardCharsets.UTF_8),
@@ -343,8 +343,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesDifferentialTest() {
         new Assertion<>(
-            "murmur3 must pass differential test",
-            new DifferentialTest(
+            "murmur3 must pass differential measure",
+            new Differential(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 4,
@@ -358,8 +358,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesDiffDistTest() {
         new Assertion<>(
-            "murmur3 must pass diff distribution test",
-            new DiffDistTest(
+            "murmur3 must pass diff distribution measure",
+            new DiffDistribution(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 4,
@@ -373,8 +373,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesSeedTest() {
         new Assertion<>(
-            "murmur3 must pass seed test",
-            new SeedTest(
+            "murmur3 must pass seed measure",
+            new SeedsCollisions(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 100_000
             ).metric().ratio().value(),
@@ -385,8 +385,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesAppendedZeroesTest() {
         new Assertion<>(
-            "murmur3 must pass appended zeroes test",
-            new AppendedZeroesTest(
+            "murmur3 must pass appended zeroes measure",
+            new AppendedZeroes(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345)
             ).metric().value(),
@@ -398,7 +398,7 @@ final class Murmur3Hash32Test {
     void passesVerificationTest() {
         new Assertion<>(
             "murmur3 must produce correct verification code",
-            new VerificationTest(
+            new Verification(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).metric(),
             new IsEqual<>(0xB0F57EE3L)
@@ -408,8 +408,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesPerlinNoiseTest() {
         new Assertion<>(
-            "murmur3 must pass perlin noise test",
-            new PerlinNoiseTest(
+            "murmur3 must pass perlin noise measure",
+            new PerlinNoise(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).metric().ratio().value(),
             new IsLessThan(2.0, "perlin noise collision ratio")
@@ -419,8 +419,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesPrngTest() {
         new Assertion<>(
-            "murmur3 must pass PRNG test",
-            new PrngTest(
+            "murmur3 must pass PRNG measure",
+            new Prng(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32()
             ).metric().ratio().value(),
@@ -431,8 +431,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesWordsTest() {
         new Assertion<>(
-            "murmur3 must pass words test",
-            new WordsTest(
+            "murmur3 must pass words measure",
+            new WordsCollisions(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345),
                 new Words(100_000, 2, 10)
@@ -444,8 +444,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesMomentChiSquaredTest() {
         new Assertion<>(
-            "murmur3 must pass moment chi-squared test",
-            new MomentChi2Test(
+            "murmur3 must pass moment chi-squared measure",
+            new MomentChiSquared(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash(),
                 new Seed32(12_345)
             ).metric(),
@@ -456,8 +456,8 @@ final class Murmur3Hash32Test {
     @Test
     void passesBadSeedsTest() {
         new Assertion<>(
-            "murmur3 must pass bad seeds test",
-            new BadSeedsTest(
+            "murmur3 must pass bad seeds measure",
+            new BadSeeds(
                 (key, seed) -> new Murmur3Hash32(key, seed).hash()
             ).metric().value(),
             new IsLessThan(0.01, "bad seeds failure ratio")

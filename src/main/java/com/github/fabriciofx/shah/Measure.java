@@ -5,18 +5,18 @@
 package com.github.fabriciofx.shah;
 
 /**
- * Test.
+ * Measure.
  *
- * @param <T> Type of the test metric
+ * @param <M> Type of the measure metric
  * @since 0.0.1
  */
 @FunctionalInterface
-public interface Test<T> {
+public interface Measure<M> {
 
     /**
-     * Get the metric of the test.
+     * Get the metric of the measure.
      *
-     * @return The metric of the test
+     * @return The metric of the measure
      */
-    T metric();
+    M metric();
 }

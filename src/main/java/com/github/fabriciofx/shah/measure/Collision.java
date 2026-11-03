@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Collision test from SMHasher.
+ * Collision measure from SMHasher.
  *
  * <p>Generate shah and compute the collision ratio (actual / expected).</p>
  *
@@ -28,13 +28,11 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (100 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class CollisionTest implements Test<Collisions> {
+public final class Collision implements Measure<Collisions> {
 
     /**
-     * The hash under test.
+     * The hash under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -61,13 +59,13 @@ public final class CollisionTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed Key seed
      * @param size Key size
      * @param initial Test seed
      * @param count Number of keys to hash
      */
-    public CollisionTest(
+    public Collision(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,

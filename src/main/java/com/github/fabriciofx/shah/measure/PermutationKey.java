@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
@@ -16,7 +16,7 @@ import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.function.BiFunction;
 
 /**
- * Permutation key test from SMHasher.
+ * Permutation key measure from SMHasher.
  *
  * <p>Compute the collision ratio for permutation keys.</p>
  *
@@ -32,13 +32,11 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (100 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class PermutationTest implements Test<Collisions> {
+public final class PermutationKey implements Measure<Collisions> {
 
     /**
-     * The hash under test.
+     * The hash under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -60,11 +58,11 @@ public final class PermutationTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param values Byte values to permute
      * @param positions Number of positions in the key
      */
-    public PermutationTest(
+    public PermutationKey(
         final BiFunction<Key, Seed, Hash> func,
         final byte[] values,
         final int positions
@@ -75,12 +73,12 @@ public final class PermutationTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param values Byte values to permute
      * @param positions Number of positions in the key
      */
-    public PermutationTest(
+    public PermutationKey(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final byte[] values,

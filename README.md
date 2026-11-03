@@ -70,7 +70,7 @@ The API is built around four concepts:
 - A `Key` is the input of a hash function;
 - A `Seed` initializes a hash function;
 - A `Func` is a hash function that produces a `Hash`;
-- A `Test` measures the quality of a hash function and returns a metric.
+- A `Measure` measures the quality of a hash function and returns a metric.
 
 Let's hash a string with MurmurHash3:
 

@@ -2,12 +2,12 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Sanity test from SMHasher.
+ * Sanity measure from SMHasher.
  *
  * <p>Basic sanity checks for a hash function.</p>
  *
@@ -40,10 +40,8 @@ import java.util.function.BiFunction;
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
  * @checkstyle NestedForDepthCheck (200 lines)
- * @checkstyle ProhibitFieldsInTestClassesCheck (200 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class SanityTest implements Test<Ratio> {
+public final class Sanity implements Measure<Ratio> {
 
     /**
      * Default key's seed.
@@ -51,7 +49,7 @@ public final class SanityTest implements Test<Ratio> {
     private static final Seed DEFAULT_INITIAL = new Seed64(883_741L);
 
     /**
-     * The hash under test.
+     * The hash under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -61,7 +59,7 @@ public final class SanityTest implements Test<Ratio> {
     private final Seed seed;
 
     /**
-     * Maximum key length to test.
+     * Maximum key length to measure.
      */
     private final int max;
 
@@ -78,21 +76,21 @@ public final class SanityTest implements Test<Ratio> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
-     * @param max Maximum key length to test
+     * @param func The hash function under measure
+     * @param max Maximum key length to measure
      */
-    public SanityTest(final BiFunction<Key, Seed, Hash> func, final int max) {
-        this(func, new Seed32(0), max, SanityTest.DEFAULT_INITIAL, 10);
+    public Sanity(final BiFunction<Key, Seed, Hash> func, final int max) {
+        this(func, new Seed32(0), max, Sanity.DEFAULT_INITIAL, 10);
     }
 
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
-     * @param max Maximum key length to test
+     * @param max Maximum key length to measure
      */
-    public SanityTest(
+    public Sanity(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int max
@@ -101,7 +99,7 @@ public final class SanityTest implements Test<Ratio> {
             func,
             seed,
             max,
-            SanityTest.DEFAULT_INITIAL,
+            Sanity.DEFAULT_INITIAL,
             10
         );
     }
@@ -109,13 +107,13 @@ public final class SanityTest implements Test<Ratio> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
-     * @param max Maximum key length to test
+     * @param max Maximum key length to measure
      * @param initial Random seed for reproducibility
      * @param repetitions Number of repetitions
      */
-    public SanityTest(
+    public Sanity(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int max,

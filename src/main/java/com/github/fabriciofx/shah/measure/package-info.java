@@ -8,4 +8,4 @@
  *
  * @since 0.0.1
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;

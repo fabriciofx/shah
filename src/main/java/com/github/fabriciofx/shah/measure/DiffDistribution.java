@@ -2,45 +2,45 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
-import com.github.fabriciofx.shah.Family;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
-import com.github.fabriciofx.shah.family.FamilyOf;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
+import com.github.fabriciofx.shah.metric.DistributionScore;
 import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Differential test from SMHasher.
+ * Differential distribution measure from SMHasher.
  *
- * <p>Compute the worst differential collision ratio.</p>
+ * <p>Compute the worst distribution score of hash differences.</p>
  *
- * <p>For a set of random keys, flips each individual bit and checks
- * whether the resulting hash collision rate exceeds the birthday
- * paradox expectation. This tests whether single-bit changes in the
- * input produce sufficiently different hash values.</p>
+ * <p>Similar to the differential measure, but instead of checking
+ * collisions in the XOR of original and flipped shah, this measure
+ * checks the distribution quality of those XOR values using the
+ * same bucket-based scoring as {@link DistributionScore}.</p>
  *
- * <p>The worst collision ratio across all bit flip positions is returned.</p>
+ * <p>For each bit flip position, the distribution score of the
+ * hash differences is computed. The worst score across all positions
+ * is returned.</p>
  *
- * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
+ * <p>Supports hash outputs of any width (32, 64, 128, 256 bits,
+ * etc.).</p>
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class DifferentialTest implements Test<Family> {
+public final class DiffDistribution implements Measure<Double> {
 
     /**
-     * The hash under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -60,20 +60,20 @@ public final class DifferentialTest implements Test<Family> {
     private final Seed initial;
 
     /**
-     * Number of keys to test.
+     * Number of keys to measure.
      */
     private final int count;
 
     /**
      * Ctor.
      *
-     * @param func The hash function under test
-     * @param seed Hash function seed
-     * @param size Key's size in bytes
+     * @param func The hash function under measure
+     * @param seed The hash function seed
+     * @param size Key's size in byte
      * @param initial Key's seed
      * @param count Number of keys
      */
-    public DifferentialTest(
+    public DiffDistribution(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,
@@ -88,10 +88,10 @@ public final class DifferentialTest implements Test<Family> {
     }
 
     @Override
-    public Family metric() {
+    public Double metric() {
         final Random random = this.initial.random();
         final Key probe = new Randomized(new KeyOf(this.size), random);
-        final Family family = new FamilyOf();
+        double worst = 0.0;
         for (int bit = 0; bit < probe.bits(); ++bit) {
             final Hashes diffs = new HashesOf();
             for (int idx = 0; idx < this.count; ++idx) {
@@ -103,8 +103,11 @@ public final class DifferentialTest implements Test<Family> {
                 );
                 diffs.add(original.diff(flipped));
             }
-            family.add(diffs);
+            final double score = new DistributionScore(diffs).value();
+            if (score > worst) {
+                worst = score;
+            }
         }
-        return family;
+        return worst;
     }
 }

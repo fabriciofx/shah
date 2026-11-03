@@ -2,17 +2,17 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.key.KeyOf;
 import java.util.function.BiFunction;
 
 /**
- * Moment chi-squared test from SMHasher.
+ * Moment chi-squared measure from SMHasher.
  *
  * <p>Analyzes hashes produced from a series of linearly increasing
  * integer keys by measuring the popcount (number of set bits)
@@ -25,7 +25,7 @@ import java.util.function.BiFunction;
  * values are then compared against pre-computed reference values
  * using a chi-squared statistic.</p>
  *
- * <p>The derivative test XORs consecutive hash values and applies
+ * <p>The derivative measure XORs consecutive hash values and applies
  * the same popcount analysis, testing whether transitions between
  * consecutive keys produce properly distributed bit changes.</p>
  *
@@ -36,13 +36,11 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (250 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class MomentChi2Test implements Test<Double> {
+public final class MomentChiSquared implements Measure<Double> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -69,10 +67,10 @@ public final class MomentChi2Test implements Test<Double> {
     /**
      * Ctor with defaults.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      */
-    public MomentChi2Test(
+    public MomentChiSquared(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed
     ) {
@@ -88,13 +86,13 @@ public final class MomentChi2Test implements Test<Double> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param size Key size in bytes
      * @param step Step between consecutive key values
      * @param count Number of keys to generate
      */
-    public MomentChi2Test(
+    public MomentChiSquared(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,
@@ -114,8 +112,8 @@ public final class MomentChi2Test implements Test<Double> {
             this.func.apply(new KeyOf(this.size), this.seed).bits(),
             64
         );
-        final double[] ref = MomentChi2Test.refs(bits);
-        return MomentChi2Test.worstChi(
+        final double[] ref = MomentChiSquared.refs(bits);
+        return MomentChiSquared.worstChi(
             this.accumulate(bits),
             this.count,
             ref[0],
@@ -126,19 +124,19 @@ public final class MomentChi2Test implements Test<Double> {
     private double[] accumulate(final int bits) {
         final double[] result = new double[8];
         final byte[] bytes = new byte[this.size];
-        MomentChi2Test.store(bytes, (long) -this.step);
-        long prev = MomentChi2Test.hashToLong(
+        MomentChiSquared.store(bytes, (long) -this.step);
+        long prev = MomentChiSquared.hashToLong(
             this.func.apply(new KeyOf(bytes.clone()), this.seed),
             bits
         );
         for (int idx = 0; idx < this.count; ++idx) {
-            MomentChi2Test.store(bytes, (long) idx * this.step);
-            final long hash = MomentChi2Test.hashToLong(
+            MomentChiSquared.store(bytes, (long) idx * this.step);
+            final long hash = MomentChiSquared.hashToLong(
                 this.func.apply(new KeyOf(bytes.clone()), this.seed),
                 bits
             );
-            MomentChi2Test.addMoments(result, 0, hash, bits);
-            MomentChi2Test.addMoments(result, 4, prev ^ hash, bits);
+            MomentChiSquared.addMoments(result, 0, hash, bits);
+            MomentChiSquared.addMoments(result, 4, prev ^ hash, bits);
             prev = hash;
         }
         return result;
@@ -167,7 +165,7 @@ public final class MomentChi2Test implements Test<Double> {
             final double mean = moments[idx] / num;
             worst = Math.max(
                 worst,
-                MomentChi2Test.chiSquared(
+                MomentChiSquared.chiSquared(
                     mean,
                     (moments[idx + 1] / num - mean * mean) / num,
                     srefh,

@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.Cycled;
 import com.github.fabriciofx.shah.key.KeyOf;
@@ -16,7 +16,7 @@ import com.github.fabriciofx.shah.metric.Collisions;
 import java.util.function.BiFunction;
 
 /**
- * Cyclic key test from SMHasher.
+ * Cyclic key measure from SMHasher.
  *
  * <p>Compute the collision ratio for cyclic keys.</p>
  *
@@ -35,13 +35,11 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class CyclicKeyTest implements Test<Collisions> {
+public final class CyclicKey implements Measure<Collisions> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -68,12 +66,12 @@ public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * Ctor with default key count.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param length Cycle pattern length in bytes
      * @param repetitions Number of cycle repetitions
      */
-    public CyclicKeyTest(
+    public CyclicKey(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int length,
@@ -85,13 +83,13 @@ public final class CyclicKeyTest implements Test<Collisions> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param length Cycle pattern length in bytes
      * @param count Number of keys to generate
      * @param repetitions Number of cycle repetitions
      */
-    public CyclicKeyTest(
+    public CyclicKey(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int length,

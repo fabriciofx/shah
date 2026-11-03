@@ -2,13 +2,13 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Distribution test from SMHasher.
+ * Distribution measure from SMHasher.
  *
  * <p>Generate hash and compute the worst distribution score, where 0.0 is
  * perfect.</p>
@@ -31,13 +31,11 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/aappleby/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (100 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class DistributionTest implements Test<DistributionScore> {
+public final class Distribution implements Measure<DistributionScore> {
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -64,13 +62,13 @@ public final class DistributionTest implements Test<DistributionScore> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param size Key's size
      * @param initial Key's seed
      * @param count Number of keys to hash
      */
-    public DistributionTest(
+    public Distribution(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,

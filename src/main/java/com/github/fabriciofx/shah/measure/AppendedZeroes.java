@@ -2,12 +2,12 @@
  * SPDX-FileCopyrightText: Copyright (C) 2026 Fabrício Barros Cabral
  * SPDX-License-Identifier: MIT
  */
-package com.github.fabriciofx.shah.test;
+package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Seed;
-import com.github.fabriciofx.shah.Test;
+import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.key.Appended;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;
@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 
 /**
- * Appended zeroes test from SMHasher.
+ * Appended zeroes measure from SMHasher.
  *
  * <p>Appending zero bytes to a key should always cause it to produce
  * a different hash value.</p>
@@ -33,10 +33,8 @@ import java.util.function.BiFunction;
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
- * @checkstyle ProhibitFieldsInTestClassesCheck (150 lines)
  */
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class AppendedZeroesTest implements Test<Ratio> {
+public final class AppendedZeroes implements Measure<Ratio> {
 
     /**
      * Default key seed.
@@ -44,7 +42,7 @@ public final class AppendedZeroesTest implements Test<Ratio> {
     private static final Seed DEFAULT_INITIAL = new Seed64(173_994L);
 
     /**
-     * The hash function under test.
+     * The hash function under measure.
      */
     private final BiFunction<Key, Seed, Hash> func;
 
@@ -76,10 +74,10 @@ public final class AppendedZeroesTest implements Test<Ratio> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      */
-    public AppendedZeroesTest(
+    public AppendedZeroes(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed
     ) {
@@ -87,7 +85,7 @@ public final class AppendedZeroesTest implements Test<Ratio> {
             func,
             seed,
             32,
-            AppendedZeroesTest.DEFAULT_INITIAL,
+            AppendedZeroes.DEFAULT_INITIAL,
             32,
             100
         );
@@ -96,14 +94,14 @@ public final class AppendedZeroesTest implements Test<Ratio> {
     /**
      * Ctor.
      *
-     * @param func The hash function under test
+     * @param func The hash function under measure
      * @param seed The hash function seed
      * @param size The key's size
      * @param initial The key's seed
      * @param max The max number of zeroes
      * @param repetitions Number of repetitions
      */
-    public AppendedZeroesTest(
+    public AppendedZeroes(
         final BiFunction<Key, Seed, Hash> func,
         final Seed seed,
         final int size,
