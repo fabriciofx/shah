@@ -13,4 +13,5 @@ extend-ignore-re = [
 ]
 
 [default.extend-words]
+collet = "collet"
 permut = "permut"
