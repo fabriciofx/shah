@@ -11,6 +11,7 @@ import com.github.fabriciofx.shah.Key;
 import com.github.fabriciofx.shah.Measure;
 import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.family.FamilyOf;
+import com.github.fabriciofx.shah.hash.Truncated;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Rotated;
@@ -36,7 +37,11 @@ import java.util.function.BiFunction;
  * <p>Returns the worst (maximum) collision ratio across all window starting
  * positions.</p>
  *
- * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).</p>
+ * <p>Supports hash outputs of any width (32, 64, 128, 256 bits, etc.).
+ * Collisions are counted only on the low bits of each hash, 32 by default,
+ * as SMHasher3 does with truncated hashes. Counting them on all bits of a
+ * wide hash would grow the window to its cap and keep about a billion
+ * hashes in memory.</p>
  *
  * @see <a href="https://github.com/rurban/smhasher">SMHasher</a>
  * @since 0.0.1
@@ -92,7 +97,27 @@ public final class WindowedKey implements Measure<Family> {
         final int size,
         final int width
     ) {
-        this.func = func;
+        this(func, seed, size, width, 32);
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param func The hash function under measure
+     * @param seed The hash function seed
+     * @param size Key length in bytes
+     * @param width Window width in bits
+     * @param bits Number of low hash bits measured, a multiple of 8
+     * @checkstyle ParameterNumberCheck (10 lines)
+     */
+    public WindowedKey(
+        final BiFunction<Key, Seed, Hash> func,
+        final Seed seed,
+        final int size,
+        final int width,
+        final int bits
+    ) {
+        this.func = (key, salt) -> new Truncated(func.apply(key, salt), bits);
         this.seed = seed;
         this.size = size;
         this.width = width;

@@ -26,6 +26,7 @@ import com.github.fabriciofx.shah.measure.SparseKey;
 import com.github.fabriciofx.shah.measure.TextKey;
 import com.github.fabriciofx.shah.measure.TwoBytes;
 import com.github.fabriciofx.shah.measure.Verification;
+import com.github.fabriciofx.shah.measure.WindowedKey;
 import com.github.fabriciofx.shah.measure.WordsCollisions;
 import com.github.fabriciofx.shah.measure.ZeroesKey;
 import com.github.fabriciofx.shah.seed.Seed64;
@@ -49,6 +50,7 @@ import org.llorllale.cactoos.matchers.IsText;
  * where SMHasher3 reports a bias of 0.79 with 4-byte keys.</p>
  *
  * @since 0.0.1
+ * @checkstyle ClassFanOutComplexityCheck (600 lines)
  */
 final class Xxh3Hash128Test {
 
@@ -339,6 +341,20 @@ final class Xxh3Hash128Test {
                 4
             ).metric().ratio().value(),
             new IsLessThan(10.0, "permutation collision ratio")
+        ).affirm();
+    }
+
+    @Test
+    void passesWindowedKeyTest() {
+        new Assertion<>(
+            "xxh3 128-bit must pass windowed key measure",
+            new WindowedKey(
+                (key, seed) -> new Xxh3Hash128(key, seed).hash(),
+                new Seed64(),
+                4,
+                12
+            ).metric().ratios().worst().value(),
+            new IsLessThan(10.0, "windowed collision ratio")
         ).affirm();
     }
 
