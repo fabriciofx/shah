@@ -4,7 +4,7 @@
  */
 
 /**
- * Test.
+ * Measure.
  *
  * @since 0.0.1
  */
