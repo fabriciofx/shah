@@ -32,6 +32,7 @@ behind Shah.
     one-at-a-time 32-bit
   - [Jenkins](https://en.wikipedia.org/wiki/Jenkins_hash_function)
     lookup2 32-bit
+  - [XXH3](https://github.com/Cyan4973/xxHash) 128-bit
   - "Do nothing" 32, 64, 128 and 256-bit baselines
 - SMHasher tests: Avalanche, BIC, Collision, Distribution, Differential,
   DiffDist, Sanity, Verification, Seed, Bad Seeds, Sparse Key, Cyclic Key,
