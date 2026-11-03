@@ -14,8 +14,8 @@ and the **Orig.** column marks the functions that already existed there.
 taken at commit `3b61937` (2026-08-27). Its data comes from the
 `REGISTER_HASH` blocks in `hashes/` and from `results/README.md`.
 
-The table has 405 rows: 188 list a function tested by both suites,
-56 only by rurban/smhasher and 161 only by SMHasher3.
+The table has 408 rows: 185 list a function tested by both suites,
+59 only by rurban/smhasher and 164 only by SMHasher3.
 
 ## Pairing
 
@@ -25,6 +25,11 @@ implementation (for example, `sha2ni-256` and `SHA-2-256`). Equal
 verification codes reveal most pairs; the rest come from reading both
 sources, since the suites often apply the seed differently. Several
 rurban/smhasher functions may share one SMHasher3 counterpart.
+
+Different versions of an algorithm get rows of their own. For example,
+rurban/smhasher tests `xxh3` and `xxh128` from xxHash 0.7.2, before XXH3
+was finalized in 0.8.0, so they are not paired with `XXH3-64` and
+`XXH3-128` from SMHasher3.
 
 SMHasher3 variants that only change how the seed is applied are left out
 (for example, `CityHash-128.seed2` and `XXH3-64.reinit`). The `aesrng`
@@ -298,7 +303,7 @@ and speeds cannot be compared with each other.
 | 196 | `SpookyV2_32` | `SpookyHash2-32` | 32 | 2⁻³² | 77 163 | 32 bits | GOOD | `0xA48BE265` | 13626.51 | 56.19 | 256.57 (19) | 2069 | | | | | 64 bits | Pass | 0/250 | 60.20 | 4.40 | `0xA48BE265` | | public domain | Bob Jenkins' SpookyV2, 32-bit result |
 | 197 | `SpookyV2_64` | `SpookyHash2-64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x972C4BDC` | 13401.13 | 56.18 | 246.33 (11) | 2069 | | | | | 64 bits | Fail | 6/250 | 60.20 | 4.40 | `0x972C4BDC` | | public domain | Bob Jenkins' SpookyV2, 64-bit result |
 | 198 | `SpookyV2_128` | `SpookyHash2-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | 128 bits | GOOD | `0x893CFCBE` | 12252.64 | 58.94 | 235.46 (2) | 2069 | | | | | 64 bits | Fail | 15/250 | 64.52 | 4.40 | `0x893CFCBE` | | public domain | Bob Jenkins' SpookyV2, 128-bit result |
-| 199 | `pengyhash` | `pengyhash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 32 bits | GOOD | `0x1FC2217B` | 13347.17 | 74.79 | 278.74 (3) | 846 | | | | | 64 bits | Fail | 16/250 | 89.81 | 3.80 | `0x861A1254` | | GPL 3.0 | pengyhash |
+| 199 | `pengyhash` | | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 32 bits | GOOD | `0x1FC2217B` | 13347.17 | 74.79 | 278.74 (3) | 846 | | | | | | | | | | | | | pengyhash |
 | 200 | `mx3` | `mx3.v1` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x4DB51E5B` | 9332.99 | 47.07 | 221.61 (2) | 766 | UB | `0x10` | | | 64 bits | Fail | 45/250 | 49.48 | 3.21 | `0x4DB51E5B` | | public domain | mx3 64bit |
 | 201 | `umash32` | | 32 | 2⁻³² | 77 163 | secret key | GOOD | `0x9451AF3B` | 24556.40 | 40.01 | 490.26 (33) | 1530 | | `0x36ced9cb`, `0x707764c0`, `0x7a1583fe` (+2) | `#ifdef HAVE_UMASH` | | | | | | | | | | umash 32 |
 | 202 | `umash32_hi` | | 32 | 2⁻³² | 77 163 | secret key | GOOD | `0x0CC4850F` | 26601.23 | 42.25 | 484.02 (17) | 1530 | | | `#ifdef HAVE_UMASH` | | | | | | | | | | umash 32 hi |
@@ -316,9 +321,9 @@ and speeds cannot be compared with each other.
 | 214 | `t1ha0_aes_avx1` | `t1ha0.aesA` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0xF07C4DA5` | 27881.52 | 36.78 | 227.13 (2) | 679 | LongNeighbors, machine-specific (x64 AVX) | | `#if T1HA0_AESNI_AVAILABLE` | | 64 bits | Fail | 5/250 | 40.19 | 9.11 | `0xF07C4DA5` | AES | zlib | Fast Positive Hash (AES-NI & AVX) |
 | 215 | `t1ha0_aes_avx2` | `t1ha0.aesB` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x8B38C599` | 56581.83 | 36.51 | 223.59 (1) | 628 | LongNeighbors, machine-specific (x64 AVX2) | | `#if T1HA0_AESNI_AVAILABLE` | | 64 bits | Fail | 5/250 | 40.43 | 21.42 | `0x8B38C599` | AES | zlib | Fast Positive Hash (AES-NI & AVX2) |
 | 216 | `ahash64` | | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x00000000` | 9862.62 | 27.32 | 181.68 (1) | 412 | rust | | `#ifdef HAVE_AHASH_C` | | | | | | | | | | ahash 64bit |
-| 217 | `xxh3` | `XXH3-64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x39CD9E4A` | 20853.74 | 29.46 | 220.07 (2) | 744 | DiffDist bit 7 w. 36 bits, BIC | `0x47ebda34` | | | 64 bits | Fail | 27/250 | 30.69 | 12.82 | `0x1AAEE62C` | lookup table | BSD | xxHash v3, 64-bit |
+| 217 | `xxh3` | | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x39CD9E4A` | 20853.74 | 29.46 | 220.07 (2) | 744 | DiffDist bit 7 w. 36 bits, BIC | `0x47ebda34` | | | | | | | | | | | xxHash v3, 64-bit |
 | 218 | `xxh3low` | | 32 | 2⁻³² | 77 163 | 64 bits | GOOD | `0xFAE8467B` | 20568.96 | 29.98 | 243.82 (5) | 756 | | `0x47ebda34` | | | | | | | | | | | xxHash v3, 64-bit, low 32-bits part |
-| 219 | `xxh128` | `XXH3-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | 64 bits | GOOD | `0xEB61B3A0` | 19259.99 | 31.58 | 228.84 (2) | 1012 | | `0x47ebda34` | | | 64 bits | Fail | 36/250 | 36.13 | 12.72 | `0x288DAA94` | lookup table | BSD | xxHash v3, 128-bit |
+| 219 | `xxh128` | | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | 64 bits | GOOD | `0xEB61B3A0` | 19259.99 | 31.58 | 228.84 (2) | 1012 | | `0x47ebda34` | | | | | | | | | | | xxHash v3, 128-bit |
 | 220 | `xxh128low` | | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x54D1CC70` | 19555.88 | 30.85 | 227.83 (2) | 1012 | | `0x47ebda34` | | | | | | | | | | | xxHash v3, 128-bit, low 64-bits part |
 | 221 | `silicium_hash64` | | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | 64 bits | GOOD | `0x00000000` | | | | | | | | | | | | | | | | | SiliciumHash 64-bit (AVX2/SWAR) |
 | 222 | `silicium_hash128` | | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | 64 bits | GOOD | `0x00000000` | | | | | | | | | | | | | | | | | SiliciumHash 128-bit (AVX2/SWAR) |
@@ -469,42 +474,45 @@ and speeds cannot be compared with each other.
 | 367 | | `mx3.v2` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 36/250 | 51.59 | 3.21 | `0x527399AD` | | public domain | mx3 (revision 2) |
 | 368 | | `mx3.v3` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 36/250 | 49.38 | 3.76 | `0x7B287B65` | | public domain | mx3 (revision 3) |
 | 369 | | `pair-multiply-shift-32` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 64 bits | Fail | 226/250 | 23.26 | 2.24 | `0xFC284F0F` | lookup table, system specific | MIT | Dietzfelbinger Pair-multiply-shift strings, 32-bit blocks |
-| 370 | | `perl-jenkins` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 164/235 | 95.00 | 0.20 | `0xE3ED0E54` | | GPL 3.0 | Bob Jenkins' OAAT hash (from old perl5 code) |
-| 371 | | `perl-stadtx` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 11/250 | 38.51 | 4.72 | `0xD983938D` | | GPL 3.0 | Stadtx hash from perl5 |
-| 372 | | `perl-zaphod32` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Fail | 12/250 | 39.48 | 1.30 | `0x2DC19200` | | GPL 3.0 | Zaphod32 hash from perl5 |
-| 373 | | `perl-zaphod32.sbox128` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Fail | 76/250 | 27.20 | 1.31 | `0x1C203149` | lookup table | GPL 3.0 | Zaphod32 hash with sbox32 and 128-bit seeding from perl5 |
-| 374 | | `poly-mersenne.deg0` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 64 bits | Fail | 161/238 | 45.22 | 0.49 | `0x5D4B947A` | system specific | BSD | Degree 0 Hashing mod 2^61-1 |
-| 375 | | `rainbow` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 61.63 | 1.28 | `0xED7533D3` | | Apache 2.0 | Rainbow v3.7.1 |
-| 376 | | `rainbow-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 62.06 | 1.27 | `0xFF03173F` | | Apache 2.0 | Rainbow 128-bit v3.7.1 |
-| 377 | | `rainbow-256` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 103.65 | 1.28 | `0x65F4A210` | | Apache 2.0 | Rainbow 256-bit v3.7.1 |
-| 378 | | `rainstorm` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 184.06 | 0.58 | `0xCECC05CE` | | Apache 2.0 | Rainstorm v3.7.1 |
-| 379 | | `rainstorm-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 196.96 | 0.58 | `0xD6D12547` | | Apache 2.0 | Rainstorm 128-bit v3.7.1 |
-| 380 | | `rainstorm-256` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 241.15 | 0.59 | `0x72D3356F` | | Apache 2.0 | Rainstorm 256-bit v3.7.1 |
-| 381 | | `rapidhash-micro.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.99 | 6.47 | `0xC7F9987C` | | MIT | rapidhashMicro v3, 64-bit protected version |
-| 382 | | `rapidhash-nano.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.36 | 5.69 | `0x7A2FA761` | | MIT | rapidhashNano v3, 64-bit protected version |
-| 383 | | `rapidhash.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.98 | 6.58 | `0x72C9270A` | | MIT | rapidhash v3, 64-bit protected version |
-| 384 | | `RH512` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 79.73 | 2.50 | `0xD5E60849` | | MIT | RH512 Pro Implementation (low 256 bits) |
-| 385 | | `RH512-64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 76.05 | 2.50 | `0x3C481EA3` | | MIT | RH512 Pro Implementation (low 64 bits) |
-| 386 | | `RH512h` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 82.13 | 2.50 | `0xE42C2BF3` | | MIT | RH512 Pro Implementation (high 256 bits) |
-| 387 | | `rust-ahash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 8/250 | 69.80 | 2.51 | `0x3BF4383B` | AES | MIT | aHash (ported from Rust, AES-based version) |
-| 388 | | `rust-ahash-fb` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Pass | 0/250 | 29.14 | 4.52 | `0x53C9F167` | | MIT | aHash (ported from Rust, fallback version) |
-| 389 | | `rust-ahash-fb.nofold` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Pass | 0/250 | 31.01 | 3.46 | `0x3FDD068C` | | MIT | aHash (ported from Rust, fallback version, folded\_multiply disabled) |
-| 390 | | `rust-ahash.noshuf` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 7/250 | 74.39 | 0.66 | `0x84CD29E5` | AES | MIT | aHash (ported from Rust, AES-based version, without shuffle) |
-| 391 | | `rust-fxhash32` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 186/250 | 34.94 | 3.94 | `0xC8D7717D` | | MIT | Rust FxHash v2.1.1 32-bit version |
-| 392 | | `rust-fxhash32.mix` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 14/250 | 40.91 | 3.94 | `0xD2DC6A74` | | MIT | Rust FxHash v2.1.1 32-bit version, with unofficial extra mixing |
-| 393 | | `rust-fxhash64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 165/250 | 30.02 | 4.99 | `0x8F177350` | | MIT | Rust FxHash v2.1.1 64-bit version |
-| 394 | | `rust-fxhash64.mix` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 2/250 | 38.02 | 4.99 | `0xFC662413` | | MIT | Rust FxHash v2.1.1 64-bit version, with unofficial extra mixing |
-| 395 | | `rust-fxhash64.mult32` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 214/250 | 31.14 | 3.94 | `0x686292BD` | | MIT | Rust FxHash v2.1.1 64-bit version |
-| 396 | | `rust-fxhash64.mult32.mix` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 7/250 | 38.76 | 3.94 | `0x9CF6B62E` | | MIT | Rust FxHash v2.1.1 64-bit version, with unofficial extra mixing |
-| 397 | | `rust-rapidhash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 35.01 | 8.66 | `0x562EF848` | | MIT | rapidhash rust, quality::RapidHasher::new() |
-| 398 | | `rust-rapidhash.fast` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 132/250 | 24.46 | 8.67 | `0xB891F260` | | MIT | rapidhash rust, fast::RapidHasher::new() |
-| 399 | | `rust-rapidhash.p` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 45.47 | 3.02 | `0x77BCDA91` | | MIT | rapidhash rust, quality::RapidHasher::new(), no wide mult |
-| 400 | | `rust-rapidhash.p.fast` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 131/250 | 28.86 | 3.07 | `0x2955B659` | | MIT | rapidhash rust, fast::RapidHasher::new(), no wide mult |
-| 401 | | `SHA-1` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | none | Pass | 0/235 | 490.81 | 0.48 | `0xE444A591` | cryptographic, weak cryptographic | MIT | SHA-1 |
-| 402 | | `SipHash-1-3.folded` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Pass | 0/238 | 111.38 | 0.61 | `0xC7BC11F8` | cryptographic | MIT | SipHash 1-3, XOR folded down to 32 bits |
-| 403 | | `SipHash-2-4.folded` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Pass | 0/235 | 154.05 | 0.32 | `0xDD46AB1A` | cryptographic | MIT | SipHash 2-4, XOR folded down to 32 bits |
-| 404 | | `TentHash` | 160 | 2⁻¹⁶⁰ | 1.4 × 10²⁴ | | | | | | | | | | | | none | Pass | 0/250 | 84.75 | 1.73 | `0x5FDAF416` | | MIT | TentHash |
-| 405 | | `wyhash.strict` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 15/250 | 31.49 | 5.79 | `0x82FE7E2E` | | public domain | wyhash v4.2, 64-bit strict version |
+| 370 | | `pengyhash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 16/250 | 89.81 | 3.80 | `0x861A1254` | | GPL 3.0 | pengyhash v0.3 |
+| 371 | | `perl-jenkins` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 164/235 | 95.00 | 0.20 | `0xE3ED0E54` | | GPL 3.0 | Bob Jenkins' OAAT hash (from old perl5 code) |
+| 372 | | `perl-stadtx` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 11/250 | 38.51 | 4.72 | `0xD983938D` | | GPL 3.0 | Stadtx hash from perl5 |
+| 373 | | `perl-zaphod32` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Fail | 12/250 | 39.48 | 1.30 | `0x2DC19200` | | GPL 3.0 | Zaphod32 hash from perl5 |
+| 374 | | `perl-zaphod32.sbox128` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Fail | 76/250 | 27.20 | 1.31 | `0x1C203149` | lookup table | GPL 3.0 | Zaphod32 hash with sbox32 and 128-bit seeding from perl5 |
+| 375 | | `poly-mersenne.deg0` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 64 bits | Fail | 161/238 | 45.22 | 0.49 | `0x5D4B947A` | system specific | BSD | Degree 0 Hashing mod 2^61-1 |
+| 376 | | `rainbow` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 61.63 | 1.28 | `0xED7533D3` | | Apache 2.0 | Rainbow v3.7.1 |
+| 377 | | `rainbow-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 62.06 | 1.27 | `0xFF03173F` | | Apache 2.0 | Rainbow 128-bit v3.7.1 |
+| 378 | | `rainbow-256` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 103.65 | 1.28 | `0x65F4A210` | | Apache 2.0 | Rainbow 256-bit v3.7.1 |
+| 379 | | `rainstorm` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 184.06 | 0.58 | `0xCECC05CE` | | Apache 2.0 | Rainstorm v3.7.1 |
+| 380 | | `rainstorm-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 196.96 | 0.58 | `0xD6D12547` | | Apache 2.0 | Rainstorm 128-bit v3.7.1 |
+| 381 | | `rainstorm-256` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/238 | 241.15 | 0.59 | `0x72D3356F` | | Apache 2.0 | Rainstorm 256-bit v3.7.1 |
+| 382 | | `rapidhash-micro.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.99 | 6.47 | `0xC7F9987C` | | MIT | rapidhashMicro v3, 64-bit protected version |
+| 383 | | `rapidhash-nano.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.36 | 5.69 | `0x7A2FA761` | | MIT | rapidhashNano v3, 64-bit protected version |
+| 384 | | `rapidhash.protected` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 31.98 | 6.58 | `0x72C9270A` | | MIT | rapidhash v3, 64-bit protected version |
+| 385 | | `RH512` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 79.73 | 2.50 | `0xD5E60849` | | MIT | RH512 Pro Implementation (low 256 bits) |
+| 386 | | `RH512-64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 76.05 | 2.50 | `0x3C481EA3` | | MIT | RH512 Pro Implementation (low 64 bits) |
+| 387 | | `RH512h` | 256 | 2⁻²⁵⁶ | 4.0 × 10³⁸ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 82.13 | 2.50 | `0xE42C2BF3` | | MIT | RH512 Pro Implementation (high 256 bits) |
+| 388 | | `rust-ahash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 8/250 | 69.80 | 2.51 | `0x3BF4383B` | AES | MIT | aHash (ported from Rust, AES-based version) |
+| 389 | | `rust-ahash-fb` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Pass | 0/250 | 29.14 | 4.52 | `0x53C9F167` | | MIT | aHash (ported from Rust, fallback version) |
+| 390 | | `rust-ahash-fb.nofold` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Pass | 0/250 | 31.01 | 3.46 | `0x3FDD068C` | | MIT | aHash (ported from Rust, fallback version, folded\_multiply disabled) |
+| 391 | | `rust-ahash.noshuf` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | over 64 bits | Fail | 7/250 | 74.39 | 0.66 | `0x84CD29E5` | AES | MIT | aHash (ported from Rust, AES-based version, without shuffle) |
+| 392 | | `rust-fxhash32` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 186/250 | 34.94 | 3.94 | `0xC8D7717D` | | MIT | Rust FxHash v2.1.1 32-bit version |
+| 393 | | `rust-fxhash32.mix` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | 32 bits | Fail | 14/250 | 40.91 | 3.94 | `0xD2DC6A74` | | MIT | Rust FxHash v2.1.1 32-bit version, with unofficial extra mixing |
+| 394 | | `rust-fxhash64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 165/250 | 30.02 | 4.99 | `0x8F177350` | | MIT | Rust FxHash v2.1.1 64-bit version |
+| 395 | | `rust-fxhash64.mix` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 2/250 | 38.02 | 4.99 | `0xFC662413` | | MIT | Rust FxHash v2.1.1 64-bit version, with unofficial extra mixing |
+| 396 | | `rust-fxhash64.mult32` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 214/250 | 31.14 | 3.94 | `0x686292BD` | | MIT | Rust FxHash v2.1.1 64-bit version |
+| 397 | | `rust-fxhash64.mult32.mix` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 7/250 | 38.76 | 3.94 | `0x9CF6B62E` | | MIT | Rust FxHash v2.1.1 64-bit version, with unofficial extra mixing |
+| 398 | | `rust-rapidhash` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 35.01 | 8.66 | `0x562EF848` | | MIT | rapidhash rust, quality::RapidHasher::new() |
+| 399 | | `rust-rapidhash.fast` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 132/250 | 24.46 | 8.67 | `0xB891F260` | | MIT | rapidhash rust, fast::RapidHasher::new() |
+| 400 | | `rust-rapidhash.p` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Pass | 0/250 | 45.47 | 3.02 | `0x77BCDA91` | | MIT | rapidhash rust, quality::RapidHasher::new(), no wide mult |
+| 401 | | `rust-rapidhash.p.fast` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 131/250 | 28.86 | 3.07 | `0x2955B659` | | MIT | rapidhash rust, fast::RapidHasher::new(), no wide mult |
+| 402 | | `SHA-1` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | none | Pass | 0/235 | 490.81 | 0.48 | `0xE444A591` | cryptographic, weak cryptographic | MIT | SHA-1 |
+| 403 | | `SipHash-1-3.folded` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Pass | 0/238 | 111.38 | 0.61 | `0xC7BC11F8` | cryptographic | MIT | SipHash 1-3, XOR folded down to 32 bits |
+| 404 | | `SipHash-2-4.folded` | 32 | 2⁻³² | 77 163 | | | | | | | | | | | | over 64 bits | Pass | 0/235 | 154.05 | 0.32 | `0xDD46AB1A` | cryptographic | MIT | SipHash 2-4, XOR folded down to 32 bits |
+| 405 | | `TentHash` | 160 | 2⁻¹⁶⁰ | 1.4 × 10²⁴ | | | | | | | | | | | | none | Pass | 0/250 | 84.75 | 1.73 | `0x5FDAF416` | | MIT | TentHash |
+| 406 | | `wyhash.strict` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 15/250 | 31.49 | 5.79 | `0x82FE7E2E` | | public domain | wyhash v4.2, 64-bit strict version |
+| 407 | | `XXH3-128` | 128 | 2⁻¹²⁸ | 2.2 × 10¹⁹ | | | | | | | | | | | | 64 bits | Fail | 36/250 | 36.13 | 12.72 | `0x288DAA94` | lookup table | BSD | xxh3, 128-bit version |
+| 408 | | `XXH3-64` | 64 | 2⁻⁶⁴ | 5.1 × 10⁹ | | | | | | | | | | | | 64 bits | Fail | 27/250 | 30.69 | 12.82 | `0x1AAEE62C` | lookup table | BSD | xxh3, 64-bit version |
 <!-- markdownlint-enable MD013 -->
 
 ## Only in the original SMHasher
