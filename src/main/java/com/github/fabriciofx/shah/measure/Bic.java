@@ -6,8 +6,8 @@ package com.github.fabriciofx.shah.measure;
 
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Key;
-import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Measure;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.key.Flipped;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.key.Randomized;

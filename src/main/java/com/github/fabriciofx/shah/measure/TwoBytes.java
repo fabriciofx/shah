@@ -7,8 +7,8 @@ package com.github.fabriciofx.shah.measure;
 import com.github.fabriciofx.shah.Hash;
 import com.github.fabriciofx.shah.Hashes;
 import com.github.fabriciofx.shah.Key;
-import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.Measure;
+import com.github.fabriciofx.shah.Seed;
 import com.github.fabriciofx.shah.hashes.HashesOf;
 import com.github.fabriciofx.shah.key.KeyOf;
 import com.github.fabriciofx.shah.metric.Collisions;
@@ -58,10 +58,7 @@ public final class TwoBytes implements Measure<Collisions> {
      * @param func The hash function under measure
      * @param size Key length
      */
-    public TwoBytes(
-        final BiFunction<Key, Seed, Hash> func,
-        final int size
-    ) {
+    public TwoBytes(final BiFunction<Key, Seed, Hash> func, final int size) {
         this(func, new Seed32(0), size);
     }
 

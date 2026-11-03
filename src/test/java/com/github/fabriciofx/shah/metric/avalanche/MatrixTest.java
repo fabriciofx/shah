@@ -6,8 +6,8 @@ package com.github.fabriciofx.shah.metric.avalanche;
 
 import com.github.fabriciofx.shah.IsGreaterThanOrEqualTo;
 import com.github.fabriciofx.shah.func.appleby.Murmur3Hash32;
-import com.github.fabriciofx.shah.seed.Seed32;
 import com.github.fabriciofx.shah.measure.Avalanche;
+import com.github.fabriciofx.shah.seed.Seed32;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
